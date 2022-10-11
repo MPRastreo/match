@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mongodb'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -90,15 +90,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
         ],
-        'mongodb' => [
-            'driver' => 'mongodb',
-            'dsn' => env('DB_URI', 'mongodb+srv://root:root@cluster0.g2itiff.mongodb.net/?retryWrites=true&w=majority'),
-            'database' => 'Hospital',
-            "options" => [
-                "database" => "Hospital",
-                "ssl" => true,
-            ],
-        ],
+
     ],
 
     /*

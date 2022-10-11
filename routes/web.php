@@ -13,45 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function ()
-{
-    return view('login');
+Route::get('/', function () {
+    return view('layout.layout');
 });
-
-Route::post('/login', 'LoginController@login');
-
-Route::group(['middleware' => ['auth']], function ()
-{
-    Route::get('/logout', 'LoginController@logout');
-    Route::get('/dashboard', function ()
-    {
-        return view('dashboard');
-    });
-    Route::get('/personal', function ()
-    {
-        return view('auth.personal_data');
-    });
-    Route::get('/family', function ()
-    {
-        return view('auth.family');
-    });
-    Route::get('/users', 'UserController@showUsers');
-    Route::get('/clinicalHistorie', function ()
-    {
-        return view('clinicalHistorie');
-    });
-    Route::get('/medicalAppointment', function ()
-    {
-        return view('medicalAppointment');
-    });
-    Route::get('/recipes', function ()
-    {
-        return view('recipes');
-    });
-
-    Route::get('/users/show', 'UserController@showUsers');
-    Route::post('/users/add', 'UserController@addUser');
-    Route::post('/users/edit/{id}', 'UserController@editUser');
-    Route::get('/users/show/{id}', 'UserController@getUserByID');
-    Route::get('/users/delete/{id}', 'UserController@deleteUser');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+Route::get('/personal', function () {
+    return view('auth.personal_data');
+});
+Route::get('/family', function () {
+    return view('auth.family');
+});
+Route::get('/users', function () {
+    return view('users');
+});
+Route::get('/clinicalHistorie', function () {
+    return view('clinicalHistorie');
+});
+Route::get('/medicalAppointment', function () {
+    return view('medicalAppointment');
+});
+Route::get('/recipes', function () {
+    return view('recipes');
 });
