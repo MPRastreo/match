@@ -1278,7 +1278,7 @@ vnv:
 watchman-monitoring:
   icons:
     - watchman-monitoring
-    - comments-question-check
+    - comments-form-family-check
   label: Watchman Monitoring
   url: 'https://www.watchmanmonitoring.com'
 weedable:

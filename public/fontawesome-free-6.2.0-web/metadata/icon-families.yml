@@ -7287,7 +7287,7 @@ circle-plus:
 circle-question:
   aliases:
     names:
-      - question-circle
+      - form-family-circle
     unicodes:
       composite:
         - f29c
