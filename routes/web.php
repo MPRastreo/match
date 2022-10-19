@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,4 +55,7 @@ Route::group(['middleware' => ['auth']], function ()
     Route::post('/users/edit/{id}', 'UserController@editUser');
     Route::get('/users/show/{id}', 'UserController@getUserByID');
     Route::get('/users/delete/{id}', 'UserController@deleteUser');
+
+    Route::get('/lang/change', 'LangController@changeLanguage');
+    Route::post('/personal/changefield', 'UserController@changeField');
 });

@@ -87,12 +87,14 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="credits"><i class="fas fa-copyright"></i>&nbsp;2022 MP Rastreo Satelital</a>
+                            <div class="copyright">
+                                &copy; Copyright <strong><span>DMM</span></strong>. All Rights Reserved
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
+        </div>
+        </section>
         </div>
     </main>
 

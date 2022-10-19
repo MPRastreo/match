@@ -6,7 +6,7 @@ use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class UserController extends Controller
 {
@@ -31,11 +31,15 @@ class UserController extends Controller
                         $value = Hash::make($value);
                     }
                 }
+                else if(strcmp($key, '_token') == 0)
+                {
+                    continue;
+                }
                 $user->$key = $value;
             }
             $user->save();
 
-            return response()->json(["result" => "User succesfully modified"], 200);
+            return response()->json(["result" => GoogleTranslate::trans('User succesfully modified', app()->getLocale())], 200);
         }
         catch (Exception $ex)
         {
@@ -53,11 +57,16 @@ class UserController extends Controller
             $user = new Users();
             foreach($userR as $key => $value)
             {
+                if(strcmp($key, '_token') == 0)
+                {
+                    continue;
+                }
                 $user->$key = $value;
             }
+            $user->lang = 'en';
             $user->save();
 
-            return response()->json(["result" => "User succesfully added"], 200);
+            return response()->json(["result" => GoogleTranslate::trans('User succesfully added', app()->getLocale())], 200);
         }
         catch (Exception $ex)
         {
@@ -74,7 +83,7 @@ class UserController extends Controller
                 return response()->json(["warning" => "You can not delete yourself"], 200);
             }
             Users::find($id)->delete();
-            return response()->json(["result" => "User succesfully deleted"], 200);
+            return response()->json(["result" => GoogleTranslate::trans('User succesfully deleted', app()->getLocale())], 200);
         }
         catch (Exception $ex)
         {
@@ -92,6 +101,22 @@ class UserController extends Controller
         catch (Exception $ex)
         {
             return response()->json(["error" => $ex->getMessage()], 500);
+        }
+    }
+
+    public function changeField(Request $request)
+    {
+        try
+        {
+            Users::find(auth()->user()->_id)->update(
+            [
+                "personal_data" => $request->all(),
+            ]);
+            return response()->json(["result" => GoogleTranslate::trans('Data succesfully modified', app()->getLocale())], 200);
+        }
+        catch (Exception $ex)
+        {
+            return response()->json(["error" => $ex->getMessage(), "text" => GoogleTranslate::trans('An error occurred, please try again', app()->getLocale())], 500);
         }
     }
 }

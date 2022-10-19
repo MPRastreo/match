@@ -1,44 +1,44 @@
 @extends('layout.layout')
 @section('title')
-    Dashboard
+    {{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}
 @endsection
 @section('pagetitle')
-    Dashboard
+{{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}
 @endsection
 @section('content')
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title"> Dashboard</h4>
+                    <h4 class="card-title">{{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
                             <thead class=" text-primary">
                                 <th>
-                                    Name
+                                    {{ GoogleTranslate::trans('Name', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    Email
+                                    {{ GoogleTranslate::trans('Email', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    Phone
+                                    {{ GoogleTranslate::trans('Phone', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    Address
+                                    {{ GoogleTranslate::trans('Address', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    City
+                                    {{ GoogleTranslate::trans('City', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    Country
+                                    {{ GoogleTranslate::trans('Country', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    Zip
+                                    {{ GoogleTranslate::trans('Zip code', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    Action
+                                    {{ GoogleTranslate::trans('Action', app()->getLocale()) }}
                                 </th>
                             </thead>
                             <tbody>

@@ -13,4 +13,5 @@ class Users extends Authenticatable
     protected $connection = 'mongodb';
     protected $collection = 'users';
     public $timestamps = false;
+    protected $fillable = ['personal_data'];
 }
