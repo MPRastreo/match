@@ -520,7 +520,7 @@
     border-radius: 50%;
 }
 
-  
+
   .bxs-color:before {
     content: "\ef39";
   }
@@ -2837,7 +2837,7 @@
   .bx-qr-scan:before {
     content: "\ebcf";
   }
-  .bx-question-mark:before {
+  .bx-form-family-mark:before {
     content: "\ebd0";
   }
   .bx-radar:before {
@@ -5321,4 +5321,3 @@
   .bxs-zoom-out:before {
     content: "\ef0b";
   }
-  

@@ -12,8 +12,16 @@
 
     <!-- Favicons -->
     <link href="{{ asset('/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-
+    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/android-chrome-192x192.png') }}">
+    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/android-chrome-512x512.png') }}">
+    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/apple-touch-icon.png') }}">
+    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/browserconfig.xml') }}">
+    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/favicon.ico') }}">
+    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/favicon-16x16.png') }}">
+    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/favicon-32x32.png') }}">
+    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/mstile-150x150.png') }}">
+    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/safari-pinned-tab.svg') }}">
+    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/site.webmanifest') }}">
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
     <link
@@ -28,20 +36,20 @@
     <link href="{{ asset('/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
     <link href="{{ asset('/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('/vendor/simple-datatables/style.css') }}" rel="stylesheet">
-
+    {{-- Font Awesome  --}}
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/brands.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/solid.css') }}">
     <!-- Template Main CSS File -->
     <link href="{{ asset('/css/style.css') }}" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    {{-- Datatable Css --}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    {{-- JQueery --}}
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- =======================================================
-  * Template Name: NiceAdmin - v2.4.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+
 </head>
 
 <body>
@@ -51,7 +59,7 @@
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
-                <img src="{{ asset('/img/logo.png') }}" alt="">
+                <img src="{{ asset('img/logo/Match_PNG-01.png') }}" alt="">
                 <span class="d-none d-lg-block">MATCH</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -60,18 +68,11 @@
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
-
-                <li class="nav-item d-block d-lg-none">
-                    <a class="nav-link nav-icon search-bar-toggle " href="#">
-                        <i class="bi bi-search"></i>
-                    </a>
-                </li><!-- End Search Icon-->
-
                 <li class="nav-item dropdown">
 
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-bell"></i>
-                        <span class="badge bg-primary badge-number">
+                        <span class="badge bg-success badge-number">
                             {{-- 4 --}}
                         </span>
                     </a><!-- End Notification Icon -->
@@ -100,54 +101,18 @@
 
                 </li><!-- End Notification Nav -->
 
-                <li class="nav-item dropdown">
-
-                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-chat-left-text"></i>
-                        <span class="badge bg-success badge-number">
-                            {{-- 3 --}}
-                        </span>
-                    </a><!-- End Messages Icon -->
-
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-                        <li class="dropdown-header">
-                            {{-- You have 3 new messages --}}
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        {{-- <li class="message-item">
-                            <a href="#">
-                                <img src="{{ asset('/img/messages-1.jpg') }}" alt="" class="rounded-circle">
-                                <div>
-                                    <h4>Maria Hudson</h4>
-                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                    <p>4 hrs. ago</p>
-                                </div>
-                            </a>
-                        </li> --}}
-
-                        {{-- <li class="dropdown-footer">
-                            <a href="#">Show all messages</a>
-                        </li> --}}
-
-                    </ul><!-- End Messages Dropdown Items -->
-
-                </li><!-- End Messages Nav -->
-
                 <li class="nav-item dropdown pe-3">
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                         data-bs-toggle="dropdown">
-                        <img src="{{ asset('/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
-                        <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                        <i class="fa-regular fa-user-tie fa-2x"></i>
+                        <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
                     </a><!-- End Profile Iamge Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            <h6>Kevin Anderson</h6>
-                            <span>Web Designer</span>
+                            <h6>{{ Auth::user()->name }}</h6>
+                            <span>{{ Auth::user()->role }}</span>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
@@ -163,7 +128,8 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" onclick="window.location.href='{{ url('logout') }}'">
+                            <a class="dropdown-item d-flex align-items-center"
+                                onclick="window.location.href='{{ url('logout') }}'">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Sign Out</span>
                             </a>
@@ -954,6 +920,7 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('/js/main.js') }}"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     @yield('scripts')
 
 </body>

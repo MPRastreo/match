@@ -31,10 +31,8 @@ Route::group(['middleware' => ['auth']], function ()
     {
         return view('auth.personal_data');
     });
-    Route::get('/family', function ()
-    {
-        return view('auth.family');
-    });
+    Route::get('/family','FamylyController@index');
+    Route::post('/family/add', 'FamylyController@create');
     Route::get('/users', 'UserController@showUsers');
     Route::get('/clinicalHistorie', function ()
     {

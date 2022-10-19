@@ -1768,11 +1768,11 @@
 }
 .#{$fa-css-prefix}.#{$fa-css-prefix}-wheelchair-alt:before { content: unquote("\"#{ $fa-var-accessible-icon }\""); }
 
-.#{$fa-css-prefix}.#{$fa-css-prefix}-question-circle-o {
+.#{$fa-css-prefix}.#{$fa-css-prefix}-form-family-circle-o {
   font-family: 'Font Awesome 6 Free';
   font-weight: 400;
 }
-.#{$fa-css-prefix}.#{$fa-css-prefix}-question-circle-o:before { content: unquote("\"#{ $fa-var-circle-question }\""); }
+.#{$fa-css-prefix}.#{$fa-css-prefix}-form-family-circle-o:before { content: unquote("\"#{ $fa-var-circle-question }\""); }
 
 .#{$fa-css-prefix}.#{$fa-css-prefix}-volume-control-phone:before { content: unquote("\"#{ $fa-var-phone-volume }\""); }
 
