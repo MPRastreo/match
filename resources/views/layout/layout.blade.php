@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', session()->get('locale')) }}">
 
 <head>
     <meta charset="utf-8">
@@ -12,8 +12,16 @@
 
     <!-- Favicons -->
     <link href="{{ asset('/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-
+    <link rel="icon" href="{{ asset('img/favi-icon/android-chrome-192x192.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/android-chrome-512x512.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/apple-touch-icon.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/browserconfig.xml') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/favicon.ico') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/favicon-16x16.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/favicon-32x32.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/mstile-150x150.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/safari-pinned-tab.svg') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/site.webmanifest') }}">
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
     <link
@@ -28,30 +36,48 @@
     <link href="{{ asset('/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
     <link href="{{ asset('/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('/vendor/simple-datatables/style.css') }}" rel="stylesheet">
-
+    {{-- Font Awesome  --}}
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/brands.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/solid.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
     <!-- Template Main CSS File -->
     <link href="{{ asset('/css/style.css') }}" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .icon-background {
+            color: #0572ce;
+        }
+    </style>
     <!-- =======================================================
   * Template Name: NiceAdmin - v2.4.0
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+    {{-- Datatable Css --}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    {{-- JQueery --}}
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
-
+    @php
+        App::setLocale(auth()->user()->lang);
+        session()->put('locale', auth()->user()->lang);
+    @endphp
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
-                <img src="{{ asset('/img/logo.png') }}" alt="">
+                <img src="{{ asset('img/Match_PNG-01.png') }}" alt="">
                 <span class="d-none d-lg-block">MATCH</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -60,7 +86,19 @@
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
-
+                <div class="px-3">
+                    <select class="form-select changeLang" aria-label="Default select example">
+                        <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>
+                            {{ GoogleTranslate::trans('English', app()->getLocale()) }}</option>
+                        <option value="fr" {{ session()->get('locale') == 'fr' ? 'selected' : '' }}>
+                            {{ GoogleTranslate::trans('French', app()->getLocale()) }}</option>
+                        <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>
+                            {{ GoogleTranslate::trans('Spanish', app()->getLocale()) }}</option>
+                        {{-- <option value="zh" {{ session()->get('locale') == 'zh' ? 'selected' : '' }}>{{ GoogleTranslate::trans('Chinese', app()->getLocale()) }}</option>
+                        <option value="ja" {{ session()->get('locale') == 'ja' ? 'selected' : '' }}>{{ GoogleTranslate::trans('Japanese', app()->getLocale()) }}</option>
+                        <option value="ru" {{ session()->get('locale') == 'ru' ? 'selected' : '' }}>{{ GoogleTranslate::trans('Russian', app()->getLocale()) }}</option> --}}
+                    </select>
+                </div>
                 <li class="nav-item d-block d-lg-none">
                     <a class="nav-link nav-icon search-bar-toggle " href="#">
                         <i class="bi bi-search"></i>
@@ -71,7 +109,7 @@
 
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-bell"></i>
-                        <span class="badge bg-primary badge-number">
+                        <span class="badge bg-success badge-number">
                             {{-- 4 --}}
                         </span>
                     </a><!-- End Notification Icon -->
@@ -100,70 +138,22 @@
 
                 </li><!-- End Notification Nav -->
 
-                <li class="nav-item dropdown">
-
-                    <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-chat-left-text"></i>
-                        <span class="badge bg-success badge-number">
-                            {{-- 3 --}}
-                        </span>
-                    </a><!-- End Messages Icon -->
-
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-                        <li class="dropdown-header">
-                            {{-- You have 3 new messages --}}
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        {{-- <li class="message-item">
-                            <a href="#">
-                                <img src="{{ asset('/img/messages-1.jpg') }}" alt="" class="rounded-circle">
-                                <div>
-                                    <h4>Maria Hudson</h4>
-                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                    <p>4 hrs. ago</p>
-                                </div>
-                            </a>
-                        </li> --}}
-
-                        {{-- <li class="dropdown-footer">
-                            <a href="#">Show all messages</a>
-                        </li> --}}
-
-                    </ul><!-- End Messages Dropdown Items -->
-
-                </li><!-- End Messages Nav -->
-
                 <li class="nav-item dropdown pe-3">
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                         data-bs-toggle="dropdown">
-                        <img src="{{ asset('/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
-                        <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                        {{-- <img src="{{ asset('/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle"> --}}
+                        <span class="d-none d-md-block dropdown-toggle">{{ Auth::user()->name }}</span>
+                        <span class="fa-stack fa-4x px-4">
+                            <i class="fa fa-circle fa-stack-2x icon-background"></i>
+                            <i class="fa-solid fa-user fa-stack-1x text-light"></i>
+                        </span>
                     </a><!-- End Profile Iamge Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                        <li class="dropdown-header">
-                            <h6>Kevin Anderson</h6>
-                            <span>Web Designer</span>
-                        </li>
                         <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                                <i class="bi bi-person"></i>
-                                <span>My Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" onclick="window.location.href='{{ url('logout') }}'">
+                            <a class="dropdown-item d-flex align-items-center"
+                                onclick="window.location.href='{{ url('logout') }}'">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Sign Out</span>
                             </a>
@@ -185,49 +175,50 @@
             <li class="nav-item">
                 <a class="nav-link  {{ Request::is('dashboard') ? '' : 'collapsed' }}" href="index.html">
                     <i class="fa-solid fa-chart-line"></i>
-                    <span>Dashboard</span>
+                    <span>{{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}</span>
                 </a>
             </li>
             <!-- End Dashboard Nav -->
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('personal') ? '' : 'collapsed' }}" href="{{ url('/personal') }}">
                     <i class="fa-regular fa-address-card"></i>
-                    <span>Personal data </span>
+                    <span>{{ GoogleTranslate::trans('Personal data', app()->getLocale()) }}</span>
                 </a>
             </li>
             <!-- End personal data Page Nav -->
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('family') ? '' : 'collapsed' }}" href="{{ url('family') }}">
                     <i class="fa-solid fa-people-roof"></i>
-                    <span>Family</span>
+                    <span>{{ GoogleTranslate::trans('Family', app()->getLocale()) }}</span>
                 </a>
             </li>
             <!-- End Family Page Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ url('/users') }}">
                     <i class="fa-regular fa-user-tie"></i>
-                    <span>Users</span>
+                    <span>{{ GoogleTranslate::trans('Users', app()->getLocale()) }}</span>
                 </a>
             </li>
             <!-- End Users Page Nav -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="users-profile.html">
+                <a class="nav-link {{ Request::is('clinicalHistorie') ? '' : 'collapsed' }}"
+                    href="{{ url('/clinicalHistorie') }}">
                     <i class="fa-solid fa-book-medical"></i>
-                    <span>Clinical Historie</span>
+                    <span>{{ GoogleTranslate::trans('Clinical Historie', app()->getLocale()) }}</span>
                 </a>
             </li>
             <!-- End Clinical Historie Page Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="users-profile.html">
                     <i class="fa-regular fa-calendar-check"></i>
-                    <span>Appoiments</span>
+                    <span>{{ GoogleTranslate::trans('Appointments', app()->getLocale()) }}</span>
                 </a>
             </li>
             <!-- End Appoiments Page Nav -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="users-profile.html">
                     <i class="fa-regular fa-rectangle-list"></i>
-                    <span>Recipes</span>
+                    <span>{{ GoogleTranslate::trans('Recipes', app()->getLocale()) }}</span>
                 </a>
             </li>
             <!-- End Recipes Page Nav -->
@@ -954,6 +945,13 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('/js/main.js') }}"></script>
+    <script>
+        let url = "{{ url('/lang/change') }}";
+        $('.changeLang').change(function(event) {
+            window.location.href = url + "?lang=" + $(this).val();
+        })
+    </script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     @yield('scripts')
 
 </body>

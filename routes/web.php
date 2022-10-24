@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,14 +32,17 @@ Route::group(['middleware' => ['auth']], function ()
     {
         return view('auth.personal_data');
     });
-    Route::get('/family', function ()
-    {
-        return view('auth.family');
-    });
+    Route::get('/family','FamylyController@index');
+    Route::post('/family/add', 'FamylyController@create');
+    Route::post('/family/update', 'FamylyController@update');
+    Route::get('/family/show/{id}', 'FamylyController@show');
+    Route::post('/family/delete', 'FamylyController@destroy');
+    Route::get('/family/show', 'FamylyController@showFamily');
+
     Route::get('/users', 'UserController@showUsers');
     Route::get('/clinicalHistorie', function ()
     {
-        return view('clinicalHistorie');
+        return view('auth.clinicalHistorie');
     });
     Route::get('/medicalAppointment', function ()
     {
@@ -54,4 +58,7 @@ Route::group(['middleware' => ['auth']], function ()
     Route::post('/users/edit/{id}', 'UserController@editUser');
     Route::get('/users/show/{id}', 'UserController@getUserByID');
     Route::get('/users/delete/{id}', 'UserController@deleteUser');
+
+    Route::get('/lang/change', 'LangController@changeLanguage');
+    Route::post('/personal/changefield', 'UserController@changeField');
 });

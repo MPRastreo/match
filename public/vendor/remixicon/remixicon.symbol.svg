@@ -8005,27 +8005,27 @@
         <path fill="none" d="M0 0h24v24H0z"/>
         <path d="M21 16v5H3v-5h2v3h14v-3h2zM3 11h18v2H3v-2zm18-3h-2V5H5v3H3V3h18v5z"/>
     </g>
-</symbol><symbol viewBox="0 0 24 24" id="ri-question-answer-fill">
+</symbol><symbol viewBox="0 0 24 24" id="ri-form-family-answer-fill">
     <g>
         <path fill="none" d="M0 0h24v24H0z"/>
         <path d="M8 18h10.237L20 19.385V9h1a1 1 0 0 1 1 1v13.5L17.545 20H9a1 1 0 0 1-1-1v-1zm-2.545-2L1 19.5V4a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455z"/>
     </g>
-</symbol><symbol viewBox="0 0 24 24" id="ri-question-answer-line">
+</symbol><symbol viewBox="0 0 24 24" id="ri-form-family-answer-line">
     <g>
         <path fill="none" d="M0 0h24v24H0z"/>
         <path d="M5.455 15L1 18.5V3a1 1 0 0 1 1-1h15a1 1 0 0 1 1 1v12H5.455zm-.692-2H16V4H3v10.385L4.763 13zM8 17h10.237L20 18.385V8h1a1 1 0 0 1 1 1v13.5L17.545 19H9a1 1 0 0 1-1-1v-1z"/>
     </g>
-</symbol><symbol viewBox="0 0 24 24" id="ri-question-fill">
+</symbol><symbol viewBox="0 0 24 24" id="ri-form-family-fill">
     <g>
         <path fill="none" d="M0 0h24v24H0z"/>
         <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm2-1.645A3.502 3.502 0 0 0 12 6.5a3.501 3.501 0 0 0-3.433 2.813l1.962.393A1.5 1.5 0 1 1 12 11.5a1 1 0 0 0-1 1V14h2v-.645z"/>
     </g>
-</symbol><symbol viewBox="0 0 24 24" id="ri-question-line">
+</symbol><symbol viewBox="0 0 24 24" id="ri-form-family-line">
     <g>
         <path fill="none" d="M0 0h24v24H0z"/>
         <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-1-5h2v2h-2v-2zm2-1.645V14h-2v-1.5a1 1 0 0 1 1-1 1.5 1.5 0 1 0-1.471-1.794l-1.962-.393A3.501 3.501 0 1 1 13 13.355z"/>
     </g>
-</symbol><symbol viewBox="0 0 24 24" id="ri-question-mark">
+</symbol><symbol viewBox="0 0 24 24" id="ri-form-family-mark">
     <g>
         <path fill="none" d="M0 0H24V24H0z"/>
         <path d="M12 19c.828 0 1.5.672 1.5 1.5S12.828 22 12 22s-1.5-.672-1.5-1.5.672-1.5 1.5-1.5zm0-17c3.314 0 6 2.686 6 6 0 2.165-.753 3.29-2.674 4.923C13.399 14.56 13 15.297 13 17h-2c0-2.474.787-3.695 3.031-5.601C15.548 10.11 16 9.434 16 8c0-2.21-1.79-4-4-4S8 5.79 8 8v1H6V8c0-3.314 2.686-6 6-6z"/>

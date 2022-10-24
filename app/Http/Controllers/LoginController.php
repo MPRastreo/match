@@ -40,9 +40,9 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        $usuario = Users::find(auth()->user()->_id);
-        $usuario->token = null;
-        $usuario->save();
+        $user = Users::find(auth()->user()->_id);
+        $user->token = null;
+        $user->save();
 
         Auth::logout();
 

@@ -3257,7 +3257,7 @@ readers do not read off random characters that represent icons */
 .fa-circle-question::before {
   content: "\f059"; }
 
-.fa-question-circle::before {
+.fa-form-family-circle::before {
   content: "\f059"; }
 
 .fa-plane-departure::before {
