@@ -41,10 +41,11 @@ class FamylyController extends Controller
         }
     }
 
-    public function editMemberFamily(Request $request)
+    public function update(Request $request)
     {
         try {
             $familyR = $request->all();
+            $familyR['num_int']="N/A";
             $family = Familys::find($familyR['id']);
             foreach ($familyR as $key => $value) {
                 if (gettype($key) == "object") {
@@ -61,11 +62,13 @@ class FamylyController extends Controller
         }
     }
 
-    public function deleteUser($id){
+    public function destroy(Request $request){
         try {
-            $family = Familys::find($id);
+
+            $family = Familys::find($request->id);
             $family->delete();
             return response()->json(["result" => true, "message" => GoogleTranslate::trans( "Family succesfully deleted")], 200);
+
         } catch (Exception $th) {
             Log::error($th);
             return response()->json(['result' => false, "message" => $th->getMessage()], 500);

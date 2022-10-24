@@ -59,12 +59,11 @@ function nextPrev(n) {
 
 function validateForm(x, currentTab) {
     var x, y, i, valid = true;
-    y = x[currentTab].getElementsByTagName("input");
-    console.log(currentTab);
     y = x[currentTab].getElementsByTagName("select");
     if (y.length != 0) {
         valid = validateSelect(x, currentTab);
     }
+    y = x[currentTab].getElementsByTagName("input");
     for (i = 0; i < y.length; i++) {
         console.log(y[i].value);
         if (y[i].value == "") {
@@ -120,7 +119,7 @@ const addFamilyMember = () => {
     var street = $('#txtStreet').val();
     var num_ext = $('#txtNumExt').val();
     var num_int = $('#txtNumInt').val();
-    var postal_code = $('#txtPostalCode').val();
+    var zip_code = $('#txtPostalCode').val();
     var colony = $('#txtColony').val();
     var city = $('#txtCity').val();
     var state = $('#txtState').val();
@@ -141,6 +140,7 @@ const addFamilyMember = () => {
 
 
     var data = {
+        id_user: user.id,
         name: name,
         lastname: lastname,
         birth_date: date_of_birth,
@@ -156,7 +156,7 @@ const addFamilyMember = () => {
             street: street,
             num_ext: num_ext,
             num_int: num_int,
-            postal_code: postal_code,
+            zip_code: zip_code,
             colony: colony,
             city: city,
             state: state,
@@ -206,12 +206,87 @@ const addFamilyMember = () => {
         });
 }
 
-function showMember(id) {
-    data = {
+function editMember(_id) {
+    var member = arrayMembers.find(x => x._id == _id);
+    console.log(member);
+    $('#txtIdEdit').val(member._id);
+
+    $('#txtNameEdit').val(member.name);
+    $('#txtLastNameEdit').val(member.lastname);
+    $('#txtCivilStatusEdit').val(member.civil_status);
+    $('#txtAgeEdit').val(member.age);
+    $('#txtStreetEdit').val(member.address.street);
+    $('#txtNumberEdit').val(member.address.num_ext);
+    // $('#txtNumIntEdit').val(member.address.num_int);
+    $('#txtColonyEdit').val(member.address.colony);
+    $('#txtCityEdit').val(member.address.city);
+    $('#txtStateEdit').val(member.address.state);
+    $('#txtCountryEdit').val(member.address.country);
+    $('#txtZipCodeEdit').val(member.address.zip_code);
+    $('#txtEmailEdit').val(member.email);
+    $('#txtPhoneEdit').val(member.phone.phone);
+    $('#txtMobileEdit').val(member.phone.mobile);
+    $('#txtSchoolingEdit').val(member.schooling);
+    $('#txtOccupationEdit').val(member.occupation);
+    $('#txtReligionEdit').val(member.religion);
+    $('#txtRelationshipEdit').val(member.relationship);
+    $('#modalEditMember').modal('show');
+
+}
+
+function updateMember() {
+
+    var id = $('#txtIdEdit').val();
+    var name = $('#txtNameEdit').val();
+    var lastname = $('#txtLastNameEdit').val();
+    var civil_status = $('#txtCivilStatusEdit').val();
+    var age = $('#txtAgeEdit').val();
+    var street = $('#txtStreetEdit').val();
+    var num_ext = $('#txtNumberEdit').val();
+    // var num_int = $('#txtNumIntEdit').val();
+    var colony = $('#txtColonyEdit').val();
+    var city = $('#txtCityEdit').val();
+    var state = $('#txtStateEdit').val();
+    var country = $('#txtCountryEdit').val();
+    var zip_code = $('#txtZipCodeEdit').val();
+    var email = $('#txtEmailEdit').val();
+    var phone = $('#txtPhoneEdit').val();
+    var mobile = $('#txtMobileEdit').val();
+    var schooling = $('#txtSchoolingEdit').val();
+    var occupation = $('#txtOccupationEdit').val();
+    var religion = $('#txtReligionEdit').val();
+    var relationship = $('#txtRelationshipEdit').val();
+
+    var data = {
+        user_id: user.id,
         id: id,
+        name: name,
+        lastname: lastname,
+        civil_status: civil_status,
+        age: age,
+        address: {
+            street: street,
+            num_ext: num_ext,
+            num_int: "N/A",
+            colony: colony,
+            city: city,
+            state: state,
+            country: country,
+            zip_code: zip_code
+        },
+        email: email,
+        phone: {
+            phone: phone,
+            mobile: mobile
+        },
+        schooling: schooling,
+        occupation: occupation,
+        religion: religion,
+        relationship: relationship,
         _token: $('meta[name="csrf-token"]').attr('content')
     }
-    fetch('/family/show', {
+
+    fetch('/family/update', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -220,32 +295,55 @@ function showMember(id) {
         }).then(response => response.json())
         .then(data => {
             if (data.result) {
-                $('#txtName').val(data.data.name);
-                $('#txtlastname').val(data.data.lastname);
-                $('#txtdate_of_birth').val(data.data.birth_date);
-                $('#sltGender').val()
-                $('#sltCivilStatus').val(data.data.civil_status);
-                $('#txtCityOfBirth').val(data.data.birth_date.city);
-                $('#txtCountryOfBirth').val(data.data.birth_date.country);
-                $('#txtStateOfBirth').val(data.data.birth_date.state);
-                $('#txtStreet').val(data.data.address.street);
-                $('#txtNumExt').val(data.data.address.num_ext);
-                $('#txtNumInt').val(data.data.address.num_int);
-                $('#txtPostalCode').val(data.data.address.postal_code);
-                $('#txtColony').val(data.data.address.colony);
-                $('#txtCity').val(data.data.address.city);
-                $('#txtState').val(data.data.address.state);
-                $('#txtCountry').val(data.data.address.country);
-                $('#txtEmail').val(data.data.email);
-                $('#txtPhone').val(data.data.phone.phone);
-                $('#txtMobile').val(data.data.phone.mobile);
-                $('#txtSchooling').val(data.data.schooling);
-                $('#txtOccupation').val(data.data.occupation);
-                $('#txtReligion').val(data.data.religion);
-                $('#txtRelation').val(data.data.relationship);
-                $('#txtId').val(data.data.id);
-                $('#btnAdd').hide();
-                $('#btnUpdate').show();
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Family member updated successfully',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                })
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Something went wrong',
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                })
+            }
+        }).catch((error) => {
+            console.error(error);
+            // console.error('Error:', error);
+        });
+
+}
+
+function deleteMember(_id) {
+    var data = {
+        id: _id,
+        _token: $('meta[name="csrf-token"]').attr('content')
+    }
+    fetch('/family/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }).then(response => response.json())
+        .then(data => {
+            if (data.result) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Family member deleted successfully',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                })
             } else {
                 Swal.fire({
                     title: 'Error!',
@@ -256,6 +354,6 @@ function showMember(id) {
             }
         }).catch((error) => {
             console.error('Error:', error);
-
         });
+
 }

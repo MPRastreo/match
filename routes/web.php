@@ -34,10 +34,15 @@ Route::group(['middleware' => ['auth']], function ()
     });
     Route::get('/family','FamylyController@index');
     Route::post('/family/add', 'FamylyController@create');
+    Route::post('/family/update', 'FamylyController@update');
+    Route::get('/family/show/{id}', 'FamylyController@show');
+    Route::post('/family/delete', 'FamylyController@destroy');
+    Route::get('/family/show', 'FamylyController@showFamily');
+
     Route::get('/users', 'UserController@showUsers');
     Route::get('/clinicalHistorie', function ()
     {
-        return view('clinicalHistorie');
+        return view('auth.clinicalHistorie');
     });
     Route::get('/medicalAppointment', function ()
     {
