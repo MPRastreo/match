@@ -47,7 +47,7 @@ const updateField = () =>
         {
             Swal.fire({
                 icon: 'success',
-                title: 'Success!',
+                title: data.title,
                 text: data.result
             }).then((result) =>
             {
@@ -61,7 +61,7 @@ const updateField = () =>
         {
             Swal.fire({
                 icon: 'error',
-                title: 'Error!',
+                title: data.title,
                 text: data.text
             });
         }
@@ -102,8 +102,8 @@ const getInfoByID = (id) =>
         {
             Swal.fire({
                 icon: 'error',
-                title: 'Error!',
-                text: 'An error occurred, please try again'
+                title: data.title,
+                text: data.text
             })
         }
     }).catch(

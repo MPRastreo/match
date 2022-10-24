@@ -11,8 +11,22 @@ class FamylyController extends Controller
 {
     public function index()
     {
-        $familys = Familys::all();
-        return view('auth.family', compact('familys'));
+        try
+        {
+            if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+            {
+                $familys = Familys::all();
+                return view('auth.family', compact('familys'));
+            }
+            else
+            {
+                return view('blocked');
+            }
+        }
+        catch (Exception $ex)
+        {
+            return redirect()->to('/users');
+        }
     }
 
     public function create(Request $request)

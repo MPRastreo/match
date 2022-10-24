@@ -12,8 +12,22 @@ class UserController extends Controller
 {
     public function showUsers()
     {
-        $users = Users::all();
-        return view('auth.users', compact('users'));
+        try
+        {
+            if(auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+            {
+                $users = Users::all();
+                return view('auth.users', compact('users'));
+            }
+            else
+            {
+                return view('blocked');
+            }
+        }
+        catch (Exception $ex)
+        {
+            return redirect()->to('/users');
+        }
     }
 
     public function editUser(Request $request, $id)
@@ -39,11 +53,14 @@ class UserController extends Controller
             }
             $user->save();
 
-            return response()->json(["result" => GoogleTranslate::trans('User succesfully modified', app()->getLocale())], 200);
+            return response()->json(["result" => GoogleTranslate::trans('User succesfully modified', app()->getLocale()),
+                                     "title" => GoogleTranslate::trans('¡Success!', app()->getLocale())], 200);
         }
         catch (Exception $ex)
         {
-            return response()->json(["error" => $ex->getMessage()], 500);
+            return response()->json(["error" => $ex->getMessage(),
+                                     "text" => GoogleTranslate::trans('An error occurred, please try again', app()->getLocale()),
+                                     "title" => GoogleTranslate::trans('¡Error!', app()->getLocale())], 500);
         }
     }
 
@@ -64,13 +81,17 @@ class UserController extends Controller
                 $user->$key = $value;
             }
             $user->lang = 'en';
+            $user->created_by = auth()->user()->_id;
             $user->save();
 
-            return response()->json(["result" => GoogleTranslate::trans('User succesfully added', app()->getLocale())], 200);
+            return response()->json(["result" => GoogleTranslate::trans('User succesfully added', app()->getLocale()),
+                                     "title" => GoogleTranslate::trans('¡Success!', app()->getLocale())], 200);
         }
         catch (Exception $ex)
         {
-            return response()->json(["error" => $ex->getMessage()], 500);
+            return response()->json(["error" => $ex->getMessage(),
+                                     "text" => GoogleTranslate::trans('An error occurred, please try again', app()->getLocale()),
+                                     "title" => GoogleTranslate::trans('¡Error!', app()->getLocale())], 500);
         }
     }
 
@@ -80,14 +101,17 @@ class UserController extends Controller
         {
             if(strcmp($id, auth()->user()->_id) == 0)
             {
-                return response()->json(["warning" => "You can not delete yourself"], 200);
+                return response()->json(["warning" => GoogleTranslate::trans('You can not delete yourself', app()->getLocale()), "title" => GoogleTranslate::trans('¡Attention!', app()->getLocale())], 200);
             }
             Users::find($id)->delete();
-            return response()->json(["result" => GoogleTranslate::trans('User succesfully deleted', app()->getLocale())], 200);
+            return response()->json(["result" => GoogleTranslate::trans('User succesfully deleted', app()->getLocale()),
+                                     "title" => GoogleTranslate::trans('¡Success!', app()->getLocale())], 200);
         }
         catch (Exception $ex)
         {
-            return response()->json(["error" => $ex->getMessage()], 500);
+            return response()->json(["error" => $ex->getMessage(),
+                                     "text" => GoogleTranslate::trans('An error occurred, please try again', app()->getLocale()),
+                                     "title" => GoogleTranslate::trans('¡Error!', app()->getLocale())], 500);
         }
     }
 
@@ -100,7 +124,9 @@ class UserController extends Controller
         }
         catch (Exception $ex)
         {
-            return response()->json(["error" => $ex->getMessage()], 500);
+            return response()->json(["error" => $ex->getMessage(),
+                                     "text" => GoogleTranslate::trans('An error occurred, please try again', app()->getLocale()),
+                                     "title" => GoogleTranslate::trans('¡Error!', app()->getLocale())], 500);
         }
     }
 
@@ -112,11 +138,14 @@ class UserController extends Controller
             [
                 "personal_data" => $request->all(),
             ]);
-            return response()->json(["result" => GoogleTranslate::trans('Data succesfully modified', app()->getLocale())], 200);
+            return response()->json(["result" => GoogleTranslate::trans('Data succesfully modified', app()->getLocale()),
+                                     "title" => GoogleTranslate::trans('¡Success!', app()->getLocale())], 200);
         }
         catch (Exception $ex)
         {
-            return response()->json(["error" => $ex->getMessage(), "text" => GoogleTranslate::trans('An error occurred, please try again', app()->getLocale())], 500);
+            return response()->json(["error" => $ex->getMessage(),
+                                     "text" => GoogleTranslate::trans('An error occurred, please try again', app()->getLocale()),
+                                     "title" => GoogleTranslate::trans('¡Error!', app()->getLocale())], 500);
         }
     }
 }

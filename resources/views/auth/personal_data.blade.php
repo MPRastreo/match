@@ -8,21 +8,21 @@
 @section('content')
     <style>
         /* input {
-                            display: block !important;
-                            outline: none !important;
-                            border: none !important;
-                            border-bottom: 1px solid #000 !important;
-                            font-size: 80% !important;
-                        }
+                                            display: block !important;
+                                            outline: none !important;
+                                            border: none !important;
+                                            border-bottom: 1px solid #000 !important;
+                                            font-size: 80% !important;
+                                        }
 
-                        input:focus {
-                            border-bottom: 1px solid #0572ce !important;
-                            box-shadow: 0 1px 0 0 #0572ce !important;
-                        }
+                                        input:focus {
+                                            border-bottom: 1px solid #0572ce !important;
+                                            box-shadow: 0 1px 0 0 #0572ce !important;
+                                        }
 
-                        .form-control {
-                            border-radius: 0;
-                        } */
+                                        .form-control {
+                                            border-radius: 0;
+                                        } */
     </style>
     <div class="row">
         <div class="col-md-12">
@@ -192,8 +192,29 @@
                                 <div class="row ">
                                     <div class="col-12">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="txtSchooling"
-                                                placeholder="Schooling" name="schooling">
+                                            <select id="txtSchooling" class="form-select"
+                                                aria-label="Floating label select schooling" required>
+                                                <option selected disabled value="">
+                                                    {{ GoogleTranslate::trans('Select an option', app()->getLocale()) }}
+                                                </option>
+                                                <option value="1">
+                                                    {{ GoogleTranslate::trans('Primary', app()->getLocale()) }}
+                                                </option>
+                                                <option value="2">
+                                                    {{ GoogleTranslate::trans('Secondary', app()->getLocale()) }}
+                                                </option>
+                                                <option value="3">
+                                                    {{ GoogleTranslate::trans('High School', app()->getLocale()) }}
+                                                </option>
+                                                <option value="4">
+                                                    {{ GoogleTranslate::trans('University', app()->getLocale()) }}</option>
+                                                <option value="5">
+                                                    {{ GoogleTranslate::trans("Master's Degree", app()->getLocale()) }}
+                                                </option>
+                                                <option value="6">
+                                                    {{ GoogleTranslate::trans('Doctorate', app()->getLocale()) }}
+                                                </option>
+                                            </select>
                                             <label for="txtSchooling"
                                                 class="text-primary">{{ GoogleTranslate::trans('Schooling', app()->getLocale()) }}</label>
                                         </div>
@@ -218,8 +239,29 @@
                                 <div class="row ">
                                     <div class="col-12">
                                         <div class="form-floating">
-                                            <input type="text" class="form-control" id="txtReligion"
-                                                placeholder="Religion" name="religion">
+                                            <select id="txtReligion" class="form-select"
+                                                aria-label="Floating label select religion" required>
+                                                <option selected disabled value="">
+                                                    {{ GoogleTranslate::trans('Select an option', app()->getLocale()) }}
+                                                </option>
+                                                <option value="1">
+                                                    {{ GoogleTranslate::trans('Catholic', app()->getLocale()) }}
+                                                </option>
+                                                <option value="2">
+                                                    {{ GoogleTranslate::trans('Protestant', app()->getLocale()) }}
+                                                </option>
+                                                <option value="3">
+                                                    {{ GoogleTranslate::trans('Jewish', app()->getLocale()) }}
+                                                </option>
+                                                <option value="4">
+                                                    {{ GoogleTranslate::trans('Muslim', app()->getLocale()) }}</option>
+                                                <option value="5">
+                                                    {{ GoogleTranslate::trans('Atheist', app()->getLocale()) }}
+                                                </option>
+                                                <option value="6">
+                                                    {{ GoogleTranslate::trans('Other', app()->getLocale()) }}
+                                                </option>
+                                            </select>
                                             <label for="txtReligion"
                                                 class="text-primary">{{ GoogleTranslate::trans('Religion', app()->getLocale()) }}</label>
                                         </div>

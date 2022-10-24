@@ -76,7 +76,7 @@ const addUser = () =>
         {
             Swal.fire({
                 icon: 'success',
-                title: 'Success!',
+                title: data.title,
                 text: data.result
             }).then((result) =>
             {
@@ -90,8 +90,8 @@ const addUser = () =>
         {
             Swal.fire({
                 icon: 'error',
-                title: 'Error!',
-                text: 'An error occurred, please try again'
+                title: data.title,
+                text: data.text
             });
         }
     }).catch(
@@ -136,8 +136,8 @@ const getInfoByID = (id) =>
         {
             Swal.fire({
                 icon: 'error',
-                title: 'Error!',
-                text: 'An error occurred, please try again'
+                title: data.title,
+                text: data.text
             })
         }
     }).catch(
@@ -182,7 +182,7 @@ const editUser = () =>
         {
             Swal.fire({
                 icon: 'success',
-                title: 'Success!',
+                title: data.title,
                 text: data.result
             }).then((result) =>
             {
@@ -196,8 +196,8 @@ const editUser = () =>
         {
             Swal.fire({
                 icon: 'error',
-                title: 'Error!',
-                text: 'An error occurred, please try again'
+                title: data.title,
+                text: data.title
             });
         }
     }).catch(
@@ -243,7 +243,7 @@ const deleteUser = (id) =>
                 {
                     Swal.fire({
                     icon: 'success',
-                    title: 'Success!',
+                    title: data.title,
                     text: data.result
                     }).then((result) =>
                     {
@@ -256,23 +256,17 @@ const deleteUser = (id) =>
                 if (data.warning != null)
                 {
                     Swal.fire({
-                    icon: 'warning',
-                    title: 'Attention!',
-                    text: data.warning
-                    }).then((result) =>
-                    {
-                        if(result.isConfirmed)
-                        {
-                            window.location = '/users';
-                        }
+                        icon: 'warning',
+                        title: data.title,
+                        text: data.warning
                     });
                 }
                 else if(data.error != null)
                 {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Error!',
-                        text: 'An error occurred, please try again'
+                        title: data.title,
+                        text: data.text
                     });
                 }
             }).catch(

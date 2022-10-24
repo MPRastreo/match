@@ -50,12 +50,6 @@
             color: #0572ce;
         }
     </style>
-    <!-- =======================================================
-  * Template Name: NiceAdmin - v2.4.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
     {{-- Datatable Css --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     {{-- JQueery --}}
@@ -71,16 +65,15 @@
         App::setLocale(auth()->user()->lang);
         session()->put('locale', auth()->user()->lang);
     @endphp
-    <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="index.html" class="logo d-flex align-items-center">
-                <img src="{{ asset('img/logo/Match_PNG-01.png') }}" alt="">
+                <img src="{{ asset('img/Match_PNG-01.png') }}" alt="">
                 <span class="d-none d-lg-block">MATCH</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
-        </div><!-- End Logo -->
+        </div>
 
 
         <nav class="header-nav ms-auto">
@@ -93,25 +86,27 @@
                             {{ GoogleTranslate::trans('French', app()->getLocale()) }}</option>
                         <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>
                             {{ GoogleTranslate::trans('Spanish', app()->getLocale()) }}</option>
-                        {{-- <option value="zh" {{ session()->get('locale') == 'zh' ? 'selected' : '' }}>{{ GoogleTranslate::trans('Chinese', app()->getLocale()) }}</option>
-                        <option value="ja" {{ session()->get('locale') == 'ja' ? 'selected' : '' }}>{{ GoogleTranslate::trans('Japanese', app()->getLocale()) }}</option>
-                        <option value="ru" {{ session()->get('locale') == 'ru' ? 'selected' : '' }}>{{ GoogleTranslate::trans('Russian', app()->getLocale()) }}</option> --}}
+                        <option value="zh" {{ session()->get('locale') == 'zh' ? 'selected' : '' }}>
+                            {{ GoogleTranslate::trans('Chinese', app()->getLocale()) }}</option>
+                        <option value="ja" {{ session()->get('locale') == 'ja' ? 'selected' : '' }}>
+                            {{ GoogleTranslate::trans('Japanese', app()->getLocale()) }}</option>
+                        <option value="ru" {{ session()->get('locale') == 'ru' ? 'selected' : '' }}>
+                            {{ GoogleTranslate::trans('Russian', app()->getLocale()) }}</option>
                     </select>
                 </div>
                 <li class="nav-item d-block d-lg-none">
                     <a class="nav-link nav-icon search-bar-toggle " href="#">
                         <i class="bi bi-search"></i>
                     </a>
-                </li><!-- End Search Icon-->
+                </li>
 
                 <li class="nav-item dropdown">
 
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-bell"></i>
                         <span class="badge bg-success badge-number">
-                            {{-- 4 --}}
                         </span>
-                    </a><!-- End Notification Icon -->
+                    </a>
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                         <li class="dropdown-header">
@@ -120,19 +115,6 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-
-                        {{-- <li class="notification-item">
-                            <i class="bi bi-exclamation-circle text-warning"></i>
-                            <div>
-                                <h4>Lorem Ipsum</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>30 min. ago</p>
-                            </div>
-                        </li> --}}
-                        {{-- <li class="dropdown-footer">
-                            <a href="#">Show all notifications</a>
-                        </li> --}}
-
                     </ul><!-- End Notification Dropdown Items -->
 
                 </li><!-- End Notification Nav -->
@@ -154,7 +136,7 @@
                             <a class="dropdown-item d-flex align-items-center"
                                 onclick="window.location.href='{{ url('logout') }}'">
                                 <i class="bi bi-box-arrow-right"></i>
-                                <span>Sign Out</span>
+                                <span>{{ GoogleTranslate::trans('Sign Out', app()->getLocale()) }}</span>
                             </a>
                         </li>
 
@@ -170,57 +152,64 @@
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
-
-            <li class="nav-item">
-                <a class="nav-link  {{ Request::is('dashboard') ? '' : 'collapsed' }}" href="index.html">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <span>{{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}</span>
-                </a>
-            </li>
-            <!-- End Dashboard Nav -->
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('personal') ? '' : 'collapsed' }}" href="{{ url('/personal') }}">
-                    <i class="fa-regular fa-address-card"></i>
-                    <span>{{ GoogleTranslate::trans('Personal data', app()->getLocale()) }}</span>
-                </a>
-            </li>
-            <!-- End personal data Page Nav -->
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('family') ? '' : 'collapsed' }}" href="{{ url('family') }}">
-                    <i class="fa-solid fa-people-roof"></i>
-                    <span>{{ GoogleTranslate::trans('Family', app()->getLocale()) }}</span>
-                </a>
-            </li>
-            <!-- End Family Page Nav -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ url('/users') }}">
-                    <i class="fa-regular fa-user-tie"></i>
-                    <span>{{ GoogleTranslate::trans('Users', app()->getLocale()) }}</span>
-                </a>
-            </li>
-            <!-- End Users Page Nav -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="users-profile.html">
-                    <i class="fa-solid fa-book-medical"></i>
-                    <span>{{ GoogleTranslate::trans('Clinical Historie', app()->getLocale()) }}</span>
-                </a>
-            </li>
-            <!-- End Clinical Historie Page Nav -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="users-profile.html">
-                    <i class="fa-regular fa-calendar-check"></i>
-                    <span>{{ GoogleTranslate::trans('Appointments', app()->getLocale()) }}</span>
-                </a>
-            </li>
-            <!-- End Appoiments Page Nav -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="users-profile.html">
-                    <i class="fa-regular fa-rectangle-list"></i>
-                    <span>{{ GoogleTranslate::trans('Recipes', app()->getLocale()) }}</span>
-                </a>
-            </li>
-            <!-- End Recipes Page Nav -->
-
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+                <li class="nav-item">
+                    <a class="nav-link  {{ Request::is('dashboard') ? '' : 'collapsed' }}"
+                        href="{{ url('/dashboard') }}">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>{{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}</span>
+                    </a>
+                </li>
+            @endif
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('personal') ? '' : 'collapsed' }}"
+                        href="{{ url('/personal') }}">
+                        <i class="fa-regular fa-address-card"></i>
+                        <span>{{ GoogleTranslate::trans('Personal data', app()->getLocale()) }}</span>
+                    </a>
+                </li>
+            @endif
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('family') ? '' : 'collapsed' }}" href="{{ url('family') }}">
+                        <i class="fa-solid fa-people-roof"></i>
+                        <span>{{ GoogleTranslate::trans('Family', app()->getLocale()) }}</span>
+                    </a>
+                </li>
+            @endif
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('users') ? '' : 'collapsed' }}" href="{{ url('/users') }}">
+                        <i class="fa-regular fa-user-tie"></i>
+                        <span>{{ GoogleTranslate::trans('Users', app()->getLocale()) }}</span>
+                    </a>
+                </li>
+            @endif
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="users-profile.html">
+                        <i class="fa-solid fa-book-medical"></i>
+                        <span>{{ GoogleTranslate::trans('Clinical Historie', app()->getLocale()) }}</span>
+                    </a>
+                </li>
+            @endif
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="users-profile.html">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>{{ GoogleTranslate::trans('Appointments', app()->getLocale()) }}</span>
+                    </a>
+                </li>
+            @endif
+            @if (auth()->user()->role == 1 || auth()->user()->role == 2)
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="users-profile.html">
+                        <i class="fa-regular fa-rectangle-list"></i>
+                        <span>{{ GoogleTranslate::trans('Recipes', app()->getLocale()) }}</span>
+                    </a>
+                </li>
+            @endif
         </ul>
 
     </aside><!-- End Sidebar-->
@@ -924,7 +913,8 @@
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">
         <div class="copyright">
-            &copy; Copyright <strong><span>DMM</span></strong>. All Rights Reserved
+            &copy; Copyright <strong><span>DMM</span></strong>.
+            {{ GoogleTranslate::trans('All Rights Reserved', app()->getLocale()) }}
         </div>
     </footer><!-- End Footer -->
 
@@ -944,6 +934,12 @@
     <!-- Template Main JS File -->
     <script src="{{ asset('/js/main.js') }}"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <script>
+        let url = "{{ url('/lang/change') }}";
+        $('.changeLang').change(function(event) {
+            window.location.href = url + "?lang=" + $(this).val();
+        })
+    </script>
     @yield('scripts')
 
 </body>

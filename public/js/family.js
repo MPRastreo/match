@@ -59,12 +59,11 @@ function nextPrev(n) {
 
 function validateForm(x, currentTab) {
     var x, y, i, valid = true;
-    y = x[currentTab].getElementsByTagName("input");
-    console.log(currentTab);
     y = x[currentTab].getElementsByTagName("select");
     if (y.length != 0) {
         valid = validateSelect(x, currentTab);
     }
+    y = x[currentTab].getElementsByTagName("input");
     for (i = 0; i < y.length; i++) {
         console.log(y[i].value);
         if (y[i].value == "") {

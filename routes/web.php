@@ -26,26 +26,61 @@ Route::group(['middleware' => ['auth']], function ()
     Route::get('/logout', 'LoginController@logout');
     Route::get('/dashboard', function ()
     {
-        return view('dashboard');
+        if(auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+        {
+            return view('dashboard');
+        }
+        else
+        {
+            return view('blocked');
+        }
     });
     Route::get('/personal', function ()
     {
-        return view('auth.personal_data');
+        if (auth()->user()->role == 1 || auth()->user()->role == 2)
+        {
+            return view('auth.personal_data');
+        }
+        else
+        {
+            return view('blocked');
+        }
     });
     Route::get('/family','FamylyController@index');
     Route::post('/family/add', 'FamylyController@create');
     Route::get('/users', 'UserController@showUsers');
     Route::get('/clinicalHistorie', function ()
     {
-        return view('clinicalHistorie');
+        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
+        {
+            return view('clinicalHistorie');
+        }
+        else
+        {
+            return view('blocked');
+        }
     });
     Route::get('/medicalAppointment', function ()
     {
-        return view('medicalAppointment');
+        if(auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+        {
+            return view('medicalAppointment');
+        }
+        else
+        {
+            return view('blocked');
+        }
     });
     Route::get('/recipes', function ()
     {
-        return view('recipes');
+        if(auth()->user()->role == 1 || auth()->user()->role == 2)
+        {
+            return view('recipes');
+        }
+        else
+        {
+            return view('blocked');
+        }
     });
 
     Route::get('/users/show', 'UserController@showUsers');
