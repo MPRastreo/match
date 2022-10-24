@@ -12,16 +12,16 @@
 
     <!-- Favicons -->
     <link href="{{ asset('/img/favicon.png') }}" rel="icon">
-    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/android-chrome-192x192.png') }}">
-    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/android-chrome-512x512.png') }}">
-    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/apple-touch-icon.png') }}">
-    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/browserconfig.xml') }}">
-    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/favicon.ico') }}">
-    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/favicon-16x16.png') }}">
-    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/favicon-32x32.png') }}">
-    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/mstile-150x150.png') }}">
-    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/safari-pinned-tab.svg') }}">
-    <link rel="icon" href="{{ asset('img/logo/favicon_package_v0.16/site.webmanifest') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/android-chrome-192x192.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/android-chrome-512x512.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/apple-touch-icon.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/browserconfig.xml') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/favicon.ico') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/favicon-16x16.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/favicon-32x32.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/mstile-150x150.png') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/safari-pinned-tab.svg') }}">
+    <link rel="icon" href="{{ asset('img/favi-icon/site.webmanifest') }}">
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
     <link
@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/brands.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/solid.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
     <!-- Template Main CSS File -->
     <link href="{{ asset('/css/style.css') }}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
@@ -933,6 +934,12 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('/js/main.js') }}"></script>
+    <script>
+        let url = "{{ url('/lang/change') }}";
+        $('.changeLang').change(function(event) {
+            window.location.href = url + "?lang=" + $(this).val();
+        })
+    </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <script>
         let url = "{{ url('/lang/change') }}";

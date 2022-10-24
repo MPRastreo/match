@@ -6,6 +6,8 @@ use App\Models\Familys;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Stichoza\GoogleTranslate\GoogleTranslate;
+
 
 class FamylyController extends Controller
 {
@@ -46,7 +48,52 @@ class FamylyController extends Controller
             // return $family;
             // Familys::create($familyR);
             $family->save();
-            return response()->json(["result" => true, "message" => "Family succesfully added"], 200);
+            return response()->json(["result" => true, "message" => GoogleTranslate::trans( "Family succesfully added")], 200);
+        } catch (Exception $th) {
+            Log::error($th);
+            return response()->json(['result' => false, "message" => $th->getMessage()], 500);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        try {
+            $familyR = $request->all();
+            $familyR['num_int']="N/A";
+            $family = Familys::find($familyR['id']);
+            foreach ($familyR as $key => $value) {
+                if (gettype($key) == "object") {
+                    $family[$key] = json_encode($value);
+                } else {
+                    $family->$key = $value;
+                }
+            }
+            $family->save();
+            return response()->json(["result" => true, "message" => GoogleTranslate::trans( "Family succesfully modified")], 200);
+        } catch (Exception $th) {
+            Log::error($th);
+            return response()->json(['result' => false, "message" => $th->getMessage()], 500);
+        }
+    }
+
+    public function destroy(Request $request){
+        try {
+
+            $family = Familys::find($request->id);
+            $family->delete();
+            return response()->json(["result" => true, "message" => GoogleTranslate::trans( "Family succesfully deleted")], 200);
+
+        } catch (Exception $th) {
+            Log::error($th);
+            return response()->json(['result' => false, "message" => $th->getMessage()], 500);
+        }
+    }
+
+    public function getUserById($id)
+    {
+        try {
+            $family = Familys::find($id);
+            return response()->json(["result" => true, "data" => $family], 200);
         } catch (Exception $th) {
             Log::error($th);
             return response()->json(['result' => false, "message" => $th->getMessage()], 500);
