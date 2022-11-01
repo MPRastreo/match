@@ -197,9 +197,9 @@
             @endif
             @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="users-profile.html">
+                    <a class="nav-link {{ Request::is('quotation') ? '' : 'collapsed' }}" href="{{ url('/quotation') }}">
                         <i class="fa-regular fa-calendar-check"></i>
-                        <span>{{ GoogleTranslate::trans('Appointments', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::trans('Quotation', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif

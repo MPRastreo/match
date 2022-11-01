@@ -65,11 +65,11 @@ Route::group(['middleware' => ['auth']], function ()
             return view('blocked');
         }
     });
-    Route::get('/medicalAppointment', function ()
+    Route::get('/quotation', function ()
     {
         if(auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
         {
-            return view('medicalAppointment');
+            return view('auth.quotation');
         }
         else
         {
