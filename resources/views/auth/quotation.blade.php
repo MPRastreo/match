@@ -8,46 +8,51 @@
 @section('content')
     <div class="row">
 
-        <div>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                style="margin: 15px;">
-                {{ GoogleTranslate::trans('Schedule Appointment', app()->getLocale()) }}
-            </button>
-        </div>
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <div class="card w-100">
+                    <div class="card-header">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            style="margin: 15px; float:right;">
+                            {{ GoogleTranslate::trans('Schedule Appointment', app()->getLocale()) }}
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="col md 12">
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <div class="row p-xl-5 p-xs-cu-3">
+                                    @foreach ($quotation as $quota)
+                                        <div class="col-xl-3 col-xs-cu-12">
+                                            <div class="card shadow mb-xs-cu-3 p-xl-4 p-xs-cu-2">
+                                                <div class="card-body text-center">
+                                                    <img src="{{ asset('img/man.png') }}" class="img-fluid rounded-top my-2"
+                                                        alt="">
+                                                </div>
+                                                <div class="text-center">
+                                                    {{ $quota->familyMembers }}<br><br>
+                                                    <i class="bi bi-clipboard2-pulse-fill"></i> {{ $quota->specialy }}
+                                                    </p>
 
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead class=" text-primary">
-                                <th>
-                                    {{ GoogleTranslate::trans('Person', app()->getLocale()) }}
-                                </th>
-                                <th>
-                                    {{ GoogleTranslate::trans('Specialty', app()->getLocale()) }}
-                                </th>
-                                <th>
-                                    {{ GoogleTranslate::trans('Date and Time', app()->getLocale()) }}
-                                </th>
-                                <th>
-                                    {{ GoogleTranslate::trans('Action', app()->getLocale()) }}
-                                </th>
-                            </thead>
-                            <tbody>
-                                {{-- @foreach ($transacciones as $tr)
-                                    @if ($tr->estado == 'aprobado')
-                                        <tr>
-                                            <td scope="row">{{ $tr->tipo }}</td>
-                                            <td>{{ $tr->descripcion }}</td>
-                                            <td>{{ $tr->monto }}</td>
-                                            <td>{{ $tr->id_refencia_clip }}</td>
-                                            <td>{{ $tr->created_at }}</td>
-                                        </tr>
-                                    @endif
-                                @endforeach --}}
-                            </tbody>
-                        </table>
+                                                    <i class="bi bi-calendar-event"></i> {{ $quota->date }}
+                                                    </p>
+                                                </div>
+                                                <div class="card-footer d-grid">
+                                                    @if (Auth::user()->role == 2)
+                                                        <button type="button" class="btn btn-danger" {{-- onclick="abrirModal({{ $solicitud->id }}" --}}>
+                                                            {{ GoogleTranslate::trans('Cancel', app()->getLocale()) }}</strong>
+                                                        </button>
+                                                    @else
+                                                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#assignQuotation" {{-- onclick="abrirModal({{ $solicitud->id }}" --}}>
+                                                            {{ GoogleTranslate::trans('Assign', app()->getLocale()) }}</strong>
+                                                        </button>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,49 +64,121 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        {{ GoogleTranslate::trans('Schedule Appointment', app()->getLocale()) }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row g-3 needs-validation" novalidate>
-                        <div class="col-md-4">
-                            <label for="validationCustom01" class="form-label">Specialty</label>
-                            <input type="text" class="form-control" id="txtSpecialty" value="Mark" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
+                    <form class="needs-validation row g-3" novalidate>
+                        <div class="col-md-12">
+                            <label for="validationCustom01"
+                                class="form-label"><b>{{ GoogleTranslate::trans('Specialty', app()->getLocale()) }}</b></label>
+                            <input type="text" class="form-control" id="txtSpecialty" required>
                         </div>
-                        <div class="col-md-4">
-                            <label for="validationCustom02" class="form-label">Date and Time</label>
-                            <input type="text" class="form-control" id="txtDateTime" value="Otto" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
+                        <div class="col-md-12">
+                            <label
+                                class="form-label"><b>{{ GoogleTranslate::trans('Date', app()->getLocale()) }}</b></label>
+                            <input type="date" class="form-control" id="txtDate" required>
                         </div>
-                        <div class="col-md-4">
-                            <label for="validationCustomUsername" class="form-label">Family members</label>
+                        <div class="col-md-12">
+                            <label for="validationCustomUsername"
+                                class="form-label"><b>{{ GoogleTranslate::trans('Family members', app()->getLocale()) }}</b></label>
                             <div class="input-group has-validation">
-                                <input type="text" class="form-control" id="txtFamilyMembers" value="Otto" required>
-                                <div class="valid-feedback">
-                                    Looks good!
+                                <select class="form-select" name="" id="txtFamilyMembers" required>
+                                    <option value="" selected disabled>
+                                        {{ GoogleTranslate::trans('Select a family member', app()->getLocale()) }}</option>
+                                    <option value="{{ Auth::user()->name . ' ' . Auth::user()->lastname }}">
+                                        {{ Auth::user()->name . ' ' . Auth::user()->lastname }}</option>
+                                    @foreach ($familys as $fam)
+                                        <option value="{{ $fam->name . ' ' . $fam->lastname }}">
+                                            {{ $fam->name . ' ' . $fam->lastname }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="validationCustomUsername"
+                                class="form-label"><b>{{ GoogleTranslate::trans('Reason for inquiry', app()->getLocale()) }}</b></label>
+                            <div class="input-group has-validation">
+                                <div class="form-floating">
+                                    <textarea class="form-control" id="floatingTextarea" required></textarea>
+                                    <button id="btnSaveQuotation" type="submit" style="display: none;"></button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12">
-                            <button class="btn btn-primary" type="submit">Submit form</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">{{ GoogleTranslate::trans('Cancel', app()->getLocale()) }}</button>
+                            <button type="button" onclick="$('#btnSaveQuotation').click();"
+                                class="btn btn-primary">{{ GoogleTranslate::trans('Save change', app()->getLocale()) }}</button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="assignQuotation" tabindex="-1" aria-labelledby="assignQuotationLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assignQuotationLabel">
+                        {{ GoogleTranslate::trans('Schedule Appointment', app()->getLocale()) }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="needs-validation row g-3" novalidate>
+
+                        <h5>{{ GoogleTranslate::trans('Physician data', app()->getLocale()) }}</h5>
+
+                        <div class="col-md-12">
+                            <label for="validationCustom01"
+                                class="form-label"><b>{{ GoogleTranslate::trans('Name', app()->getLocale()) }}</b></label>
+                            <input type="text" class="form-control" id="txtName" required>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label for="validationCustom01"
+                                class="form-label"><b>{{ GoogleTranslate::trans('Mail', app()->getLocale()) }}</b></label>
+                            <input type="text" class="form-control" id="txtMail" required>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label for="validationCustom01"
+                                class="form-label"><b>{{ GoogleTranslate::trans('Phone', app()->getLocale()) }}</b></label>
+                            <input type="text" class="form-control" id="txtPhone" required>
+                        </div>
+
+                        <hr>
+
+                        <h5>{{ GoogleTranslate::trans('Clinic data', app()->getLocale()) }}</h5>
+
+                        <div class="col-md-12">
+                            <label for="validationCustom01"
+                                class="form-label"><b>{{ GoogleTranslate::trans('Clinic name', app()->getLocale()) }}</b></label>
+                            <input type="text" class="form-control" id="txtClinicName" required>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="validationCustom01"
+                                class="form-label"><b>{{ GoogleTranslate::trans('Address', app()->getLocale()) }}</b></label>
+                            <input type="text" class="form-control" id="txtAddress" required>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">{{ GoogleTranslate::trans('Cancel', app()->getLocale()) }}</button>
+                            <button type="button" onclick="$('#btnSaveQuotation').click();"
+                                class="btn btn-primary">{{ GoogleTranslate::trans('Save change', app()->getLocale()) }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
 @section('scripts')
-
-<script src="{{ asset('js/quotation.js') }}"></script>
-
+    <script src="{{ asset('js/quotation.js') }}"></script>
 @endsection

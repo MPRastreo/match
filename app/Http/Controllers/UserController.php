@@ -18,6 +18,7 @@ class UserController extends Controller
             {
                 $users = Users::all();
                 return view('auth.users', compact('users'));
+                // return response()->json(["rs" => $users],200);
             }
             else
             {

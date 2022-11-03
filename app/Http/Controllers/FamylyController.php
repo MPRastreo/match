@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Familys;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
@@ -46,6 +47,7 @@ class FamylyController extends Controller
                 }
             }
             // return $family;
+            $family->id_usuario = Auth::user()->id;
             // Familys::create($familyR);
             $family->save();
             return response()->json(["result" => true, "message" => GoogleTranslate::trans( "Family succesfully added")], 200);
@@ -68,6 +70,9 @@ class FamylyController extends Controller
                     $family->$key = $value;
                 }
             }
+
+            $family->id_usuario = Auth::user()->id;
+
             $family->save();
             return response()->json(["result" => true, "message" => GoogleTranslate::trans( "Family succesfully modified")], 200);
         } catch (Exception $th) {
