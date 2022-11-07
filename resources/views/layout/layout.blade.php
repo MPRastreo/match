@@ -83,16 +83,16 @@
                     <select class="form-select changeLang" aria-label="Default select example">
                         <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>
                             {{ GoogleTranslate::trans('English', app()->getLocale()) }}</option>
-                        <option value="fr" {{ session()->get('locale') == 'fr' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::trans('French', app()->getLocale()) }}</option>
                         <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>
                             {{ GoogleTranslate::trans('Spanish', app()->getLocale()) }}</option>
+                        <option value="pt" {{ session()->get('locale') == 'pt' ? 'selected' : '' }}>
+                            {{ GoogleTranslate::trans('Portugués', app()->getLocale()) }}</option>
                         <option value="zh" {{ session()->get('locale') == 'zh' ? 'selected' : '' }}>
                             {{ GoogleTranslate::trans('Chinese', app()->getLocale()) }}</option>
-                        <option value="ja" {{ session()->get('locale') == 'ja' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::trans('Japanese', app()->getLocale()) }}</option>
-                        <option value="ru" {{ session()->get('locale') == 'ru' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::trans('Russian', app()->getLocale()) }}</option>
+                        <option value="ko" {{ session()->get('locale') == 'ko' ? 'selected' : '' }}>
+                            {{ GoogleTranslate::trans('Corean', app()->getLocale()) }}</option>
+                        <option value="it" {{ session()->get('locale') == 'it' ? 'selected' : '' }}>
+                            {{ GoogleTranslate::trans('Italian', app()->getLocale()) }}</option>
                     </select>
                 </div>
                 <li class="nav-item d-block d-lg-none">
@@ -197,7 +197,8 @@
             @endif
             @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('quotation') ? '' : 'collapsed' }}" href="{{ url('/quotation') }}">
+                    <a class="nav-link {{ Request::is('quotation') ? '' : 'collapsed' }}"
+                        href="{{ url('/quotation') }}">
                         <i class="fa-regular fa-calendar-check"></i>
                         <span>{{ GoogleTranslate::trans('Quotation', app()->getLocale()) }}</span>
                     </a>

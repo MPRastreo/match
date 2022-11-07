@@ -53,6 +53,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/quotation', 'QuotationController@showQuotation');
     Route::post('/quotation/add', 'QuotationController@addQuotation');
+    Route::get('/quotation/delete/{id}', 'QuotationController@deleteAppo');
+
+    Route::post('/quotation/assign','QuotationController@assignQuotation');
 
     Route::get('/recipes', function () {
         if (auth()->user()->role == 1 || auth()->user()->role == 2) {
