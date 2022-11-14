@@ -25,7 +25,7 @@
                             <div class="row d-flex justify-content-center align-items-center">
                                 <div class="row p-xl-5 p-xs-cu-3">
                                     @foreach ($quotation as $quota)
-                                        @if ($quota->status == 'Assign' && Auth::user()->role == 2 || Auth::user()->role == 1)
+                                        @if ($quota->status == "Assign" && (Auth::user()->role == 2 || Auth::user()->role == 1))
                                             <div class="col-xl-3 col-xs-cu-12">
                                                 <div class="card shadow mb-xs-cu-3 p-xl-4 p-xs-cu-2">
                                                     @if ($quota->gender == 'Male')
@@ -48,16 +48,16 @@
                                                         </p>
                                                     </div>
                                                     <div class="card-footer d-grid">
-                                                        @if (Auth::user()->role == 2 || Auth::user()->role == 1)
+                                                        {{-- @if (Auth::user()->role == 2) --}}
                                                             <button type="button" class="btn btn-warning"
                                                                 onclick="seeDetails('{{ $quota->_id }}');">
                                                                 {{ GoogleTranslate::trans('See details', app()->getLocale()) }}
                                                             </button>
-                                                        @endif
+                                                        {{-- @endif --}}
                                                     </div>
                                                 </div>
                                             </div>
-                                        @elseif ($quota->status == 'Requested')
+                                        @elseif ($quota->status == "Requested")
                                             <div class="col-xl-3 col-xs-cu-12">
                                                 <div class="card shadow mb-xs-cu-3 p-xl-4 p-xs-cu-2">
                                                     @if ($quota->gender == 'Male')
