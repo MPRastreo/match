@@ -54,17 +54,8 @@ Route::group(['middleware' => ['auth']], function ()
     Route::get('/family/show', 'FamylyController@showFamily');
 
     Route::get('/users', 'UserController@showUsers');
-    Route::get('/clinicalHistorie', function ()
-    {
-        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
-        {
-            return view('auth.clinicalHistorie');
-        }
-        else
-        {
-            return view('blocked');
-        }
-    });
+    Route::get('/clinicalHistorie', 'MedicalHController@index');
+    Route::post('/clinicalHistorie/save', 'MedicalHController@saveClinicalHistorie');
     Route::get('/medicalAppointment', function ()
     {
         if(auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
@@ -96,4 +87,7 @@ Route::group(['middleware' => ['auth']], function ()
 
     Route::get('/lang/change', 'LangController@changeLanguage');
     Route::post('/personal/changefield', 'UserController@changeField');
+    Route::get('/clinicalHistorie/getbyid/{id}', 'MedicalHController@getClinicalHistoryByID');
+    Route::get('/clinicalhistorie/hereditarydiseases/{id}', 'MedicalHController@getHereditaryDiseasesByID');
+    Route::post('/translate/alerts', 'LangController@translateAlerts');
 });
