@@ -1,44 +1,44 @@
 @extends('layout.layout')
 @section('title')
-    {{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}
+    {{ GoogleTranslate::justTranslate('Dashboard', app()->getLocale()) }}
 @endsection
 @section('pagetitle')
-{{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}
+    {{ GoogleTranslate::justTranslate('Dashboard', app()->getLocale()) }}
 @endsection
 @section('content')
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">{{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}</h4>
+                    <h4 class="card-title">{{ GoogleTranslate::justTranslate('Dashboard', app()->getLocale()) }}</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
                             <thead class=" text-primary">
                                 <th>
-                                    {{ GoogleTranslate::trans('Name', app()->getLocale()) }}
+                                    {{ GoogleTranslate::justTranslate('Name', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    {{ GoogleTranslate::trans('Email', app()->getLocale()) }}
+                                    {{ GoogleTranslate::justTranslate('Email', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    {{ GoogleTranslate::trans('Phone', app()->getLocale()) }}
+                                    {{ GoogleTranslate::justTranslate('Phone', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    {{ GoogleTranslate::trans('Address', app()->getLocale()) }}
+                                    {{ GoogleTranslate::justTranslate('Address', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    {{ GoogleTranslate::trans('City', app()->getLocale()) }}
+                                    {{ GoogleTranslate::justTranslate('City', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    {{ GoogleTranslate::trans('Country', app()->getLocale()) }}
+                                    {{ GoogleTranslate::justTranslate('Country', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    {{ GoogleTranslate::trans('Zip code', app()->getLocale()) }}
+                                    {{ GoogleTranslate::justTranslate('Zip code', app()->getLocale()) }}
                                 </th>
                                 <th>
-                                    {{ GoogleTranslate::trans('Action', app()->getLocale()) }}
+                                    {{ GoogleTranslate::justTranslate('Action', app()->getLocale()) }}
                                 </th>
                             </thead>
                             <tbody>

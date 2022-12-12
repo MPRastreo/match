@@ -1,9 +1,9 @@
 @extends('layout.layout')
 @section('title')
-    {{ GoogleTranslate::trans('Family', app()->getLocale()) }}
+    {{ GoogleTranslate::justTranslate('Family', app()->getLocale()) }}
 @endsection
 @section('pagetitle')
-    {{ GoogleTranslate::trans('Family', app()->getLocale()) }}
+    {{ GoogleTranslate::justTranslate('Family', app()->getLocale()) }}
 @endsection
 @section('content')
     <style>

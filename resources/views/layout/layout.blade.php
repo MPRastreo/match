@@ -70,6 +70,7 @@
     {{-- <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/3DBookShowcase/css/default.css"> --}}
     <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/3DBookShowcase/css/component2.css">
     <script src="https://tympanus.net/Development/3DBookShowcase/js/modernizr.custom.js"></script>
+    @yield('links')
 </head>
 
 <body>
@@ -92,17 +93,17 @@
                 <div class="px-3">
                     <select class="form-select changeLang" aria-label="Default select example">
                         <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::trans('English', app()->getLocale()) }}</option>
+                            {{ GoogleTranslate::justTranslate('English', app()->getLocale()) }}</option>
                         <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::trans('Spanish', app()->getLocale()) }}</option>
+                            {{ GoogleTranslate::justTranslate('Spanish', app()->getLocale()) }}</option>
                         <option value="pt" {{ session()->get('locale') == 'pt' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::trans('Portugués', app()->getLocale()) }}</option>
+                            {{ GoogleTranslate::justTranslate('Portugués', app()->getLocale()) }}</option>
                         <option value="zh" {{ session()->get('locale') == 'zh' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::trans('Chinese', app()->getLocale()) }}</option>
-                        <option value="ko" {{ session()->get('locale') == 'ko' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::trans('Corean', app()->getLocale()) }}</option>
+                            {{ GoogleTranslate::justTranslate('Chinese', app()->getLocale()) }}</option>
+                        <option value="ja" {{ session()->get('locale') == 'ja' ? 'selected' : '' }}>
+                            {{ GoogleTranslate::justTranslate('Japanese', app()->getLocale()) }}</option>
                         <option value="it" {{ session()->get('locale') == 'it' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::trans('Italian', app()->getLocale()) }}</option>
+                            {{ GoogleTranslate::justTranslate('Italian', app()->getLocale()) }}</option>
                     </select>
                 </div>
                 <li class="nav-item d-block d-lg-none">
@@ -147,7 +148,7 @@
                             <a class="dropdown-item d-flex align-items-center"
                                 onclick="window.location.href='{{ url('logout') }}'">
                                 <i class="bi bi-box-arrow-right"></i>
-                                <span>{{ GoogleTranslate::trans('Sign Out', app()->getLocale()) }}</span>
+                                <span>{{ GoogleTranslate::justTranslate('Sign Out', app()->getLocale()) }}</span>
                             </a>
                         </li>
 
@@ -166,7 +167,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="users-profile.html">
                     <i class="fa-regular fa-calendar-check"></i>
-                    <span>{{ GoogleTranslate::trans('Appointments', app()->getLocale()) }}</span>
+                    <span>{{ GoogleTranslate::justTranslate('Appointments', app()->getLocale()) }}</span>
                 </a>
             </li>
             @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
@@ -174,7 +175,7 @@
                     <a class="nav-link  {{ Request::is('dashboard') ? '' : 'collapsed' }}"
                         href="{{ url('/dashboard') }}">
                         <i class="fa-solid fa-chart-line"></i>
-                        <span>{{ GoogleTranslate::trans('Dashboard', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::justTranslate('Dashboard', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif
@@ -183,7 +184,7 @@
                     <a class="nav-link {{ Request::is('personal') ? '' : 'collapsed' }}"
                         href="{{ url('/personal') }}">
                         <i class="fa-regular fa-address-card"></i>
-                        <span>{{ GoogleTranslate::trans('Personal data', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::justTranslate('Personal data', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif
@@ -191,7 +192,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('family') ? '' : 'collapsed' }}" href="{{ url('family') }}">
                         <i class="fa-solid fa-people-roof"></i>
-                        <span>{{ GoogleTranslate::trans('Family', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::justTranslate('Family', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif
@@ -199,7 +200,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('users') ? '' : 'collapsed' }}" href="{{ url('/users') }}">
                         <i class="fa-solid fa-user"></i>
-                        <span>{{ GoogleTranslate::trans('Users', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::justTranslate('Users', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif
@@ -208,7 +209,7 @@
                     <a class="nav-link {{ Request::is('clinicalHistorie') ? '' : 'collapsed' }}"
                         href="{{ url('/clinicalHistorie') }}">
                         <i class="fa-solid fa-book-medical"></i>
-                        <span>{{ GoogleTranslate::trans('Clinical History', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::justTranslate('Clinical History', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif
@@ -216,7 +217,7 @@
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="users-profile.html">
                         <i class="fa-regular fa-calendar-check"></i>
-                        <span>{{ GoogleTranslate::trans('Appointments', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::justTranslate('Appointments', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif
@@ -225,7 +226,7 @@
                     <a class="nav-link  {{ Request::is('recipes') ? '' : 'collapsed' }}"
                         href="{{ url('/recipes') }}">
                         <i class="fa-regular fa-rectangle-list"></i>
-                        <span>{{ GoogleTranslate::trans('Recipes', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::justTranslate('Recipes', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif
@@ -933,7 +934,7 @@
     <footer id="footer" class="footer">
         <div class="copyright">
             &copy; Copyright <strong><span>DMM</span></strong>.
-            {{ GoogleTranslate::trans('All Rights Reserved', app()->getLocale()) }}
+            {{ GoogleTranslate::justTranslate('All Rights Reserved', app()->getLocale()) }}
         </div>
     </footer><!-- End Footer -->
 
