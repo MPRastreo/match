@@ -1,9 +1,9 @@
 @extends('layout.layout')
 @section('title')
-    Family
+    {{ GoogleTranslate::trans('Family', app()->getLocale()) }}
 @endsection
 @section('pagetitle')
-    Family
+    {{ GoogleTranslate::trans('Family', app()->getLocale()) }}
 @endsection
 @section('content')
     <style>
@@ -62,7 +62,7 @@
                     <div class="col md 12">
                         <div class="row d-flex justify-content-center align-items-center">
                             @foreach ($familys as $family)
-                                <div class="col col-lg-4 mb-4">
+                                <div class="col col-lg-5 mb-4">
                                     <div class="card mb-3">
                                         <div class="row g-0">
                                             <div class="col-md-4 text-center text-white"

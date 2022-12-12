@@ -37,14 +37,18 @@
     <link href="{{ asset('/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('/vendor/simple-datatables/style.css') }}" rel="stylesheet">
     {{-- Font Awesome  --}}
-    <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/fontawesome.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/brands.css') }}">
-    <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/solid.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="{{ asset('fontawesome-free-6.2.0-web/css/solid.css') }}"> --}}
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">
     <!-- Template Main CSS File -->
     <link href="{{ asset('/css/style.css') }}" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-        crossorigin="anonymous"></script>
+    <script src="{{ asset('/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .icon-background {
@@ -58,7 +62,14 @@
         crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.0/progressbar.js"
+        integrity="sha512-5IpLUbqlmXPB1IBI0TN9iNnokMYTLpNrA51lbvI3B7+qeHORt8OJnYaSST8ymGTE8kcdm9oVEIh06mj/E0c9yg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
 
+    {{-- <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/3DBookShowcase/css/default.css"> --}}
+    <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/3DBookShowcase/css/component2.css">
+    <script src="https://tympanus.net/Development/3DBookShowcase/js/modernizr.custom.js"></script>
 </head>
 
 <body>
@@ -68,10 +79,9 @@
     @endphp
     <header id="header" class="header fixed-top d-flex align-items-center">
 
-        <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center justify-content-between pt-3">
             <a href="index.html" class="logo d-flex align-items-center">
-                <img src="{{ asset('img/Match_PNG-01.png') }}" alt="">
-                <span class="d-none d-lg-block">MATCH</span>
+                <img src="{{ asset('img/Logo-largo-08.png') }}" alt="">
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div>
@@ -133,7 +143,7 @@
                     </a><!-- End Profile Iamge Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                        <li>
+                        <li style="cursor: pointer;">
                             <a class="dropdown-item d-flex align-items-center"
                                 onclick="window.location.href='{{ url('logout') }}'">
                                 <i class="bi bi-box-arrow-right"></i>
@@ -153,6 +163,12 @@
     <aside id="sidebar" class="sidebar">
 
         <ul class="sidebar-nav" id="sidebar-nav">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="users-profile.html">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>{{ GoogleTranslate::trans('Appointments', app()->getLocale()) }}</span>
+                </a>
+            </li>
             @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
                 <li class="nav-item">
                     <a class="nav-link  {{ Request::is('dashboard') ? '' : 'collapsed' }}"
@@ -182,16 +198,17 @@
             @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('users') ? '' : 'collapsed' }}" href="{{ url('/users') }}">
-                        <i class="fa-regular fa-user-tie"></i>
+                        <i class="fa-solid fa-user"></i>
                         <span>{{ GoogleTranslate::trans('Users', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif
             @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3)
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="users-profile.html">
+                    <a class="nav-link {{ Request::is('clinicalHistorie') ? '' : 'collapsed' }}"
+                        href="{{ url('/clinicalHistorie') }}">
                         <i class="fa-solid fa-book-medical"></i>
-                        <span>{{ GoogleTranslate::trans('Clinical Historie', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::trans('Clinical History', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif
@@ -206,7 +223,8 @@
             @endif
             @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="users-profile.html">
+                    <a class="nav-link  {{ Request::is('recipes') ? '' : 'collapsed' }}"
+                        href="{{ url('/recipes') }}">
                         <i class="fa-regular fa-rectangle-list"></i>
                         <span>{{ GoogleTranslate::trans('Recipes', app()->getLocale()) }}</span>
                     </a>
@@ -925,7 +943,6 @@
 
     <!-- Vendor JS Files -->
     <script src="{{ asset('/vendor/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('/vendor/chart.js/chart.min.js') }}"></script>
     <script src="{{ asset('/vendor/echarts/echarts.min.js') }}"></script>
     <script src="{{ asset('/vendor/quill/quill.min.js') }}"></script>
@@ -936,18 +953,12 @@
     <!-- Template Main JS File -->
     <script src="{{ asset('/js/main.js') }}"></script>
     <script>
-        let url = "{{ url('/lang/change') }}";
+        const url = "{{ url('/lang/change') }}";
         $('.changeLang').change(function(event) {
             window.location.href = url + "?lang=" + $(this).val();
         })
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-    <script>
-        let url = "{{ url('/lang/change') }}";
-        $('.changeLang').change(function(event) {
-            window.location.href = url + "?lang=" + $(this).val();
-        })
-    </script>
     @yield('scripts')
 
 </body>

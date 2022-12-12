@@ -124,7 +124,7 @@
                                                             </td>
                                                             <td>
                                                                 <button class="btn btn-outline-danger btn-sm"
-                                                                    onclick="deleteUser('{{ $row->_id }}');"><span
+                                                                    onclick="translateAlert('{{ $row->_id }}', deleteUser);"><span
                                                                         class="sr-only">Delete</span><i
                                                                         class="fa fa-trash"></i>
                                                                 </button>
