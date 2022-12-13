@@ -211,12 +211,12 @@ const editUser = () =>
 }
 
 
-const deleteUser = (id) =>
+const deleteUser = (id, title, text) =>
 {
     Swal.fire({
         icon: 'warning',
-        title: '¿Are you sure?',
-        text: 'This action can not be undone',
+        title: title,
+        text: text,
         showCancelButton: true,
         confirmButtonText: 'Yes',
         cancelButtonText: 'Cancel'
@@ -224,12 +224,6 @@ const deleteUser = (id) =>
     {
         if (result.isConfirmed)
         {
-            data =
-            {
-                id: id,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            }
-
             fetch('/users/delete/' + id,
             {
                 headers:
@@ -278,5 +272,46 @@ const deleteUser = (id) =>
                 })
             )
         }
+    });
+}
+
+const translateAlert = (_id, callback) =>
+{
+    const dataJSON =
+    {
+        "title": '¿Are you sure?',
+        "text": 'This action can not be undone'
+    }
+    let title;
+    let text;
+
+    fetch('/translate/alerts',
+    {
+        method: 'POST',
+        headers:
+        {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+        },
+        body: JSON.stringify(dataJSON)
+    }).then(resp => resp.json())
+    .then(data =>
+    {
+        if (data.title != null)
+        {
+            title = data.title;
+            text = data.text;
+        }
+        else if (data.error != null)
+        {
+            title = dataJSON.title;
+            text = dataJSON.text;
+        }
+        callback(_id, title, text);
+    }).catch(error =>
+    {
+        title = dataJSON.title;
+        text = dataJSON.text;
+        callback(_id, title, text);
     });
 }

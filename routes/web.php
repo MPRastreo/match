@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Stichoza\GoogleTranslate\GoogleTranslate;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,10 +42,28 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/family/delete', 'FamylyController@destroy');
     Route::get('/family/show', 'FamylyController@showFamily');
 
-    Route::get('/clinicalHistorie', function () {
-        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3) {
-            return view('auth.clinicalHistorie');
-        } else {
+    Route::get('/users', 'UserController@showUsers');
+    Route::get('/clinicalHistorie', 'MedicalHController@index');
+    Route::post('/clinicalHistorie/save', 'MedicalHController@saveClinicalHistorie');
+    Route::get('/medicalAppointment', function ()
+    {
+        if(auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+        {
+            return view('medicalAppointment');
+        }
+        else
+        {
+            return view('blocked');
+        }
+    });
+    Route::get('/recipes', function ()
+    {
+        if(auth()->user()->role == 1 || auth()->user()->role == 2)
+        {
+            return view('recipes');
+        }
+        else
+        {
             return view('blocked');
         }
     });
@@ -74,4 +91,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/lang/change', 'LangController@changeLanguage');
     Route::post('/personal/changefield', 'UserController@changeField');
+    Route::get('/clinicalHistorie/getbyid/{id}', 'MedicalHController@getClinicalHistoryByID');
+    Route::get('/clinicalhistorie/hereditarydiseases/{id}', 'MedicalHController@getHereditaryDiseasesByID');
+    Route::post('/translate/alerts', 'LangController@translateAlerts');
 });
