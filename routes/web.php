@@ -47,6 +47,10 @@ Route::group(['middleware' => ['auth']], function () {
         if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 3) {
             return view('auth.clinicalHistorie');
         } else {
+
+            return view('blocked');
+        }
+    });
     Route::get('/users', 'UserController@showUsers');
     Route::get('/clinicalHistorie', 'MedicalHController@index');
     Route::post('/clinicalHistorie/save', 'MedicalHController@saveClinicalHistorie');
