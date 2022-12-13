@@ -7,8 +7,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Stichoza\GoogleTranslate\GoogleTranslate;
-
+use GoogleTranslate;
 
 class FamylyController extends Controller
 {
@@ -50,7 +49,7 @@ class FamylyController extends Controller
             $family->id_usuario = Auth::user()->id;
             // Familys::create($familyR);
             $family->save();
-            return response()->json(["result" => true, "message" => GoogleTranslate::trans( "Family succesfully added")], 200);
+            return response()->json(["result" => true, "message" => GoogleTranslate::justTranslate( "Family succesfully added")], 200);
         } catch (Exception $th) {
             Log::error($th);
             return response()->json(['result' => false, "message" => $th->getMessage()], 500);
@@ -74,7 +73,7 @@ class FamylyController extends Controller
             $family->id_usuario = Auth::user()->id;
 
             $family->save();
-            return response()->json(["result" => true, "message" => GoogleTranslate::trans( "Family succesfully modified")], 200);
+            return response()->json(["result" => true, "message" => GoogleTranslate::justTranslate( "Family succesfully modified")], 200);
         } catch (Exception $th) {
             Log::error($th);
             return response()->json(['result' => false, "message" => $th->getMessage()], 500);
@@ -86,7 +85,7 @@ class FamylyController extends Controller
 
             $family = Familys::find($request->id);
             $family->delete();
-            return response()->json(["result" => true, "message" => GoogleTranslate::trans( "Family succesfully deleted")], 200);
+            return response()->json(["result" => true, "message" => GoogleTranslate::justTranslate( "Family succesfully deleted")], 200);
 
         } catch (Exception $th) {
             Log::error($th);

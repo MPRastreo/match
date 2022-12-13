@@ -1,9 +1,9 @@
 @extends('layout.layout')
 @section('title')
-    {{ GoogleTranslate::trans('Personal data', app()->getLocale()) }}
+    {{ GoogleTranslate::justTranslate('Personal data', app()->getLocale()) }}
 @endsection
 @section('pagetitle')
-    {{ GoogleTranslate::trans('Personal data', app()->getLocale()) }}
+    {{ GoogleTranslate::justTranslate('Personal data', app()->getLocale()) }}
 @endsection
 @section('content')
     <style>
@@ -28,13 +28,13 @@
         <div class="col-md-12">
             <div class="card w-100">
                 <div class="card-header">
-                    <h4 class="card-title">{{ GoogleTranslate::trans('Profile details', app()->getLocale()) }}</h4>
+                    <h4 class="card-title">{{ GoogleTranslate::justTranslate('Profile details', app()->getLocale()) }}</h4>
                 </div>
                 <div class="card-body pt-3">
                     <!-- Vertical Pills Tabs -->
                     <div class="d-flex align-items-start">
                         {{-- <h5 class="card-title">
-                            {{ GoogleTranslate::trans('Profile details', app()->getLocale()) }}</h5> --}}
+                            {{ GoogleTranslate::justTranslate('Profile details', app()->getLocale()) }}</h5> --}}
                         <form class="row g-3">
                             {{-- Nombre --}}
                             <div class="col-md-6 p-2">
@@ -44,7 +44,7 @@
                                             <input type="text" class="form-control" id="txtName" name="name"
                                                 placeholder="Your Name">
                                             <label for="txtName"
-                                                class="text-primary">{{ GoogleTranslate::trans('Your name', app()->getLocale()) }}
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('Your name', app()->getLocale()) }}
                                             </label>
                                         </div>
                                     </div>
@@ -58,7 +58,7 @@
                                             <input type="text" class="form-control" id="txtLastName" placeholder="Phone"
                                                 name="last_name">
                                             <label for="txtLastName"
-                                                class="text-primary ">{{ GoogleTranslate::trans('Your last name', app()->getLocale()) }}</label>
+                                                class="text-primary ">{{ GoogleTranslate::justTranslate('Your last name', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                                             <input type="number" class="form-control " id="txtAge"
                                                 placeholder="Your Age" name="age">
                                             <label for="txtAge"
-                                                class="text-primary">{{ GoogleTranslate::trans('Your age', app()->getLocale()) }}</label>
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('Your age', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -84,7 +84,7 @@
                                             <input type="date" class="form-control " id="txtAgeBirth"
                                                 placeholder="Age of Birth" name="age_birth">
                                             <label for="txtAgeBirth"
-                                                class="text-primary">{{ GoogleTranslate::trans('Age of birth', app()->getLocale()) }}</label>
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('Age of birth', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -97,15 +97,15 @@
                                             <select class="form-select" id="txtGender"
                                                 aria-label="Floating label select gender">
                                                 <option selected disabled value="">
-                                                    {{ GoogleTranslate::trans('Select a gender', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Select a gender', app()->getLocale()) }}
                                                 </option>
                                                 <option value="M">
-                                                    {{ GoogleTranslate::trans('Male', app()->getLocale()) }}</option>
+                                                    {{ GoogleTranslate::justTranslate('Male', app()->getLocale()) }}</option>
                                                 <option value="F">
-                                                    {{ GoogleTranslate::trans('Female', app()->getLocale()) }}</option>
+                                                    {{ GoogleTranslate::justTranslate('Female', app()->getLocale()) }}</option>
                                             </select>
                                             <label for="txtGender"
-                                                class="text-primary">{{ GoogleTranslate::trans('Gender', app()->getLocale()) }}</label>
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('Gender', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@
                                             <input type="email" class="form-control" id="txtEmail" placeholder="Email"
                                                 name="email">
                                             <label for="txtEmail"
-                                                class="text-primary">{{ GoogleTranslate::trans('E-mail address', app()->getLocale()) }}</label>
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('E-mail address', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -131,7 +131,7 @@
                                             <input type="text" class="form-control" id="txtPhone" placeholder="Phone"
                                                 name="phone">
                                             <label for="txtPhone"
-                                                class="text-primary ">{{ GoogleTranslate::trans('Phone', app()->getLocale()) }}</label>
+                                                class="text-primary ">{{ GoogleTranslate::justTranslate('Phone', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -144,19 +144,19 @@
                                             <select class="form-select" id="txtMaritalStatus"
                                                 aria-label="Floating label select gender">
                                                 <option selected disabled value="">
-                                                    {{ GoogleTranslate::trans('Select the marital status', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Select the marital status', app()->getLocale()) }}
                                                 </option>
                                                 <option value="1">
-                                                    {{ GoogleTranslate::trans('Unmarried', app()->getLocale()) }}</option>
+                                                    {{ GoogleTranslate::justTranslate('Unmarried', app()->getLocale()) }}</option>
                                                 <option value="2">
-                                                    {{ GoogleTranslate::trans('Married', app()->getLocale()) }}</option>
+                                                    {{ GoogleTranslate::justTranslate('Married', app()->getLocale()) }}</option>
                                                 <option value="3">
-                                                    {{ GoogleTranslate::trans('Divorced', app()->getLocale()) }}</option>
+                                                    {{ GoogleTranslate::justTranslate('Divorced', app()->getLocale()) }}</option>
                                                 <option value="4">
-                                                    {{ GoogleTranslate::trans('Widowed', app()->getLocale()) }}</option>
+                                                    {{ GoogleTranslate::justTranslate('Widowed', app()->getLocale()) }}</option>
                                             </select>
                                             <label for="txtMarital"
-                                                class="text-primary">{{ GoogleTranslate::trans('Marital status', app()->getLocale()) }}</label>
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('Marital status', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -169,7 +169,7 @@
                                             <input type="text" class="form-control" id="txtBirthplace"
                                                 placeholder="Birthplace" name="birth_place">
                                             <label for="txtBirthplace"
-                                                class="text-primary">{{ GoogleTranslate::trans('Birthplace', app()->getLocale()) }}</label>
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('Birthplace', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -182,7 +182,7 @@
                                             <input type="text" class="form-control" id="txtAddress"
                                                 placeholder="Address" name="address">
                                             <label for="txtAddress"
-                                                class="text-primary">{{ GoogleTranslate::trans('Address', app()->getLocale()) }}</label>
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('Address', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -195,28 +195,28 @@
                                             <select id="txtSchooling" class="form-select"
                                                 aria-label="Floating label select schooling" required>
                                                 <option selected disabled value="">
-                                                    {{ GoogleTranslate::trans('Select an option', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
                                                 </option>
                                                 <option value="1">
-                                                    {{ GoogleTranslate::trans('Primary', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Primary', app()->getLocale()) }}
                                                 </option>
                                                 <option value="2">
-                                                    {{ GoogleTranslate::trans('Secondary', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Secondary', app()->getLocale()) }}
                                                 </option>
                                                 <option value="3">
-                                                    {{ GoogleTranslate::trans('High School', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('High School', app()->getLocale()) }}
                                                 </option>
                                                 <option value="4">
-                                                    {{ GoogleTranslate::trans('University', app()->getLocale()) }}</option>
+                                                    {{ GoogleTranslate::justTranslate('University', app()->getLocale()) }}</option>
                                                 <option value="5">
-                                                    {{ GoogleTranslate::trans("Master's Degree", app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate("Master's Degree", app()->getLocale()) }}
                                                 </option>
                                                 <option value="6">
-                                                    {{ GoogleTranslate::trans('Doctorate', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Doctorate', app()->getLocale()) }}
                                                 </option>
                                             </select>
                                             <label for="txtSchooling"
-                                                class="text-primary">{{ GoogleTranslate::trans('Schooling', app()->getLocale()) }}</label>
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('Schooling', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -229,7 +229,7 @@
                                             <input type="text" class="form-control" id="txtOccupation"
                                                 placeholder="Occupation" name="occupation">
                                             <label for="txtOccupation"
-                                                class="text-primary">{{ GoogleTranslate::trans('Occupation', app()->getLocale()) }}</label>
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('Occupation', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -242,28 +242,28 @@
                                             <select id="txtReligion" class="form-select"
                                                 aria-label="Floating label select religion" required>
                                                 <option selected disabled value="">
-                                                    {{ GoogleTranslate::trans('Select an option', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
                                                 </option>
                                                 <option value="1">
-                                                    {{ GoogleTranslate::trans('Catholic', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Catholic', app()->getLocale()) }}
                                                 </option>
                                                 <option value="2">
-                                                    {{ GoogleTranslate::trans('Protestant', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Protestant', app()->getLocale()) }}
                                                 </option>
                                                 <option value="3">
-                                                    {{ GoogleTranslate::trans('Jewish', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Jewish', app()->getLocale()) }}
                                                 </option>
                                                 <option value="4">
-                                                    {{ GoogleTranslate::trans('Muslim', app()->getLocale()) }}</option>
+                                                    {{ GoogleTranslate::justTranslate('Muslim', app()->getLocale()) }}</option>
                                                 <option value="5">
-                                                    {{ GoogleTranslate::trans('Atheist', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Atheist', app()->getLocale()) }}
                                                 </option>
                                                 <option value="6">
-                                                    {{ GoogleTranslate::trans('Other', app()->getLocale()) }}
+                                                    {{ GoogleTranslate::justTranslate('Other', app()->getLocale()) }}
                                                 </option>
                                             </select>
                                             <label for="txtReligion"
-                                                class="text-primary">{{ GoogleTranslate::trans('Religion', app()->getLocale()) }}</label>
+                                                class="text-primary">{{ GoogleTranslate::justTranslate('Religion', app()->getLocale()) }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -272,7 +272,7 @@
                                 <div class="row ">
                                     <div class="col-12 text-center">
                                         <button type="button" class="btn btn-primary rounded-pill"
-                                            onclick="updateField();">{{ GoogleTranslate::trans('Save changes', app()->getLocale()) }}</button>
+                                            onclick="updateField();">{{ GoogleTranslate::justTranslate('Save changes', app()->getLocale()) }}</button>
                                     </div>
                                 </div>
                             </div>
