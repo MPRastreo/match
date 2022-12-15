@@ -206,9 +206,14 @@ const translateAlertAttention = (title, text, alert) =>
 $('#modalNew').on('hidden.bs.modal', function ()
 {
     $(this).find('form').trigger('reset');
+    $('form').removeClass('was-validated');
     $('.selectpicker').prop('disabled', true);
     $('.selectpicker').selectpicker('refresh');
     edit = false;
+    current = 1;
+    $('.divListSurgerPPH').slice(1).remove();
+    $('.divListAllergyPPH').slice(1).remove();
+    $('.divListFracturePPH').slice(1).remove();
 
     if(idFamilyM != null)
     {
@@ -246,6 +251,51 @@ const checkStepsValidity = () =>
     else
     {
         document.getElementById('btnSecondStep').style.display = 'none';
+    }
+
+    if(document.getElementById('checkSurgerPPH').checked)
+    {
+        $('.surgerGroup').prop('disabled', false);
+        $('.surgerGroup').prop('required', true);
+        $('#btnSurgerPPH').show();
+    }
+    else
+    {
+        $('.surgerGroup').prop('disabled', true);
+        $('.surgerGroup').prop('required', false);
+        $('.surgerGroup').val('');
+        $('#btnSurgerPPH').hide();
+        $('.divListSurgerPPH').slice(1).remove();
+    }
+
+    if(document.getElementById('checkFracturePPH').checked)
+    {
+        $('.fractureGroup').prop('disabled', false);
+        $('.fractureGroup').prop('required', true);
+        $('#btnFracturePPH').show();
+    }
+    else
+    {
+        $('.fractureGroup').prop('disabled', true);
+        $('.fractureGroup').prop('required', false);
+        $('.fractureGroup').val('');
+        $('#btnFracturePPH').hide();
+        $('.divListFracturePPH').slice(1).remove();
+    }
+
+    if(document.getElementById('checkAllergyPPH').checked)
+    {
+        $('.allergyGroup').prop('disabled', false);
+        $('.allergyGroup').prop('required', true);
+        $('#btnAllergyPPH').show();
+    }
+    else
+    {
+        $('.allergyGroup').prop('disabled', true);
+        $('.allergyGroup').prop('required', false);
+        $('.allergyGroup').val('');
+        $('#btnAllergyPPH').hide();
+        $('.divListAllergyPPH').slice(1).remove();
     }
 }
 
@@ -395,24 +445,6 @@ const disableFieldImmCV = () =>
     immunizations.required = false;
 }
 
-const enableFieldsAllergySF = (id) =>
-{
-    document.getElementById('txt' + id.substring(5)).disabled = false;
-    document.getElementById('txt' + id.substring(5)).required = true;
-    document.getElementById('tx' + id.substring(5)).disabled = false;
-    document.getElementById('tx' + id.substring(5)).required = true;
-}
-
-const disableFieldsAllergySF = (id) =>
-{
-    document.getElementById('txt' + id.substring(5, 15)).disabled = true;
-    document.getElementById('txt' + id.substring(5, 15)).required = false;
-    document.getElementById('txt' + id.substring(5, 15)).value = "";
-    document.getElementById('tx' + id.substring(5, 15)).disabled = true;
-    document.getElementById('tx' + id.substring(5, 15)).required = false;
-    document.getElementById('tx' + id.substring(5, 15)).value = "";
-}
-
 const enableFieldsDiabetes = (id) =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
@@ -449,22 +481,19 @@ const disableFieldsHyper = (id) =>
     document.getElementById('txt' + id.substring(5, 13)).value = "";
 }
 
-const enableFieldsSurg = (id) =>
+const enableFieldsSurg = () =>
 {
-    document.getElementById('txt' + id.substring(5)).disabled = false;
-    document.getElementById('txt' + id.substring(5)).required = true;
-    document.getElementById('tx' + id.substring(5)).disabled = false;
-    document.getElementById('tx' + id.substring(5)).required = true;
+    $('.surgerGroup').prop('disabled', false);
+    $('.surgerGroup').prop('required', true);
+    $('#btnSurgerPPH').show();
 }
 
-const disableFieldsSurg = (id) =>
+const disableFieldsSurg = () =>
 {
-    document.getElementById('tx' + id.substring(5, 14)).disabled = true;
-    document.getElementById('tx' + id.substring(5, 14)).required = false;
-    document.getElementById('tx' + id.substring(5, 14)).value = "";
-    document.getElementById('txt' + id.substring(5, 14)).disabled = true;
-    document.getElementById('txt' + id.substring(5, 14)).required = false;
-    document.getElementById('txt' + id.substring(5, 14)).value = "";
+    $('.surgerGroup').prop('disabled', true);
+    $('.surgerGroup').prop('required', false);
+    $('.surgerGroup').val('');
+    $('#btnSurgerPPH').hide();
 }
 
 const enableFieldsFractures = (id) =>
@@ -856,12 +885,25 @@ const savePersonalPathHis = () =>
 {
     if(clinicalHistory.progress > 53)
     {
-        const objAllergySuff =
+        const dataS = $('.repeater').repeaterVal();
+        let surgeries = dataS['listSurgerPPH'];
+        let fractures = dataS['listFracturePPH'];
+        let allergies = dataS['listAllergyPPH'];
+
+        surgeries.forEach(element =>
         {
-            estatus: document.getElementById('checkAllergyPPH').checked,
-            medications: $('#txtAllergyPPH').val(),
-            food: $('#txAllergyPPH').val()
-        };
+            delete element['dButton'];
+        });
+
+        fractures.forEach(element =>
+        {
+            delete element['dButton'];
+        });
+
+        allergies.forEach(element =>
+        {
+            delete element['dButton'];
+        });
 
         const objDiabetes =
         {
@@ -875,20 +917,6 @@ const savePersonalPathHis = () =>
             estatus: document.getElementById('checkHyperPPH').checked,
             diagnosis_year: $('#selectHyperPPH').val(),
             current_treatment: $('#txtHyperPPH').val()
-        };
-
-        const objSurgeries =
-        {
-            estatus: document.getElementById('checkSurgerPPH').checked,
-            motive: $('#txtSurgerPPH').val(),
-            antiquity: $('#txSurgerPPH').val()
-        };
-
-        const objFractures =
-        {
-            estatus: document.getElementById('checkFracturePPH').checked,
-            motive: $('#txtFracturePPH').val(),
-            antiquity: $('#txFracturePPH').val()
         };
 
         const objSeizures =
@@ -947,11 +975,36 @@ const savePersonalPathHis = () =>
             current_treatment: $('#txtRheumPPH').val()
         };
 
-        clinicalHistory.allergy_sufferers = objAllergySuff;
+        if(allergies[0].allergy != "")
+        {
+            clinicalHistory.allergy_sufferers = allergies;
+        }
+        else
+        {
+            clinicalHistory.allergy_sufferers = [];
+        }
+
         clinicalHistory.diabetes = objDiabetes;
         clinicalHistory.hypertension = objHypertension;
-        clinicalHistory.surgeries = objSurgeries;
-        clinicalHistory.fractures = objFractures;
+
+        if(surgeries[0].motive != "" && surgeries[0].antiquity != "")
+        {
+            clinicalHistory.surgeries = surgeries;
+        }
+        else
+        {
+            clinicalHistory.surgeries = [];
+        }
+
+        if(fractures[0].motive != "" && fractures[0].antiquity != "")
+        {
+            clinicalHistory.fractures = fractures;
+        }
+        else
+        {
+            clinicalHistory.fractures = [];
+        }
+
         clinicalHistory.seizures = objSeizures;
         clinicalHistory.pulmonary_diseases = objPulmonaryDiseases;
         clinicalHistory.cardiacal_diseases = objCardiacalDiseases;
@@ -962,7 +1015,7 @@ const savePersonalPathHis = () =>
         clinicalHistory.rheumatic_diseases = objRheumaticDiseases;
         clinicalHistory.progress = 100;
 
-        let data =
+        const data =
         {
             clinical_history: clinicalHistory,
         };
@@ -1015,51 +1068,6 @@ const savePersonalPathHis = () =>
     {
         translateAlert(translateAlertAttention, '¡Error!', 'Complete the first and second section to continue', 'error');
     }
-}
-
-const generateProgressBars = (family) =>
-{
-    const bars = [];
-    family.forEach((element, i) =>
-    {
-        if(element.clinical_history != null)
-        {
-            bars[i] = new ProgressBar.Circle(`#progressBarCircle-${element._id}`,
-            {
-                color: '#1e68b1',
-                strokeWidth: 4,
-                trailWidth: 1,
-                easing: 'easeInOut',
-                duration: 4400,
-                text:
-                {
-                    autoStyleContainer: true
-                },
-                from:
-                {
-                    color: '#1e68b1',
-                    width: 4
-                },
-                to:
-                {
-                    color: '#0d6efd',
-                    width: 4
-                },
-                step: (state, circle) =>
-                {
-                    circle.path.setAttribute('stroke', state.color);
-                    circle.path.setAttribute('stroke-width', state.width);
-
-                    let value = Math.round(circle.value() * 100);
-                    circle.setText(value + ' %');
-                }
-            });
-            bars[i].text.style.fontFamily = '"Nunito", Helvetica, sans-serif';
-            bars[i].text.style.fontSize = '0.80rem';
-            bars[i].text.style.color = '#000';
-            bars[i].animate(element.clinical_history.progress / 100);
-        }
-    });
 }
 
 const completeClinicalH = (id) =>
@@ -1153,6 +1161,7 @@ const fillDataClinicalH = ({ clinical_history, _id, name, lastname }) =>
     $('#txtWaterConsumption').val(water_consumption);
     $('#txtSleepingT').val(sleeping_time);
     $('#txtPet').val(pet);
+    $('#txtPet').prop('disabled', false);
 
     if(alcoholism)
     {
@@ -1210,16 +1219,6 @@ const fillDataClinicalH = ({ clinical_history, _id, name, lastname }) =>
         }
     }
 
-    // Personal pathological history
-    // if(allergy_sufferers.estatus == true)
-    // {
-    //     $('#checkAllergyPPH').prop('checked', true);
-    //     $('#txtAllergyPPH').prop('disabled', false);
-    //     $('#txAllergyPPH').prop('disabled', false);
-    //     $('#txtAllergyPPH').val(allergy_sufferers.allergy_sufferes);
-    //     $('#txAllergyPPH').val(allergy_sufferers.food);
-    // }
-
     option.text = name + ' ' + lastname;
     option.value = _id;
     selectFMember.add(option);
@@ -1272,6 +1271,7 @@ const fillDataClinicalHEdit = ({ clinical_history, _id, name, lastname }) =>
     //Hereditary diseases
     const { diabetes_relatives, hypertension_relatives, hiv_relatives, cancer_relatives, psychiatric_relatives, tuberculosis_relatives } = clinical_history;
     const { feeding, water_consumption, sleeping_time, pet, alcoholism, smoking, drug_adict, immunizations, immunizations_covid } = clinical_history
+    const { allergy_sufferers, diabetes, hypertension, surgeries, fractures, seizures, pulmonary_diseases, cardiacal_diseases, kidney_diseases, psychiatric_diseases, transfusions, hematic_diseases, rheumatic_diseases } = clinical_history;
     const option = document.createElement("option");
 
     if(JSON.stringify(diabetes_relatives.relatives) != '[]')
@@ -1379,14 +1379,189 @@ const fillDataClinicalHEdit = ({ clinical_history, _id, name, lastname }) =>
     }
 
     // Personal pathological history
-    // if(allergy_sufferers.estatus == true)
-    // {
-    //     $('#checkAllergyPPH').prop('checked', true);
-    //     $('#txtAllergyPPH').prop('disabled', false);
-    //     $('#txAllergyPPH').prop('disabled', false);
-    //     $('#txtAllergyPPH').val(allergy_sufferers.allergy_sufferes);
-    //     $('#txAllergyPPH').val(allergy_sufferers.food);
-    // }
+    if(allergy_sufferers)
+    {
+        if(allergy_sufferers.length > 0)
+        {
+            $('#checkAllergyPPH').prop('checked', true);
+            allergy_sufferers.forEach((element, i) =>
+            {
+                if(i > 0)
+                {
+                    $('#btnAllergyPPH').click();
+                    $("input[name='listAllergyPPH[" + i +"][allergy]']").val(element.allergy);
+                }
+                else
+                {
+                    $("input[name='listAllergyPPH[" + i +"][allergy]']").val(element.allergy);
+                }
+            });
+        }
+    }
+
+    if(diabetes)
+    {
+        if(diabetes.estatus == true)
+        {
+            $('#checkDiabetesPPH').prop('checked', true);
+            $('#selectDiabetesPPH').prop('disabled', false);
+            $('#txtDiabetesPPH').prop('disabled', false);
+            $('#selectDiabetesPPH').val(diabetes.diagnosis_year);
+            $('#txtDiabetesPPH').val(diabetes.current_treatment);
+        }
+    }
+
+    if(hypertension)
+    {
+        if(hypertension.estatus == true)
+        {
+            $('#checkHyperPPH').prop('checked', true);
+            $('#selectHyperPPH').prop('disabled', false);
+            $('#txtHyperPPH').prop('disabled', false);
+            $('#selectHyperPPH').val(hypertension.diagnosis_year);
+            $('#txtHyperPPH').val(hypertension.current_treatment);
+        }
+    }
+
+    if(surgeries)
+    {
+        if(surgeries.length > 0)
+        {
+            $('#checkSurgerPPH').prop('checked', true);
+            surgeries.forEach((element, i) =>
+            {
+                if(i > 0)
+                {
+                    $('#btnSurgerPPH').click();
+                    $("input[name='listSurgerPPH[" + i +"][motive]']").val(element.motive);
+                    $("input[name='listSurgerPPH[" + i +"][antiquity]']").val(element.antiquity);
+                }
+                else
+                {
+                    $("input[name='listSurgerPPH[" + i +"][motive]']").val(element.motive);
+                    $("input[name='listSurgerPPH[" + i +"][antiquity]']").val(element.antiquity);
+                }
+            });
+        }
+    }
+
+    if(fractures)
+    {
+        if(fractures.length > 0)
+        {
+            $('#checkFracturePPH').prop('checked', true);
+            fractures.forEach((element, i) =>
+            {
+                if(i > 0)
+                {
+                    $('#btnFracturePPH').click();
+                    $("input[name='listFracturePPH[" + i +"][motive]']").val(element.motive);
+                    $("input[name='listFracturePPH[" + i +"][antiquity]']").val(element.antiquity);
+                }
+                else
+                {
+                    $("input[name='listFracturePPH[" + i +"][motive]']").val(element.motive);
+                    $("input[name='listFracturePPH[" + i +"][antiquity]']").val(element.antiquity);
+                }
+            });
+        }
+    }
+
+    if(seizures)
+    {
+        if(seizures.estatus == true)
+        {
+            $('#checkSeizPPH').prop('checked', true);
+            $('#selectSeizPPH').prop('disabled', false);
+            $('#txtSeizPPH').prop('disabled', false);
+            $('#selectSeizPPH').val(seizures.diagnosis_year);
+            $('#txtSeizPPH').val(seizures.current_treatment);
+        }
+    }
+
+    if(pulmonary_diseases)
+    {
+        if(pulmonary_diseases.estatus == true)
+        {
+            $('#checkPulmonPPH').prop('checked', true);
+            $('#selectPulmonPPH').prop('disabled', false);
+            $('#txtPulmonPPH').prop('disabled', false);
+            $('#selectPulmonPPH').val(pulmonary_diseases.diagnosis_year);
+            $('#txtPulmonPPH').val(pulmonary_diseases.current_treatment);
+        }
+    }
+
+    if(cardiacal_diseases)
+    {
+        if(cardiacal_diseases.estatus == true)
+        {
+            $('#checkCardPPH').prop('checked', true);
+            $('#selectCardPPH').prop('disabled', false);
+            $('#txtCardPPH').prop('disabled', false);
+            $('#selectCardPPH').val(cardiacal_diseases.diagnosis_year);
+            $('#txtCardPPH').val(cardiacal_diseases.current_treatment);
+        }
+    }
+
+    if(kidney_diseases)
+    {
+        if(kidney_diseases.estatus == true)
+        {
+            $('#checkKidneyPPH').prop('checked', true);
+            $('#selectKidneyPPH').prop('disabled', false);
+            $('#txtKidneyPPH').prop('disabled', false);
+            $('#selectKidneyPPH').val(kidney_diseases.diagnosis_year);
+            $('#txtKidneyPPH').val(kidney_diseases.current_treatment);
+        }
+    }
+
+    if(psychiatric_diseases)
+    {
+        if(psychiatric_diseases.estatus == true)
+        {
+            $('#checkPsychPPH').prop('checked', true);
+            $('#selectPsychPPH').prop('disabled', false);
+            $('#txtPsychPPH').prop('disabled', false);
+            $('#selectPsychPPH').val(psychiatric_diseases.diagnosis_year);
+            $('#txtPsychPPH').val(psychiatric_diseases.current_treatment);
+        }
+    }
+
+    if(transfusions)
+    {
+        if(transfusions.estatus == true)
+        {
+            $('#checkTransPPH').prop('checked', true);
+            $('#selectTransPPH').prop('disabled', false);
+            $('#txtTransPPH').prop('disabled', false);
+            $('#selectTransPPH').val(transfusions.post_reactions);
+            $('#txtTransPPH').val(transfusions.antiquity);
+        }
+    }
+
+    if(hematic_diseases)
+    {
+        if(hematic_diseases.estatus == true)
+        {
+            $('#checkHematPPH').prop('checked', true);
+            $('#selectHematPPH').prop('disabled', false);
+            $('#txtHematPPH').prop('disabled', false);
+            $('#selectHematPPH').val(hematic_diseases.diagnosis_year);
+            $('#txtHematPPH').val(hematic_diseases.current_treatment);
+        }
+    }
+
+    if(rheumatic_diseases)
+    {
+        if(rheumatic_diseases.estatus == true)
+        {
+            $('#checkRheumPPH').prop('checked', true);
+            $('#selectRheumPPH').prop('disabled', false);
+            $('#txtRheumPPH').prop('disabled', false);
+            $('#selectRheumPPH').val(rheumatic_diseases.diagnosis_year);
+            $('#txtRheumPPH').val(rheumatic_diseases.current_treatment);
+        }
+    }
 
     option.text = name + ' ' + lastname;
     option.value = _id;
@@ -1400,13 +1575,13 @@ const fillDataClinicalHEdit = ({ clinical_history, _id, name, lastname }) =>
 
 const translateAlert = (callback, title, text, alert) =>
 {
+    let titleNewAlert;
+    let textNewAlert;
     const dataJSON =
     {
         "title": title,
         "text": text
-    }
-    let titleNewAlert;
-    let textNewAlert;
+    };
 
     fetch('/translate/alerts',
     {

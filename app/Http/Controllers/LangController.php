@@ -27,8 +27,8 @@ class LangController extends Controller
         try
         {
             $translation = new stdClass();
-            $translation->title = GoogleTranslate::justTranslate($request->title, auth()->user()->lang);
-            $translation->text = GoogleTranslate::justTranslate($request->text, auth()->user()->lang);
+            $translation->title = ucwords(GoogleTranslate::justTranslate($request->title, auth()->user()->lang));
+            $translation->text = ucwords(GoogleTranslate::justTranslate($request->text, auth()->user()->lang));
 
             return response()->json($translation, 200);
         }

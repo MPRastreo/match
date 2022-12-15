@@ -1,11 +1,11 @@
 @extends('layout.layout')
 @section('title')
-    {{ GoogleTranslate::justTranslate('Clinical History', app()->getLocale()) }}
+    {{ ucwords(GoogleTranslate::justTranslate('Clinical History', app()->getLocale())) }}
 @endsection
 @section('pagetitle')
-    {{ GoogleTranslate::justTranslate('Clinical History', app()->getLocale()) }}
+    {{ ucwords(GoogleTranslate::justTranslate('Clinical History', app()->getLocale())) }}
     <button type="button" class="btn btn-primary float-end rounded-pill rounded-pill" data-bs-toggle="modal"
-        data-bs-target="#modalNew">{{ GoogleTranslate::justTranslate('New Clinical Historie', app()->getLocale()) }}</button>
+        data-bs-target="#modalNew">{{ ucwords(GoogleTranslate::justTranslate('New Clinical Historie', app()->getLocale())) }}</button>
 @endsection
 @section('links')
     <style>
@@ -307,13 +307,47 @@
             background-color: #2778c4 !important;
         }
     </style>
-    <script src="{{ asset('js/clinical.js') }}"></script>
     <script type="text/javascript">
-        const castArrayToJSON = callback =>
-        {
+        const castArrayToJSON = callback => {
             let family = [];
             family = @json($family);
             callback(family);
+        }
+
+        const generateProgressBars = family => {
+            const bars = [];
+            family.forEach((element, i) => {
+                if (element.clinical_history != null) {
+                    bars[i] = new ProgressBar.Circle(`#progressBarCircle-${element._id}`, {
+                        color: '#1e68b1',
+                        strokeWidth: 4,
+                        trailWidth: 1,
+                        easing: 'easeInOut',
+                        duration: 4400,
+                        text: {
+                            autoStyleContainer: true
+                        },
+                        from: {
+                            color: '#1e68b1',
+                            width: 4
+                        },
+                        to: {
+                            color: '#0d6efd',
+                            width: 4
+                        },
+                        step: (state, circle) => {
+                            circle.path.setAttribute('stroke', state.color);
+                            circle.path.setAttribute('stroke-width', state.width);
+                            let value = Math.round(circle.value() * 100);
+                            circle.setText(value + ' %');
+                        }
+                    });
+                    bars[i].text.style.fontFamily = '"Nunito", Helvetica, sans-serif';
+                    bars[i].text.style.fontSize = '0.80rem';
+                    bars[i].text.style.color = '#000';
+                    bars[i].animate(element.clinical_history.progress / 100);
+                }
+            });
         }
     </script>
 @endsection
@@ -323,17 +357,17 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="tab-pend" data-bs-toggle="tab" data-bs-target="#tab-pend-pane"
                     type="button" role="tab" aria-controls="tab-pend-pane"
-                    aria-selected="true">{{ GoogleTranslate::justTranslate('Pending histories', app()->getLocale()) }}</button>
+                    aria-selected="true">{{ ucwords(GoogleTranslate::justTranslate('Pending histories', app()->getLocale())) }}</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="tab-historie" data-bs-toggle="tab" data-bs-target="#tab-historie-pane"
                     type="button" role="tab" aria-controls="tab-historie-pane"
-                    aria-selected="false">{{ GoogleTranslate::justTranslate('Clinical Histories', app()->getLocale()) }}</button>
+                    aria-selected="false">{{ ucwords(GoogleTranslate::justTranslate('Clinical Histories', app()->getLocale())) }}</button>
             </li>
             {{-- <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane"
                     type="button" role="tab" aria-controls="contact-tab-pane"
-                    aria-selected="false">{{ GoogleTranslate::justTranslate('Contact', app()->getLocale()) }}</button>
+                    aria-selected="false">{{ ucwords(GoogleTranslate::justTranslate('Contact', app()->getLocale())) }}</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane"
@@ -349,54 +383,65 @@
                         <thead>
                             <tr>
                                 <th scope="col">
-                                    {{ GoogleTranslate::justTranslate('Name', app()->getLocale()) }}</th>
+                                    {{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</th>
                                 <th scope="col">
-                                    {{ GoogleTranslate::justTranslate('Progress', app()->getLocale()) }}
+                                    {{ ucwords(GoogleTranslate::justTranslate('Progress', app()->getLocale())) }}
                                 </th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($family as $f)
-                                @if ($f->clinical_history != null && $f->clinical_history['progress'] < 100)
-                                    <tr>
-                                        <td class="align-middle">{{ $f->name . ' ' . $f->lastname }}</td>
-                                        <td class="align-middle">
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <div style="max-width: 80px;" id="progressBarCircle-{{ $f->_id }}">
-                                                </div>
-                                            </div>
-                                        </td>
-                                        @if ($f->clinical_history['progress'] < 100)
-                                            <td class="align-middle">
-                                                <button class="btn btn-primary btn-circle" data-bs-toggle="tooltip"
-                                                    data-bs-toggle="tooltip"
-                                                    onclick="completeClinicalH('{{ $f->_id }}');"
-                                                    title="{{ GoogleTranslate::justTranslate('Complete medical history', app()->getLocale()) }}"><i
-                                                        class="fas fa-spinner"></i></button>
-                                            </td>
-                                        @else
-                                            <td class="align-middle">
-                                                <button class="btn btn-success btn-circle" data-bs-toggle="tooltip"
-                                                    data-bs-toggle="tooltip"
-                                                    title="{{ GoogleTranslate::justTranslate('Medical history completed', app()->getLocale()) }}"><i
-                                                        class="fa-solid fa-check"></i></button>
-                                            </td>
-                                        @endif
-                                    </tr>
-                                    @if ($loop->index == sizeof($family) - 1)
-                                        <script>
-                                            castArrayToJSON(generateProgressBars);
-                                        </script>
-                                    @endif
-                                @else
-                                    @if ($loop->index == 0)
+                            @if ($family != '[]')
+                                @foreach ($family as $f)
+                                    @if ($f->clinical_history != null && $f->clinical_history['progress'] < 100)
                                         <tr>
-                                            <td class="align-middle" colspan="3">No hay registros</td>
+                                            <td class="align-middle">{{ $f->name . ' ' . $f->lastname }}</td>
+                                            <td class="align-middle">
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <div style="max-width: 80px;"
+                                                        id="progressBarCircle-{{ $f->_id }}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            @if ($f->clinical_history['progress'] < 100)
+                                                <td class="align-middle">
+                                                    <button class="btn btn-primary btn-circle" data-bs-toggle="tooltip"
+                                                        data-bs-toggle="tooltip"
+                                                        onclick="completeClinicalH('{{ $f->_id }}');"
+                                                        title="{{ ucwords(GoogleTranslate::justTranslate('Complete medical history', app()->getLocale())) }}"><i
+                                                            class="fas fa-spinner"></i></button>
+                                                </td>
+                                            @else
+                                                <td class="align-middle">
+                                                    <button class="btn btn-success btn-circle" data-bs-toggle="tooltip"
+                                                        data-bs-toggle="tooltip"
+                                                        title="{{ ucwords(GoogleTranslate::justTranslate('Medical history completed', app()->getLocale())) }}"><i
+                                                            class="fa-solid fa-check"></i></button>
+                                                </td>
+                                            @endif
                                         </tr>
+                                        @if ($loop->index == sizeof($family) - 1)
+                                            <script>
+                                                castArrayToJSON(generateProgressBars);
+                                            </script>
+                                        @endif
+                                    @else
+                                        @if ($loop->index == 0)
+                                            <tr>
+                                                <td class="align-middle" colspan="3">
+                                                    {{ ucwords(GoogleTranslate::justTranslate('There are no records', app()->getLocale())) }}
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endif
-                                @endif
-                            @endforeach
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td class="align-middle" colspan="3">
+                                        {{ ucwords(GoogleTranslate::justTranslate('There are no records', app()->getLocale())) }}
+                                    </td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -404,74 +449,97 @@
             <div class="tab-pane fade" id="tab-historie-pane" role="tabpanel" aria-labelledby="tab-historie" tabindex="0">
                 <div class="row">
                     <div class="col-md-12">
-                        <h5 class="d-block py-3">{{ GoogleTranslate::justTranslate('Histories', app()->getLocale()) }}</h5>
+                        <h5 class="d-block py-3">
+                            {{ ucwords(GoogleTranslate::justTranslate('Histories', app()->getLocale())) }}</h5>
                         <div class="container-fluid">
                             <!-- Codrops top bar -->
                             <!--/ Codrops top bar -->
                             <div class="table-responsive">
                                 <div class="main">
                                     <ul id="bk-list" class="bk-list clearfix">
-                                        @foreach ($history as $h)
-                                            @if ($h->clinical_history != null && $h->clinical_history['progress'] == 100)
-                                                <li style="z-index: {{ $loop->index }};"
-                                                    onclick="openInfoClinicalH('{{ $f->_id }}');">
-                                                    <div class="bk-book book-2">
-                                                        <div class="bk-front">
-                                                            <div class="bk-cover-back"></div>
-                                                            <div class="bk-cover">
+                                        @if ($history != '[]')
+                                            @foreach ($history as $h)
+                                                @if ($h->clinical_history != null && $h->clinical_history['progress'] == 100)
+                                                    <li style="z-index: {{ $loop->index }};"
+                                                        onclick="openInfoClinicalH('{{ $h->_id }}');">
+                                                        <div class="bk-book book-2">
+                                                            <div class="bk-front">
+                                                                <div class="bk-cover-back"></div>
+                                                                <div class="bk-cover">
 
+                                                                </div>
+                                                            </div>
+                                                            <div class="bk-page">
+                                                                <div class="bk-content bk-content-current">
+                                                                </div>
+                                                                <div class="bk-content">
+                                                                </div>
+                                                                <div class="bk-content">
+                                                                </div>
+                                                                <nav><span class="bk-page-prev">&lt;</span><span
+                                                                        class="bk-page-next">&gt;</span></nav>
+                                                                <nav><span class="bk-page-prev">&lt;</span><span
+                                                                        class="bk-page-next">&gt;</span></nav>
+                                                            </div>
+                                                            <div class="bk-back">
+                                                            </div>
+                                                            <div class="bk-right"></div>
+                                                            <div class="bk-left">
+                                                                <h2>
+                                                                    <span>{{ $h->name . ' ' . $h->lastname }}</span>
+                                                                </h2>
+                                                            </div>
+                                                            <div class="bk-top"></div>
+                                                            <div class="bk-bottom"></div>
+                                                        </div>
+                                                    </li>
+                                                    @php
+                                                        $bookshelf = 1;
+                                                    @endphp
+                                                @else
+                                                    <div class="container-fluid p-2">
+                                                        <div class="row">
+                                                            <div class="d-flex align-items-center justify-content-center">
+                                                                <div class="col-md-8">
+                                                                    <img src="{{ asset('img/medical-history.png') }}"
+                                                                        class="img-fluid col-12" />
+                                                                    <h1
+                                                                        class="h1 text-center pb-5 px-3 text-title-cu text-bold-cu text-uppercase">
+                                                                        {{ ucwords(GoogleTranslate::justTranslate('No medical records', app()->getLocale())) }}
+                                                                    </h1>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="bk-page">
-                                                            <div class="bk-content bk-content-current">
-                                                            </div>
-                                                            <div class="bk-content">
-                                                            </div>
-                                                            <div class="bk-content">
-                                                            </div>
-                                                            <nav><span class="bk-page-prev">&lt;</span><span
-                                                                    class="bk-page-next">&gt;</span></nav>
-                                                            <nav><span class="bk-page-prev">&lt;</span><span
-                                                                    class="bk-page-next">&gt;</span></nav>
-                                                        </div>
-                                                        <div class="bk-back">
-                                                        </div>
-                                                        <div class="bk-right"></div>
-                                                        <div class="bk-left">
-                                                            <h2>
-                                                                <span>{{ $h->name . ' ' . $h->lastname }}</span>
-                                                            </h2>
-                                                        </div>
-                                                        <div class="bk-top"></div>
-                                                        <div class="bk-bottom"></div>
                                                     </div>
-                                                </li>
-                                                @php
-                                                    $bookshelf = 1;
-                                                @endphp
-                                            @else
-                                                <div class="container-fluid p-2">
-                                                    <div class="row">
-                                                        <div class="d-flex align-items-center justify-content-center">
-                                                            <div class="col-md-8">
-                                                                <img src="{{ asset('img/medical-history.png') }}"
-                                                                    class="img-fluid col-12" />
-                                                                <h1
-                                                                    class="h1 text-center pb-5 px-3 text-title-cu text-bold-cu text-uppercase">
-                                                                    {{ GoogleTranslate::justTranslate('No medical records', app()->getLocale()) }}
-                                                                </h1>
-                                                            </div>
+                                                    @php
+                                                        $bookshelf = 0;
+                                                    @endphp
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            <div class="container-fluid p-2">
+                                                <div class="row">
+                                                    <div class="d-flex align-items-center justify-content-center">
+                                                        <div class="col-md-8">
+                                                            <img src="{{ asset('img/medical-history.png') }}"
+                                                                class="img-fluid col-12" />
+                                                            <h1
+                                                                class="h1 text-center pb-5 px-3 text-title-cu text-bold-cu text-uppercase">
+                                                                {{ ucwords(GoogleTranslate::justTranslate('No medical records', app()->getLocale())) }}
+                                                            </h1>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                @php
-                                                    $bookshelf = 0;
-                                                @endphp
-                                            @endif
-                                        @endforeach
+                                            </div>
+                                            @php
+                                                $bookshelf = 0;
+                                            @endphp
+                                        @endif
                                     </ul>
-                                    @if ($bookshelf == 1)
-                                        <div class="bookshelf"></div>
+                                    @if (isset($bookshelf))
+                                        @if ($bookshelf == 1)
+                                            <div class="bookshelf"></div>
+                                        @endif
                                     @endif
                                 </div>
                             </div>
@@ -479,25 +547,19 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab"
-                tabindex="0">
-                ...</div>
-            <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab"
-                tabindex="0">
-                ...</div>
         </div>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="modalNew" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="modalNewLabel" aria-hidden="true">
         <button class="btn btn-primary btn-circle float" data-bs-toggle="tooltip" data-bs-toggle="tooltip"
-            title="{{ GoogleTranslate::justTranslate('Save your progress', app()->getLocale()) }}"
+            title="{{ ucwords(GoogleTranslate::justTranslate('Save your progress', app()->getLocale())) }}"
             onclick="validateSteps();"><i class="fa-regular fa-floppy-disk"></i></button>
         <div class="modal-dialog modal-xl" onmouseover="checkStepsValidity();">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modalNewLabel">
-                        {{ GoogleTranslate::justTranslate('Add a new medical record', app()->getLocale()) }}</h1>
+                        {{ ucwords(GoogleTranslate::justTranslate('Add a new medical record', app()->getLocale())) }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -508,13 +570,13 @@
                                     <!-- progressbar -->
                                     <ul id="progressbar" class="d-flex justify-content-center">
                                         <li class="active" id="hereDise">
-                                            <strong>{{ GoogleTranslate::justTranslate('Hereditary Diseases', app()->getLocale()) }}</strong>
+                                            <strong>{{ ucwords(GoogleTranslate::justTranslate('Hereditary Diseases', app()->getLocale())) }}</strong>
                                         </li>
                                         <li id="nonpat">
-                                            <strong>{{ GoogleTranslate::justTranslate('Non-pathological antecedents', app()->getLocale()) }}</strong>
+                                            <strong>{{ ucwords(GoogleTranslate::justTranslate('Non-pathological antecedents', app()->getLocale())) }}</strong>
                                         </li>
                                         <li id="personal">
-                                            <strong>{{ GoogleTranslate::justTranslate('Personal pathological history', app()->getLocale()) }}</strong>
+                                            <strong>{{ ucwords(GoogleTranslate::justTranslate('Personal pathological history', app()->getLocale())) }}</strong>
                                         </li>
                                         {{-- <li id="confirm"><strong>Finish</strong></li> --}}
                                     </ul>
@@ -522,7 +584,7 @@
                                         <div class="form-floating">
                                             <select class="form-select" id="selectFamilyM" required>
                                                 <option selected disabled value="">
-                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                 </option>
                                                 @if ($family != '[]')
                                                     @foreach ($family as $f)
@@ -530,16 +592,22 @@
                                                             <option value="{{ $f->_id }}">
                                                                 {{ $f->name . ' ' . $f->lastname }}
                                                             </option>
+                                                        @else
+                                                            @if ($loop->index == 0)
+                                                                <option disabled value="">
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('There are no family members associated with your user', app()->getLocale())) }}
+                                                                </option>
+                                                            @endif
                                                         @endif
                                                     @endforeach
                                                 @else
                                                     <option disabled value="">
-                                                        {{ GoogleTranslate::justTranslate('There are no family members associated with your user', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('There are no family members associated with your user', app()->getLocale())) }}
                                                     </option>
                                                 @endif
                                             </select>
                                             <label
-                                                for="selectFamilyM">{{ GoogleTranslate::justTranslate('Family member', app()->getLocale()) }}</label>
+                                                for="selectFamilyM">{{ ucwords(GoogleTranslate::justTranslate('Family member', app()->getLocale())) }}</label>
                                         </div>
                                     </div>
                                     <!-- fieldsets -->
@@ -549,44 +617,44 @@
                                                 <div class="row">
                                                     <div class="col-7">
                                                         <h2 class="fs-title">
-                                                            {{ GoogleTranslate::justTranslate('Hereditary Diseases', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Hereditary Diseases', app()->getLocale())) }}
                                                         </h2>
                                                     </div>
                                                     <div class="col-5">
                                                         <h2 class="steps">
-                                                            {{ GoogleTranslate::justTranslate('Step 1 of 3', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Step 1 of 3', app()->getLocale())) }}
                                                         </h2>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 py-2">
                                                         <div class="row">
-                                                            <div class="col-md-4">
+                                                            <div class="d-block">
                                                                 <div class="form-check form-switch">
                                                                     <input class="form-check-input" type="checkbox"
                                                                         id="switchDiabetesRelative"
                                                                         onchange="disableField(this.id);">
                                                                     <label class="form-check-label"
-                                                                        for="switchDiabetesRelative">{{ GoogleTranslate::justTranslate('Diabetes', app()->getLocale()) }}</label>
+                                                                        for="switchDiabetesRelative">{{ ucwords(GoogleTranslate::justTranslate('Diabetes', app()->getLocale())) }}</label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <select class="form-control selectpicker my-2" multiple
                                                                 id="txtDiabetesRelative"
-                                                                title="{{ GoogleTranslate::justTranslate('Diabetes Relatives', app()->getLocale()) }}"
+                                                                title="{{ ucwords(GoogleTranslate::justTranslate('Diabetes Relatives', app()->getLocale())) }}"
                                                                 disabled>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Mother', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Mother', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('Father', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Father', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Siblings', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Siblings', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="4">
-                                                                    {{ GoogleTranslate::justTranslate('Grandparents', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Grandparents', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             {{-- <div class="form-floating">
@@ -594,38 +662,38 @@
                                                                 id="txtDiabetesRelative" placeholder="Diabetes Relative"
                                                                 disabled>
                                                             <label
-                                                                for="txtDiabetesRelative">{{ GoogleTranslate::justTranslate('Diabetes Relative', app()->getLocale()) }}</label>
+                                                                for="txtDiabetesRelative">{{ ucwords(GoogleTranslate::justTranslate('Diabetes Relative', app()->getLocale())) }}</label>
                                                         </div> --}}
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
                                                         <div class="row">
-                                                            <div class="col-md-4">
+                                                            <div class="d-block">
                                                                 <div class="form-check form-switch">
                                                                     <input class="form-check-input" type="checkbox"
                                                                         id="switchHypertensionRelative"
                                                                         onchange="disableField(this.id);">
                                                                     <label class="form-check-label"
-                                                                        for="switchHypertensionRelative">{{ GoogleTranslate::justTranslate('Hypertension', app()->getLocale()) }}</label>
+                                                                        for="switchHypertensionRelative">{{ ucwords(GoogleTranslate::justTranslate('Hypertension', app()->getLocale())) }}</label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <select class="form-control selectpicker my-2" multiple
                                                                 id="txtHypertensionRelative"
-                                                                title="{{ GoogleTranslate::justTranslate('Hypertension Relatives', app()->getLocale()) }}"
+                                                                title="{{ ucwords(GoogleTranslate::justTranslate('Hypertension Relatives', app()->getLocale())) }}"
                                                                 disabled>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Mother', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Mother', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('Father', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Father', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Siblings', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Siblings', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="4">
-                                                                    {{ GoogleTranslate::justTranslate('Grandparents', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Grandparents', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             {{-- <div class="form-floating">
@@ -633,158 +701,158 @@
                                                                 id="txtHypertensionRelative"
                                                                 placeholder="Hypertension Relative" disabled>
                                                             <label
-                                                                for="txtHypertensionRelative">{{ GoogleTranslate::justTranslate('Hypertension Relative', app()->getLocale()) }}</label>
+                                                                for="txtHypertensionRelative">{{ ucwords(GoogleTranslate::justTranslate('Hypertension Relative', app()->getLocale())) }}</label>
                                                         </div> --}}
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
                                                         <div class="row">
-                                                            <div class="col-md-4">
+                                                            <div class="d-block">
                                                                 <div class="form-check form-switch">
                                                                     <input class="form-check-input" type="checkbox"
                                                                         id="switchHIV" onchange="disableField(this.id);">
                                                                     <label class="form-check-label"
-                                                                        for="switchHIV">{{ GoogleTranslate::justTranslate('HIV', app()->getLocale()) }}</label>
+                                                                        for="switchHIV">{{ ucwords(GoogleTranslate::justTranslate('Human immunodeficiency virus', app()->getLocale())) }}</label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <select class="form-control selectpicker my-2" multiple
                                                                 id="txtHIV"
-                                                                title="{{ GoogleTranslate::justTranslate('HIV Relatives', app()->getLocale()) }}"
+                                                                title="{{ ucwords(GoogleTranslate::justTranslate('Human immunodeficiency virus Relatives', app()->getLocale())) }}"
                                                                 disabled>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Mother', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Mother', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('Father', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Father', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Siblings', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Siblings', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="4">
-                                                                    {{ GoogleTranslate::justTranslate('Grandparents', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Grandparents', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             {{-- <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtHIV"
                                                                 placeholder="HIV" disabled>
                                                             <label
-                                                                for="txtHIV">{{ GoogleTranslate::justTranslate('HIV Relative', app()->getLocale()) }}</label>
+                                                                for="txtHIV">{{ ucwords(GoogleTranslate::justTranslate('HIV Relative', app()->getLocale())) }}</label>
                                                         </div> --}}
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
                                                         <div class="row">
-                                                            <div class="col-md-4">
+                                                            <div class="d-block">
                                                                 <div class="form-check form-switch">
                                                                     <input class="form-check-input" type="checkbox"
                                                                         id="switchCancer"
                                                                         onchange="disableField(this.id);">
                                                                     <label class="form-check-label"
-                                                                        for="switchCancer">{{ GoogleTranslate::justTranslate('Cancer', app()->getLocale()) }}</label>
+                                                                        for="switchCancer">{{ ucwords(GoogleTranslate::justTranslate('Cancer', app()->getLocale())) }}</label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <select class="form-control selectpicker my-2" multiple
                                                                 id="txtCancer"
-                                                                title="{{ GoogleTranslate::justTranslate('Diabetes Relatives', app()->getLocale()) }}"
+                                                                title="{{ ucwords(GoogleTranslate::justTranslate('Diabetes Relatives', app()->getLocale())) }}"
                                                                 disabled>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Mother', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Mother', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('Father', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Father', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Siblings', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Siblings', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="4">
-                                                                    {{ GoogleTranslate::justTranslate('Grandparents', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Grandparents', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             {{-- <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtCancer"
                                                                 placeholder="Cancer" disabled>
                                                             <label
-                                                                for="txtCancer">{{ GoogleTranslate::justTranslate('Cancer Relative', app()->getLocale()) }}</label>
+                                                                for="txtCancer">{{ ucwords(GoogleTranslate::justTranslate('Cancer Relative', app()->getLocale())) }}</label>
                                                         </div> --}}
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
                                                         <div class="row">
-                                                            <div class="col-md-4">
+                                                            <div class="d-block">
                                                                 <div class="form-check form-switch">
                                                                     <input class="form-check-input" type="checkbox"
                                                                         id="switchPsychiatric"
                                                                         onchange="disableField(this.id);">
                                                                     <label class="form-check-label"
-                                                                        for="switchPsychiatric">{{ GoogleTranslate::justTranslate('Psychiatric', app()->getLocale()) }}</label>
+                                                                        for="switchPsychiatric">{{ ucwords(GoogleTranslate::justTranslate('Psychiatric', app()->getLocale())) }}</label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <select class="form-control selectpicker my-2" multiple
                                                                 id="txtPsychiatric"
-                                                                title="{{ GoogleTranslate::justTranslate('Psychiatric Relatives', app()->getLocale()) }}"
+                                                                title="{{ ucwords(GoogleTranslate::justTranslate('Psychiatric Relatives', app()->getLocale())) }}"
                                                                 disabled>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Mother', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Mother', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('Father', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Father', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Siblings', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Siblings', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="4">
-                                                                    {{ GoogleTranslate::justTranslate('Grandparents', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Grandparents', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             {{-- <div class="form-floating">
                                                             <input type="text" class="form-control"
                                                                 id="txtPsychiatric" placeholder="Psychiatric" disabled>
                                                             <label
-                                                                for="txtPsychiatric">{{ GoogleTranslate::justTranslate('Psychiatric Relative', app()->getLocale()) }}</label>
+                                                                for="txtPsychiatric">{{ ucwords(GoogleTranslate::justTranslate('Psychiatric Relative', app()->getLocale())) }}</label>
                                                         </div> --}}
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
                                                         <div class="row">
-                                                            <div class="col-md-4">
+                                                            <div class="d-block">
                                                                 <div class="form-check form-switch">
                                                                     <input class="form-check-input" type="checkbox"
                                                                         id="switchTuberculosis"
                                                                         onchange="disableField(this.id);">
                                                                     <label class="form-check-label"
-                                                                        for="switchTuberculosis">{{ GoogleTranslate::justTranslate('Tuberculosis', app()->getLocale()) }}</label>
+                                                                        for="switchTuberculosis">{{ ucwords(GoogleTranslate::justTranslate('Tuberculosis', app()->getLocale())) }}</label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <select class="form-control selectpicker my-2" multiple
                                                                 id="txtTuberculosis"
-                                                                title="{{ GoogleTranslate::justTranslate('Tuberculosis Relatives', app()->getLocale()) }}"
+                                                                title="{{ ucwords(GoogleTranslate::justTranslate('Tuberculosis Relatives', app()->getLocale())) }}"
                                                                 disabled>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Mother', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Mother', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('Father', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Father', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Siblings', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Siblings', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="4">
-                                                                    {{ GoogleTranslate::justTranslate('Grandparents', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Grandparents', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             {{-- <div class="form-floating">
                                                             <input type="text" class="form-control"
                                                                 id="txtTuberculosis" placeholder="Tuberculosis" disabled>
                                                             <label
-                                                                for="txtTuberculosis">{{ GoogleTranslate::justTranslate('Tuberculosis Relative', app()->getLocale()) }}</label>
+                                                                for="txtTuberculosis">{{ ucwords(GoogleTranslate::justTranslate('Tuberculosis Relative', app()->getLocale())) }}</label>
                                                         </div> --}}
                                                         </div>
                                                     </div>
@@ -793,7 +861,7 @@
                                         </form>
                                         <input type="button" name="next" id="btnFirstStep"
                                             class="next action-button"
-                                            value="{{ GoogleTranslate::justTranslate('Next', app()->getLocale()) }}"
+                                            value="{{ ucwords(GoogleTranslate::justTranslate('Next', app()->getLocale())) }}"
                                             style="display: none;" />
                                     </fieldset>
                                     <fieldset>
@@ -802,138 +870,138 @@
                                                 <div class="row">
                                                     <div class="col-7">
                                                         <h2 class="fs-title">
-                                                            {{ GoogleTranslate::justTranslate('Non-pathological antecedents', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Non-pathological antecedents', app()->getLocale())) }}
                                                         </h2>
                                                     </div>
                                                     <div class="col-5">
                                                         <h2 class="steps">
-                                                            {{ GoogleTranslate::justTranslate('Step 2 of 3', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Step 2 of 3', app()->getLocale())) }}
                                                         </h2>
                                                     </div>
                                                     {{-- <div class="col-md-6 py-2">
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Dental Lavage', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Dental Lavage', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="form-floating">
                                                         <select class="form-select" id="txtDentalLavage" required>
                                                             <option selected disabled value="">
-                                                                {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                             </option>
                                                             <option value="1">
-                                                                {{ GoogleTranslate::justTranslate('After each meal', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('After each meal', app()->getLocale())) }}
                                                             </option>
                                                             <option value="2">
-                                                                {{ GoogleTranslate::justTranslate('3 times per day', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('3 times per day', app()->getLocale())) }}
                                                             </option>
                                                             <option value="3">
-                                                                {{ GoogleTranslate::justTranslate('2 times per day', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('2 times per day', app()->getLocale())) }}
                                                             </option>
                                                             <option value="4">
-                                                                {{ GoogleTranslate::justTranslate('1 times per day', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('1 times per day', app()->getLocale())) }}
                                                             </option>
                                                             <option value="5">
-                                                                {{ GoogleTranslate::justTranslate('Occasional per week', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Occasional per week', app()->getLocale())) }}
                                                             </option>
                                                             <option value="6">
-                                                                {{ GoogleTranslate::justTranslate('Not performed', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Not performed', app()->getLocale())) }}
                                                             </option>
                                                         </select>
                                                         <label
-                                                            for="txtDentalLavage">{{ GoogleTranslate::justTranslate('Dental Lavage', app()->getLocale()) }}</label>
+                                                            for="txtDentalLavage">{{ ucwords(GoogleTranslate::justTranslate('Dental Lavage', app()->getLocale())) }}</label>
                                                     </div>
                                                 </div> --}}
                                                     {{-- <div class="col-md-6 py-2">
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Shower', app()->getLocale()) }}</h6>
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Shower', app()->getLocale())) }}</h6>
                                                     <div class="form-floating">
                                                         <select class="form-select" id="txtShower" required>
                                                             <option selected disabled value="">
-                                                                {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                             </option>
                                                             <option value="1">
-                                                                {{ GoogleTranslate::justTranslate('Daily', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Daily', app()->getLocale())) }}
                                                             </option>
                                                             <option value="2">
-                                                                {{ GoogleTranslate::justTranslate('Every 2 or 3 days', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Every 2 or 3 days', app()->getLocale())) }}
                                                             </option>
                                                             <option value="3">
-                                                                {{ GoogleTranslate::justTranslate('1 time per week', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('1 time per week', app()->getLocale())) }}
                                                             </option>
                                                             <option value="4">
-                                                                {{ GoogleTranslate::justTranslate('Not performed', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Not performed', app()->getLocale())) }}
                                                             </option>
                                                         </select>
                                                         <label
-                                                            for="txtShower">{{ GoogleTranslate::justTranslate('Shower', app()->getLocale()) }}</label>
+                                                            for="txtShower">{{ ucwords(GoogleTranslate::justTranslate('Shower', app()->getLocale())) }}</label>
                                                     </div>
                                                 </div> --}}
                                                     <div class="col-md-6 py-2">
                                                         <h6 class="fw-bolder py-2 pt-3">
-                                                            {{ GoogleTranslate::justTranslate('Feeding', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Feeding', app()->getLocale())) }}
                                                         </h6>
                                                         <div class="form-floating">
                                                             <select class="form-select" id="txtFeeding" required>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Good in quality and quantity', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Good in quality and quantity', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('Fair in quality and quantity', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Fair in quality and quantity', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Poor in quality and quantity', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Poor in quality and quantity', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             <label
-                                                                for="txtFeeding">{{ GoogleTranslate::justTranslate('Feeding', app()->getLocale()) }}</label>
+                                                                for="txtFeeding">{{ ucwords(GoogleTranslate::justTranslate('Feeding', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
                                                         <h6 class="fw-bolder py-2 pt-3">
-                                                            {{ GoogleTranslate::justTranslate('Water consumption', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Water consumption', app()->getLocale())) }}
                                                         </h6>
                                                         <div class="form-floating">
                                                             <select class="form-select" id="txtWaterConsumption" required>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('More than 3 liters per day', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('More than 3 liters per day', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('From 2 to 3 liters per day', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('From 2 to 3 liters per day', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Less than 1 liter per day', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Less than 1 liter per day', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             <label
-                                                                for="txtWaterConsumption">{{ GoogleTranslate::justTranslate('Water consumption', app()->getLocale()) }}</label>
+                                                                for="txtWaterConsumption">{{ ucwords(GoogleTranslate::justTranslate('Water consumption', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
                                                         <h6 class="fw-bolder py-2 pt-3">
-                                                            {{ GoogleTranslate::justTranslate('Sleeping time', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Sleeping time', app()->getLocale())) }}
                                                         </h6>
                                                         <div class="form-floating py-2">
                                                             <select class="form-select" id="txtSleepingT" required>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('8 or more hours of sleep', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('8 or more hours of sleep', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('6 to 8 hours of sleep', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('6 to 8 hours of sleep', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Less than 6 hours of sleep', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Less than 6 hours of sleep', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             <label
-                                                                for="txtSleepingT">{{ GoogleTranslate::justTranslate('Sleeping time', app()->getLocale()) }}</label>
+                                                                for="txtSleepingT">{{ ucwords(GoogleTranslate::justTranslate('Sleeping time', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
@@ -949,100 +1017,100 @@
                                                             </div>
                                                         </div> --}}
                                                         <h6 class="fw-bolder py-2 pt-3">
-                                                            {{ GoogleTranslate::justTranslate('Pet', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Pet', app()->getLocale())) }}
                                                         </h6>
                                                         <select class="form-control selectpicker my-2" multiple
                                                             id="txtPet">
                                                             <option value="1">
-                                                                {{ GoogleTranslate::justTranslate('Dogs', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Dogs', app()->getLocale())) }}
                                                             </option>
                                                             <option value="2">
-                                                                {{ GoogleTranslate::justTranslate('Cats', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Cats', app()->getLocale())) }}
                                                             </option>
                                                             <option value="3">
-                                                                {{ GoogleTranslate::justTranslate('Birds', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Birds', app()->getLocale())) }}
                                                             </option>
                                                             <option value="4">
-                                                                {{ GoogleTranslate::justTranslate('Others', app()->getLocale()) }}
+                                                                {{ ucwords(GoogleTranslate::justTranslate('Others', app()->getLocale())) }}
                                                             </option>
                                                         </select>
                                                         {{-- <label
-                                                        for="txtPet">{{ GoogleTranslate::justTranslate('Sleeping time', app()->getLocale()) }}</label> --}}
+                                                        for="txtPet">{{ ucwords(GoogleTranslate::justTranslate('Sleeping time', app()->getLocale())) }}</label> --}}
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     {{-- <h6 class="fw-bolder py-2">
-                                                    {{ GoogleTranslate::justTranslate('Housing', app()->getLocale()) }}</h6>
+                                                    {{ ucwords(GoogleTranslate::justTranslate('Housing', app()->getLocale())) }}</h6>
                                                 <div class="col-md-4 pb-2">
                                                     <div class="form-floating">
                                                         <input type="text" class="form-control" id="txtMaterial"
-                                                            placeholder="{{ GoogleTranslate::justTranslate('Material', app()->getLocale()) }}"
+                                                            placeholder="{{ ucwords(GoogleTranslate::justTranslate('Material', app()->getLocale())) }}"
                                                             required>
                                                         <label
-                                                            for="txtMaterial">{{ GoogleTranslate::justTranslate('Material', app()->getLocale()) }}</label>
+                                                            for="txtMaterial">{{ ucwords(GoogleTranslate::justTranslate('Material', app()->getLocale())) }}</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4 pb-2">
                                                     <div class="form-floating">
                                                         <input type="text" class="form-control" id="txtRooms"
-                                                            placeholder="{{ GoogleTranslate::justTranslate('Rooms', app()->getLocale()) }}"
+                                                            placeholder="{{ ucwords(GoogleTranslate::justTranslate('Rooms', app()->getLocale())) }}"
                                                             required>
                                                         <label
-                                                            for="txtRooms">{{ GoogleTranslate::justTranslate('Rooms', app()->getLocale()) }}</label>
+                                                            for="txtRooms">{{ ucwords(GoogleTranslate::justTranslate('Rooms', app()->getLocale())) }}</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4 pb-2">
                                                     <div class="form-floating">
                                                         <input type="text" class="form-control" id="txtPeopleLivingIn"
-                                                            placeholder="{{ GoogleTranslate::justTranslate('PeopleLivingIn', app()->getLocale()) }}"
+                                                            placeholder="{{ ucwords(GoogleTranslate::justTranslate('PeopleLivingIn', app()->getLocale())) }}"
                                                             required>
                                                         <label
-                                                            for="txtPeopleLivingIn">{{ GoogleTranslate::justTranslate('People Living In', app()->getLocale()) }}</label>
+                                                            for="txtPeopleLivingIn">{{ ucwords(GoogleTranslate::justTranslate('People Living In', app()->getLocale())) }}</label>
                                                     </div>
                                                 </div>
                                                 <h6 class="fw-bolder py-2 pt-3">
-                                                    {{ GoogleTranslate::justTranslate('Services', app()->getLocale()) }}</h6>
+                                                    {{ ucwords(GoogleTranslate::justTranslate('Services', app()->getLocale())) }}</h6>
                                                 <div class="col-md-12">
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="checkbox" id="checkWater"
                                                             name="services" required>
                                                         <label class="form-check-label" for="checkWater">
-                                                            {{ GoogleTranslate::justTranslate('Water', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Water', app()->getLocale())) }}
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="checkbox"
                                                             id="checkElectricity" name="services" required>
                                                         <label class="form-check-label" for="checkElectricity">
-                                                            {{ GoogleTranslate::justTranslate('Electricity', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Electricity', app()->getLocale())) }}
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="checkbox"
                                                             id="checkDrainage" name="services" required>
                                                         <label class="form-check-label" for="checkDrainage">
-                                                            {{ GoogleTranslate::justTranslate('Drainage', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Drainage', app()->getLocale())) }}
                                                         </label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
                                                         <input class="form-check-input" type="checkbox" id="checkGas"
                                                             name="services" required>
                                                         <label class="form-check-label" for="checkGas">
-                                                            {{ GoogleTranslate::justTranslate('Gas', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Gas', app()->getLocale())) }}
                                                         </label>
                                                     </div>
                                                 </div> --}}
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Alcholism', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Alcholism', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkAlcoholism" name="radioAlc"
                                                                     onclick="enableFieldsAlch(this.id);">
                                                                 <label class="form-check-label" for="checkAlcoholism">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1050,7 +1118,7 @@
                                                                     id="checkAlcoholismF" name="radioAlc" checked
                                                                     onclick="disableFieldsAlch(this.id);">
                                                                 <label class="form-check-label" for="checkAlcoholismF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1059,20 +1127,20 @@
                                                         <div class="form-floating">
                                                             <select class="form-select" id="txtAlcoholism" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('1 drink', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('1 drink', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('2 drinks', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('2 drinks', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('More than 3 drinks', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('More than 3 drinks', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             <label
-                                                                for="txtAlcoholism">{{ GoogleTranslate::justTranslate('Quantity', app()->getLocale()) }}</label>
+                                                                for="txtAlcoholism">{{ ucwords(GoogleTranslate::justTranslate('Quantity', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
@@ -1080,36 +1148,36 @@
                                                             <select class="form-select" id="selectAlcoholism" required
                                                                 disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Daily', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Daily', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('Weekly', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Weekly', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Biweekly', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Biweekly', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="4">
-                                                                    {{ GoogleTranslate::justTranslate('Occassional', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Occassional', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             <label
-                                                                for="selectAlcoholism">{{ GoogleTranslate::justTranslate('Frecuency', app()->getLocale()) }}</label>
+                                                                for="selectAlcoholism">{{ ucwords(GoogleTranslate::justTranslate('Frecuency', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Smoking', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Smoking', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkSmoking" name="radioSmk"
                                                                     onclick="enableFieldsSmok(this.id);">
                                                                 <label class="form-check-label" for="checkSmoking">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1117,7 +1185,7 @@
                                                                     id="checkSmokingF" name="radioSmk" checked
                                                                     onclick="disableFieldsSmok(this.id);">
                                                                 <label class="form-check-label" for="checkSmokingF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1126,20 +1194,20 @@
                                                         <div class="form-floating">
                                                             <select class="form-select" id="txtSmoking" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('1 cigarrette', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('1 cigarrette', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('2 to 4 cigarettes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('2 to 4 cigarettes', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('More than 5 cigarrettes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('More than 5 cigarrettes', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             <label
-                                                                for="txtSmoking">{{ GoogleTranslate::justTranslate('Quantity', app()->getLocale()) }}</label>
+                                                                for="txtSmoking">{{ ucwords(GoogleTranslate::justTranslate('Quantity', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
@@ -1147,33 +1215,36 @@
                                                             <select class="form-select" id="selectSmoking" required
                                                                 disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('8 or more hours of sleep', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Daily', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('6 to 8 hours of sleep', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Weekly', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Less than 6 hours of sleep', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Biweekly', app()->getLocale())) }}
+                                                                </option>
+                                                                <option value="4">
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Occassional', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             <label
-                                                                for="selectAlcoholism">{{ GoogleTranslate::justTranslate('Frecuency', app()->getLocale()) }}</label>
+                                                                for="selectAlcoholism">{{ ucwords(GoogleTranslate::justTranslate('Frecuency', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Drug adict', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Drug adict', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkDrugAd" name="radioDrugAd"
                                                                     onclick="enableFieldsDrugAd(this.id);">
                                                                 <label class="form-check-label" for="checkDrugAd">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1181,7 +1252,7 @@
                                                                     id="checkDrugAdF" name="radioDrugAd" checked
                                                                     onclick="disableFieldsDrugAd(this.id);">
                                                                 <label class="form-check-label" for="checkDrugAdF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1190,26 +1261,26 @@
                                                         <div class="form-floating">
                                                             <select class="form-select" id="txtDrugAd" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Marijuana', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Marijuana', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('Cocaine', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Cocaine', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Methamphetamines', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Methamphetamines', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="4">
-                                                                    {{ GoogleTranslate::justTranslate('Opiates', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Opiates', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="5">
-                                                                    {{ GoogleTranslate::justTranslate('Other', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Other', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             <label
-                                                                for="txtDrugAd">{{ GoogleTranslate::justTranslate('Drug', app()->getLocale()) }}</label>
+                                                                for="txtDrugAd">{{ ucwords(GoogleTranslate::justTranslate('Drug', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
@@ -1217,36 +1288,36 @@
                                                             <select class="form-select" id="selectDrugAd" required
                                                                 disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Today', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Today', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="2">
-                                                                    {{ GoogleTranslate::justTranslate('Less than 1 month', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Less than 1 month', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Less than 6 months', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Less than 6 months', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="3">
-                                                                    {{ GoogleTranslate::justTranslate('Greater than 6 months', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Greater than 6 months', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             <label
-                                                                for="selectDrugAd">{{ GoogleTranslate::justTranslate('Last Consume', app()->getLocale()) }}</label>
+                                                                for="selectDrugAd">{{ ucwords(GoogleTranslate::justTranslate('Last Consume', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Immunizations', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Immunizations', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkImmunizations" name="radioImm"
                                                                     onclick="disableFieldImm();" checked>
                                                                 <label class="form-check-label" for="checkImmunizations">
-                                                                    {{ GoogleTranslate::justTranslate('Complete', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Complete', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1254,7 +1325,7 @@
                                                                     id="checkImmunizationsI" name="radioImm"
                                                                     onclick="enableFieldImm();">
                                                                 <label class="form-check-label" for="checkImmunizationsI">
-                                                                    {{ GoogleTranslate::justTranslate('Incomplete', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Incomplete', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1263,24 +1334,24 @@
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control"
                                                                 id="txtImmunizations"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Missing immunization', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Missing immunization', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtImmunizations">{{ GoogleTranslate::justTranslate('Missing immunization', app()->getLocale()) }}</label>
+                                                                for="txtImmunizations">{{ ucwords(GoogleTranslate::justTranslate('Missing immunization', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Covid immunization', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Covid immunization', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkImmunizationsCV" name="radioImmCV"
                                                                     onclick="disableFieldImmCV();" checked>
                                                                 <label class="form-check-label"
                                                                     for="checkImmunizationsCV">
-                                                                    {{ GoogleTranslate::justTranslate('Complete', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Complete', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1289,7 +1360,7 @@
                                                                     onclick="enableFieldImmCV();">
                                                                 <label class="form-check-label"
                                                                     for="checkImmunizationsICV">
-                                                                    {{ GoogleTranslate::justTranslate('Incomplete', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Incomplete', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1298,10 +1369,10 @@
                                                         <div class="form-floating">
                                                             <input type="number" class="form-control"
                                                                 id="txtImmunizationsCV" min="1" max="6"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Number of missing immunizations', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Number of missing immunizations', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtImmunizationsCV">{{ GoogleTranslate::justTranslate('Number of missing immunizations', app()->getLocale()) }}</label>
+                                                                for="txtImmunizationsCV">{{ ucwords(GoogleTranslate::justTranslate('Number of missing immunizations', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1309,10 +1380,10 @@
                                         </form>
                                         <input type="button" name="next" id="btnSecondStep"
                                             class="next action-button"
-                                            value="{{ GoogleTranslate::justTranslate('Next', app()->getLocale()) }}"
+                                            value="{{ ucwords(GoogleTranslate::justTranslate('Next', app()->getLocale())) }}"
                                             id="btnSecondStep" />
                                         <input type="button" name="previous" class="previous action-button-previous"
-                                            value="{{ GoogleTranslate::justTranslate('Previous', app()->getLocale()) }}" />
+                                            value="{{ ucwords(GoogleTranslate::justTranslate('Previous', app()->getLocale())) }}" />
                                     </fieldset>
                                     <fieldset>
                                         <form class="validationPersonalPathHis" id="formPersonalPathHis" novalidate>
@@ -1320,66 +1391,94 @@
                                                 <div class="row">
                                                     <div class="col-7">
                                                         <h2 class="fs-title">
-                                                            {{ GoogleTranslate::justTranslate('Personal pathological history', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Personal pathological history', app()->getLocale())) }}
                                                         </h2>
                                                     </div>
                                                     <div class="col-5">
                                                         <h2 class="steps">
-                                                            {{ GoogleTranslate::justTranslate('Step 3 of 3', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Step 3 of 3', app()->getLocale())) }}
                                                         </h2>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Allergy sufferers', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Allergy sufferers', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
-                                                                    id="checkAllergyPPH" name="radioAllergy"
-                                                                    onclick="enableFieldsAllergySF(this.id);">
+                                                                    id="checkAllergyPPH" name="radioAllergy">
                                                                 <label class="form-check-label" for="checkAllergyPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
-                                                                    id="checkAllergyPPHF" name="radioAllergy" checked
-                                                                    onclick="disableFieldsAllergySF(this.id);">
+                                                                    id="checkAllergyPPHF" name="radioAllergy" checked>
                                                                 <label class="form-check-label" for="checkAllergyPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 py-2">
+                                                    <div class="repeater">
+                                                        <div data-repeater-list="listAllergyPPH">
+                                                            <div data-repeater-item class="divListAllergyPPH">
+                                                                <div data-repeater-list="inner-list" class="row">
+                                                                    <div class="col-md-11 py-2">
+                                                                        <div class="form-floating">
+                                                                            <input type="text"
+                                                                                class="form-control allergyGroup"
+                                                                                id="txtAllergyPPH"
+                                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Allergy', app()->getLocale())) }}"
+                                                                                disabled name="allergy">
+                                                                            <label
+                                                                                for="txtAllergyPPH">{{ ucwords(GoogleTranslate::justTranslate('Allergy', app()->getLocale())) }}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1 py-2">
+                                                                        <button name="dButton" data-repeater-delete
+                                                                            type="button"
+                                                                            class="btn btn-danger h-100 w-100 btn-circle"
+                                                                            data-bs-toggle="tooltip"
+                                                                            aria-label="{{ ucwords(GoogleTranslate::justTranslate('Remove allergy', app()->getLocale())) }}"><i
+                                                                                class="fa-regular fa-trash-can"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <button id="btnAllergyPPH" data-repeater-create type="button"
+                                                            class="btn btn-primary rounded-pill">{{ ucwords(GoogleTranslate::justTranslate('Add allergy', app()->getLocale())) }}&nbsp;&nbsp;<i
+                                                                class="fa-solid fa-plus"></i></button>
+                                                    </div>
+                                                    {{-- <div class="col-md-6 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtAllergyPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Medications', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Medications', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtAllergy">{{ GoogleTranslate::justTranslate('Medications', app()->getLocale()) }}</label>
+                                                                for="txtAllergy">{{ ucwords(GoogleTranslate::justTranslate('Medications', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="txAllergyPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Food', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Food', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txAllergy">{{ GoogleTranslate::justTranslate('Food', app()->getLocale()) }}</label>
+                                                                for="txAllergy">{{ ucwords(GoogleTranslate::justTranslate('Food', app()->getLocale())) }}</label>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Diabetes', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Diabetes', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkDiabetesPPH" name="radioDiab"
                                                                     onclick="enableFieldsDiabetes(this.id);">
                                                                 <label class="form-check-label" for="checkDiabetes">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1387,7 +1486,7 @@
                                                                     id="checkDiabetesPPHF" name="radioDiab" checked
                                                                     onclick="disableFieldsDiabetes(this.id);">
                                                                 <label class="form-check-label" for="checkDiabetesPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1395,10 +1494,10 @@
                                                     <div class="col-md-4 py-2">
                                                         <div class="form-floating">
                                                             <select class="form-select" id="selectDiabetesPPH" required
-                                                                aria-label="{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}"
+                                                                aria-label="{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}"
                                                                 data-live-search="true" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 @foreach ($years as $year)
                                                                     <option value="{{ $year }}">
@@ -1407,30 +1506,30 @@
                                                                 @endforeach
                                                             </select>
                                                             <label
-                                                                for="selectDiabetesPPH">{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}</label>
+                                                                for="selectDiabetesPPH">{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control"
                                                                 id="txtDiabetesPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtDiabetesPPH">{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}</label>
+                                                                for="txtDiabetesPPH">{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Hypertension', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Hypertension', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkHyperPPH" name="radioHyp"
                                                                     onclick="enableFieldsHyper(this.id);">
                                                                 <label class="form-check-label" for="checkHyperPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1438,7 +1537,7 @@
                                                                     id="checkHyperPPHF" name="radioHyp" checked
                                                                     onclick="disableFieldsHyper(this.id);">
                                                                 <label class="form-check-label" for="checkHyperPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1446,10 +1545,10 @@
                                                     <div class="col-md-4 py-2">
                                                         <div class="form-floating">
                                                             <select class="form-select" id="selectHyperPPH" required
-                                                                aria-label="{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}"
+                                                                aria-label="{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}"
                                                                 data-live-search="true" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 @foreach ($years as $year)
                                                                     <option value="{{ $year }}">
@@ -1458,112 +1557,153 @@
                                                                 @endforeach
                                                             </select>
                                                             <label
-                                                                for="selectHyperPPH">{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}</label>
+                                                                for="selectHyperPPH">{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtHyperPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtHyperPPH">{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}</label>
+                                                                for="txtHyperPPH">{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Surgeries', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Surgeries', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
-                                                                    id="checkSurgerPPH" name="radioSur"
-                                                                    onclick="enableFieldsSurg(this.id);">
+                                                                    id="checkSurgerPPH" name="radioSur">
                                                                 <label class="form-check-label" for="checkSurgerPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
-                                                                    id="checkSurgerPPHF" name="radioSur" checked
-                                                                    onclick="disableFieldsSurg(this.id);">
+                                                                    id="checkSurgerPPHF" name="radioSur" checked>
                                                                 <label class="form-check-label" for="checkSurgerPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 py-2">
-                                                        <div class="form-floating">
-                                                            <input type="text" class="form-control" id="txtSurgerPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Motive', app()->getLocale()) }}"
-                                                                disabled>
-                                                            <label
-                                                                for="txtSurgerPPH">{{ GoogleTranslate::justTranslate('Motive', app()->getLocale()) }}</label>
+                                                    <div class="repeater">
+                                                        <div data-repeater-list="listSurgerPPH">
+                                                            <div data-repeater-item class="divListSurgerPPH">
+                                                                <div data-repeater-list="inner-list" class="row">
+                                                                    <div class="col-md-6 py-2">
+                                                                        <div class="form-floating">
+                                                                            <input type="text"
+                                                                                class="form-control surgerGroup"
+                                                                                id="txtSurgerPPH"
+                                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Motive', app()->getLocale())) }}"
+                                                                                disabled name="motive">
+                                                                            <label
+                                                                                for="txtSurgerPPH">{{ ucwords(GoogleTranslate::justTranslate('Motive', app()->getLocale())) }}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-5 py-2">
+                                                                        <div class="form-floating">
+                                                                            <input type="text"
+                                                                                class="form-control surgerGroup"
+                                                                                id="txSurgerPPH"
+                                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Antiquity', app()->getLocale())) }}"
+                                                                                disabled name="antiquity">
+                                                                            <label
+                                                                                for="txSurgerPPH">{{ ucwords(GoogleTranslate::justTranslate('Antiquity', app()->getLocale())) }}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1 py-2">
+                                                                        <button name="dButton" data-repeater-delete
+                                                                            type="button"
+                                                                            class="btn btn-danger h-100 w-100 btn-circle"
+                                                                            data-bs-toggle="tooltip"
+                                                                            aria-label="{{ ucwords(GoogleTranslate::justTranslate('Remove surgery', app()->getLocale())) }}"><i
+                                                                                class="fa-regular fa-trash-can"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-6 py-2">
-                                                        <div class="form-floating">
-                                                            <input type="text" class="form-control" id="txSurgerPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Antiquity', app()->getLocale()) }}"
-                                                                disabled>
-                                                            <label
-                                                                for="txSurgerPPH">{{ GoogleTranslate::justTranslate('Antiquity', app()->getLocale()) }}</label>
-                                                        </div>
+                                                        <button id="btnSurgerPPH" data-repeater-create type="button"
+                                                            class="btn btn-primary rounded-pill">{{ ucwords(GoogleTranslate::justTranslate('Add surgery', app()->getLocale())) }}&nbsp;&nbsp;<i
+                                                                class="fa-solid fa-plus"></i></button>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Fractures', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Fractures', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
-                                                                    id="checkFracturePPH" name="radioFractures"
-                                                                    onclick="enableFieldsFractures(this.id);">
+                                                                    id="checkFracturePPH" name="radioFractures">
                                                                 <label class="form-check-label" for="checkFracturePPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
-                                                                    id="checkFracturePPHF" name="radioFractures" checked
-                                                                    onclick="disableFieldsFractures(this.id);">
+                                                                    id="checkFracturePPHF" name="radioFractures" checked>
                                                                 <label class="form-check-label" for="checkFracturePPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 py-2">
-                                                        <div class="form-floating">
-                                                            <input type="text" class="form-control"
-                                                                id="txtFracturePPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Motive', app()->getLocale()) }}"
-                                                                disabled>
-                                                            <label
-                                                                for="txtFracturePPH">{{ GoogleTranslate::justTranslate('Motive', app()->getLocale()) }}</label>
+                                                    <div class="repeater">
+                                                        <div data-repeater-list="listFracturePPH">
+                                                            <div data-repeater-item class="divListFracturePPH">
+                                                                <div data-repeater-list="inner-list" class="row">
+                                                                    <div class="col-md-6 py-2">
+                                                                        <div class="form-floating">
+                                                                            <input type="text"
+                                                                                class="form-control fractureGroup"
+                                                                                id="txtFracturePPH"
+                                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Motive', app()->getLocale())) }}"
+                                                                                disabled name="motive">
+                                                                            <label
+                                                                                for="txtFracturePPH">{{ ucwords(GoogleTranslate::justTranslate('Motive', app()->getLocale())) }}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-5 py-2">
+                                                                        <div class="form-floating">
+                                                                            <input type="text"
+                                                                                class="form-control fractureGroup"
+                                                                                id="txFracturePPH"
+                                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Antiquity', app()->getLocale())) }}"
+                                                                                disabled name="antiquity">
+                                                                            <label
+                                                                                for="txFracturePPH">{{ ucwords(GoogleTranslate::justTranslate('Antiquity', app()->getLocale())) }}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1 py-2">
+                                                                        <button name="dButton" data-repeater-delete
+                                                                            type="button"
+                                                                            class="btn btn-danger h-100 w-100 btn-circle"
+                                                                            data-bs-toggle="tooltip"
+                                                                            aria-label="{{ ucwords(GoogleTranslate::justTranslate('Remove fracture', app()->getLocale())) }}"><i
+                                                                                class="fa-regular fa-trash-can"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-6 py-2">
-                                                        <div class="form-floating">
-                                                            <input type="text" class="form-control" id="txFracturePPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Antiquity', app()->getLocale()) }}"
-                                                                disabled>
-                                                            <label
-                                                                for="txFracturePPH">{{ GoogleTranslate::justTranslate('Antiquity', app()->getLocale()) }}</label>
-                                                        </div>
+                                                        <button id="btnFracturePPH" data-repeater-create type="button"
+                                                            class="btn btn-primary rounded-pill">{{ ucwords(GoogleTranslate::justTranslate('Add fracture', app()->getLocale())) }}&nbsp;&nbsp;<i
+                                                                class="fa-solid fa-plus"></i></button>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Seizures', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Seizures', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkSeizPPH" name="radioSeiz"
                                                                     onclick="enableFieldsSeizures(this.id);">
                                                                 <label class="form-check-label" for="checkSeizPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1571,7 +1711,7 @@
                                                                     id="checkSeizPPHF" name="radioSeiz" checked
                                                                     onclick="disableFieldsSeizures(this.id);">
                                                                 <label class="form-check-label" for="checkSeizPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1579,10 +1719,10 @@
                                                     <div class="col-md-4 py-2">
                                                         <div class="form-floating">
                                                             <select class="form-select" id="selectSeizPPH" required
-                                                                aria-label="{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}"
+                                                                aria-label="{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}"
                                                                 data-live-search="true" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 @foreach ($years as $year)
                                                                     <option value="{{ $year }}">
@@ -1591,29 +1731,29 @@
                                                                 @endforeach
                                                             </select>
                                                             <label
-                                                                for="selectSeizPPH">{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}</label>
+                                                                for="selectSeizPPH">{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtSeizPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtSeizPPH">{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}</label>
+                                                                for="txtSeizPPH">{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Pulmonary diseases', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Pulmonary diseases', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkPulmonPPH" name="radioPulmon"
                                                                     onclick="enableFieldsPulmonary(this.id);">
                                                                 <label class="form-check-label" for="checkPulmonaryPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1621,7 +1761,7 @@
                                                                     id="checkPulmonPPHF" name="radioPulmon" checked
                                                                     onclick="disableFieldsPulmonary(this.id);">
                                                                 <label class="form-check-label" for="checkPulmonaryPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1629,10 +1769,10 @@
                                                     <div class="col-md-4 py-2">
                                                         <div class="form-floating">
                                                             <select class="form-select" id="selectPulmonPPH" required
-                                                                aria-label="{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}"
+                                                                aria-label="{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}"
                                                                 data-live-search="true" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 @foreach ($years as $year)
                                                                     <option value="{{ $year }}">
@@ -1641,29 +1781,29 @@
                                                                 @endforeach
                                                             </select>
                                                             <label
-                                                                for="selectPulmonPPH">{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}</label>
+                                                                for="selectPulmonPPH">{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtPulmonPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtPulmonPPH">{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}</label>
+                                                                for="txtPulmonPPH">{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Cardiacal diseases', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Cardiacal diseases', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkCardPPH" name="radioCardiacal"
                                                                     onclick="enableFieldsCardiacal(this.id);">
                                                                 <label class="form-check-label" for="checkCardPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1671,7 +1811,7 @@
                                                                     id="checkCardPPHF" name="radioCardiacal" checked
                                                                     onclick="disableFieldsCardiacal(this.id);">
                                                                 <label class="form-check-label" for="checkCardPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1679,10 +1819,10 @@
                                                     <div class="col-md-4 py-2">
                                                         <div class="form-floating">
                                                             <select class="form-select" id="selectCardPPH" required
-                                                                aria-label="{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}"
+                                                                aria-label="{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}"
                                                                 data-live-search="true" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 @foreach ($years as $year)
                                                                     <option value="{{ $year }}">
@@ -1691,29 +1831,29 @@
                                                                 @endforeach
                                                             </select>
                                                             <label
-                                                                for="selectCardPPH">{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}</label>
+                                                                for="selectCardPPH">{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtCardPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtCardPPH">{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}</label>
+                                                                for="txtCardPPH">{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Kidney diseases', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Kidney diseases', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkKidneyPPH" name="radioKidney"
                                                                     onclick="enableFieldsKidney(this.id);">
                                                                 <label class="form-check-label" for="checkKidneyPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1721,7 +1861,7 @@
                                                                     id="checkKidneyPPHF" name="radioKidney" checked
                                                                     onclick="disableFieldsKidney(this.id);">
                                                                 <label class="form-check-label" for="checkKidneyPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1729,10 +1869,10 @@
                                                     <div class="col-md-4 py-2">
                                                         <div class="form-floating">
                                                             <select class="form-select" id="selectKidneyPPH" required
-                                                                aria-label="{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}"
+                                                                aria-label="{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}"
                                                                 data-live-search="true" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 @foreach ($years as $year)
                                                                     <option value="{{ $year }}">
@@ -1741,29 +1881,29 @@
                                                                 @endforeach
                                                             </select>
                                                             <label
-                                                                for="selectKidneyPPH">{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}</label>
+                                                                for="selectKidneyPPH">{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtKidneyPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtKidneyPPH">{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}</label>
+                                                                for="txtKidneyPPH">{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Psychiatric diseases', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Psychiatric diseases', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkPsychPPH" name="radioPsych"
                                                                     onclick="enableFieldsPsych(this.id);">
                                                                 <label class="form-check-label" for="checkPsychPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1771,7 +1911,7 @@
                                                                     id="checkPsychPPHF" name="radioPsych" checked
                                                                     onclick="disableFieldsPsych(this.id);">
                                                                 <label class="form-check-label" for="checkPsychPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1779,10 +1919,10 @@
                                                     <div class="col-md-4 py-2">
                                                         <div class="form-floating">
                                                             <select class="form-select" id="selectPsychPPH" required
-                                                                aria-label="{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}"
+                                                                aria-label="{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}"
                                                                 data-live-search="true" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 @foreach ($years as $year)
                                                                     <option value="{{ $year }}">
@@ -1791,29 +1931,29 @@
                                                                 @endforeach
                                                             </select>
                                                             <label
-                                                                for="selectPsychPPH">{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}</label>
+                                                                for="selectPsychPPH">{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtPsychPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtPsychPPH">{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}</label>
+                                                                for="txtPsychPPH">{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Transfusions', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Transfusions', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkTransPPH" name="radioTrans"
                                                                     onclick="enableFieldsTrans(this.id);">
                                                                 <label class="form-check-label" for="checkTransPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1821,7 +1961,7 @@
                                                                     id="checkTransPPHF" name="radioTrans" checked
                                                                     onclick="disableFieldsTrans(this.id);">
                                                                 <label class="form-check-label" for="checkTransPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1829,42 +1969,42 @@
                                                     <div class="col-md-4 py-2">
                                                         <div class="form-floating">
                                                             <select class="form-select" id="selectTransPPH" required
-                                                                aria-label="{{ GoogleTranslate::justTranslate('Post-transfusion reactions', app()->getLocale()) }}"
+                                                                aria-label="{{ ucwords(GoogleTranslate::justTranslate('Post-transfusion reactions', app()->getLocale())) }}"
                                                                 data-live-search="true" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="1">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </option>
                                                                 <option value="0">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </option>
                                                             </select>
                                                             <label
-                                                                for="selectTransPPH">{{ GoogleTranslate::justTranslate('Post-transfusion reactions', app()->getLocale()) }}</label>
+                                                                for="selectTransPPH">{{ ucwords(GoogleTranslate::justTranslate('Post-transfusion reactions', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtTransPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Antiquity', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Antiquity', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtTransPPH">{{ GoogleTranslate::justTranslate('Antiquity', app()->getLocale()) }}</label>
+                                                                for="txtTransPPH">{{ ucwords(GoogleTranslate::justTranslate('Antiquity', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Hematic diseases', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Hematic diseases', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkHematPPH" name="radioHemat"
                                                                     onclick="enableFieldsHematic(this.id);">
                                                                 <label class="form-check-label" for="checkHematPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1872,7 +2012,7 @@
                                                                     id="checkHematPPHF" name="radioHemat" checked
                                                                     onclick="disableFieldsHematic(this.id);">
                                                                 <label class="form-check-label" for="checkHematPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1880,10 +2020,10 @@
                                                     <div class="col-md-4 py-2">
                                                         <div class="form-floating">
                                                             <select class="form-select" id="selectHematPPH" required
-                                                                aria-label="{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}"
+                                                                aria-label="{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}"
                                                                 data-live-search="true" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 @foreach ($years as $year)
                                                                     <option value="{{ $year }}">
@@ -1892,29 +2032,29 @@
                                                                 @endforeach
                                                             </select>
                                                             <label
-                                                                for="selectHematPPH">{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}</label>
+                                                                for="selectHematPPH">{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 py-2">
                                                         <div class="form-floating">
                                                             <input type="text" class="form-control" id="txtHematPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtHematPPH">{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}</label>
+                                                                for="txtHematPPH">{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <h6 class="fw-bolder py-2 pt-3">
-                                                        {{ GoogleTranslate::justTranslate('Rheumatic diseases', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Rheumatic diseases', app()->getLocale())) }}
                                                     </h6>
                                                     <div class="row d-block">
-                                                        <div class="col-md-4">
+                                                        <div class="d-block">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio"
                                                                     id="checkRheumPPH" name="radioRheum"
                                                                     onclick="enableFieldsRheum(this.id);">
                                                                 <label class="form-check-label" for="checkRheumPPH">
-                                                                    {{ GoogleTranslate::justTranslate('Yes', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Yes', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                             <div class="form-check form-check-inline">
@@ -1922,7 +2062,7 @@
                                                                     id="checkRheumPPHF" name="radioRheum" checked
                                                                     onclick="disableFieldsRheum(this.id);">
                                                                 <label class="form-check-label" for="checkRheumPPHF">
-                                                                    {{ GoogleTranslate::justTranslate('No', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('No', app()->getLocale())) }}
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -1930,10 +2070,10 @@
                                                     <div class="col-md-4 py-2">
                                                         <div class="form-floating">
                                                             <select class="form-select" id="selectRheumPPH" required
-                                                                aria-label="{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}"
+                                                                aria-label="{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}"
                                                                 data-live-search="true" disabled>
                                                                 <option selected disabled value="">
-                                                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                                 </option>
                                                                 @foreach ($years as $year)
                                                                     <option value="{{ $year }}">
@@ -1942,16 +2082,17 @@
                                                                 @endforeach
                                                             </select>
                                                             <label
-                                                                for="selectRheumPPH">{{ GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale()) }}</label>
+                                                                for="selectRheumPPH">{{ ucwords(GoogleTranslate::justTranslate('Diagnosis year', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-8 py-2">
                                                         <div class="form-floating">
-                                                            <input type="text" class="form-control" id="txtRheumPPH"
-                                                                placeholder="{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}"
+                                                            <input type="text" class="form-control"
+                                                                id="txtRheumPPH"
+                                                                placeholder="{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}"
                                                                 disabled>
                                                             <label
-                                                                for="txtRheumPPH">{{ GoogleTranslate::justTranslate('Current treatment', app()->getLocale()) }}</label>
+                                                                for="txtRheumPPH">{{ ucwords(GoogleTranslate::justTranslate('Current treatment', app()->getLocale())) }}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1967,11 +2108,22 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary rounded-pill"
-                        data-bs-dismiss="modal">{{ GoogleTranslate::justTranslate('Close window', app()->getLocale()) }}</button>
+                        data-bs-dismiss="modal">{{ ucwords(GoogleTranslate::justTranslate('Close window', app()->getLocale())) }}</button>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.repeater/1.2.1/jquery.repeater.js"
+        integrity="sha512-bZAXvpVfp1+9AUHQzekEZaXclsgSlAeEnMJ6LfFAvjqYUVZfcuVXeQoN5LhD7Uw0Jy4NCY9q3kbdEXbwhZUmUQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        (() => {
+            $('.repeater').repeater({
+                isFirstItemUndeletable: true,
+            });
+        })();
+    </script>
+    <script src="{{ asset('js/clinical.js') }}"></script>
 @endsection

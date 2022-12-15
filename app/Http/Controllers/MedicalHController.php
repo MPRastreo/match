@@ -45,14 +45,14 @@ class MedicalHController extends Controller
             $relative->clinical_history = $request->clinical_history;
             $relative->save();
 
-            return response()->json(["result" => GoogleTranslate::justTranslate('Clinical Historie succesfully saved', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Success!', app()->getLocale())], 200);
+            return response()->json(["result" => ucwords(GoogleTranslate::justTranslate('Clinical Historie succesfully saved', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Success!', app()->getLocale()))], 200);
         }
         catch (Exception $ex)
         {
             return response()->json(["error" => $ex->getMessage(),
-                                     "text" => GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Error!', app()->getLocale())], 500);
+                                     "text" => ucwords(GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Error!', app()->getLocale()))], 500);
         }
     }
 
@@ -66,8 +66,8 @@ class MedicalHController extends Controller
         catch (Exception $ex)
         {
             return response()->json(["error" => $ex->getMessage(),
-                                     "text" => GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Error!', app()->getLocale())], 500);
+                                     "text" => ucwords(GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Error!', app()->getLocale()))], 500);
         }
     }
 }

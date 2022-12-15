@@ -53,14 +53,14 @@ class UserController extends Controller
             }
             $user->save();
 
-            return response()->json(["result" => GoogleTranslate::justTranslate('User succesfully modified', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Success!', app()->getLocale())], 200);
+            return response()->json(["result" => ucwords(GoogleTranslate::justTranslate('User succesfully modified', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Success!', app()->getLocale()))], 200);
         }
         catch (Exception $ex)
         {
             return response()->json(["error" => $ex->getMessage(),
-                                     "text" => GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Error!', app()->getLocale())], 500);
+                                     "text" => ucwords(GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Error!', app()->getLocale()))], 500);
         }
     }
 
@@ -84,14 +84,14 @@ class UserController extends Controller
             $user->created_by = auth()->user()->_id;
             $user->save();
 
-            return response()->json(["result" => GoogleTranslate::justTranslate('User succesfully added', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Success!', app()->getLocale())], 200);
+            return response()->json(["result" => ucwords(GoogleTranslate::justTranslate('User succesfully added', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Success!', app()->getLocale()))], 200);
         }
         catch (Exception $ex)
         {
             return response()->json(["error" => $ex->getMessage(),
-                                     "text" => GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Error!', app()->getLocale())], 500);
+                                     "text" => ucwords(GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Error!', app()->getLocale()))], 500);
         }
     }
 
@@ -101,17 +101,18 @@ class UserController extends Controller
         {
             if(strcmp($id, auth()->user()->_id) == 0)
             {
-                return response()->json(["warning" => GoogleTranslate::justTranslate('You can not delete yourself', app()->getLocale()), "title" => GoogleTranslate::justTranslate('¡Attention!', app()->getLocale())], 200);
+                return response()->json(["warning" => ucwords(GoogleTranslate::justTranslate('You can not delete yourself', app()->getLocale())),
+                                        "title" => ucwords(GoogleTranslate::justTranslate('¡Attention!', app()->getLocale()))], 200);
             }
             Users::find($id)->delete();
-            return response()->json(["result" => GoogleTranslate::justTranslate('User succesfully deleted', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Success!', app()->getLocale())], 200);
+            return response()->json(["result" => ucwords(GoogleTranslate::justTranslate('User succesfully deleted', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Success!', app()->getLocale()))], 200);
         }
         catch (Exception $ex)
         {
             return response()->json(["error" => $ex->getMessage(),
-                                     "text" => GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Error!', app()->getLocale())], 500);
+                                     "text" => ucwords(GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Error!', app()->getLocale()))], 500);
         }
     }
 
@@ -125,8 +126,8 @@ class UserController extends Controller
         catch (Exception $ex)
         {
             return response()->json(["error" => $ex->getMessage(),
-                                     "text" => GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Error!', app()->getLocale())], 500);
+                                     "text" => ucwords(GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Error!', app()->getLocale()))], 500);
         }
     }
 
@@ -138,14 +139,14 @@ class UserController extends Controller
             [
                 "personal_data" => $request->all(),
             ]);
-            return response()->json(["result" => GoogleTranslate::justTranslate('Data succesfully modified', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Success!', app()->getLocale())], 200);
+            return response()->json(["result" => ucwords(GoogleTranslate::justTranslate('Data succesfully modified', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Success!', app()->getLocale()))], 200);
         }
         catch (Exception $ex)
         {
             return response()->json(["error" => $ex->getMessage(),
-                                     "text" => GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale()),
-                                     "title" => GoogleTranslate::justTranslate('¡Error!', app()->getLocale())], 500);
+                                     "text" => ucwords(GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale())),
+                                     "title" => ucwords(GoogleTranslate::justTranslate('¡Error!', app()->getLocale()))], 500);
         }
     }
 }

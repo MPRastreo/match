@@ -93,17 +93,17 @@
                 <div class="px-3">
                     <select class="form-select changeLang" aria-label="Default select example">
                         <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::justTranslate('English', app()->getLocale()) }}</option>
+                            {{ ucwords(GoogleTranslate::justTranslate('English', app()->getLocale())) }}</option>
                         <option value="es" {{ session()->get('locale') == 'es' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::justTranslate('Spanish', app()->getLocale()) }}</option>
+                            {{ ucwords(GoogleTranslate::justTranslate('Spanish', app()->getLocale())) }}</option>
                         <option value="pt" {{ session()->get('locale') == 'pt' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::justTranslate('Portugués', app()->getLocale()) }}</option>
+                            {{ ucwords(GoogleTranslate::justTranslate('Portugués', app()->getLocale())) }}</option>
                         <option value="zh" {{ session()->get('locale') == 'zh' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::justTranslate('Chinese', app()->getLocale()) }}</option>
+                            {{ ucwords(GoogleTranslate::justTranslate('Chinese', app()->getLocale())) }}</option>
                         <option value="ja" {{ session()->get('locale') == 'ja' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::justTranslate('Japanese', app()->getLocale()) }}</option>
+                            {{ ucwords(GoogleTranslate::justTranslate('Japanese', app()->getLocale())) }}</option>
                         <option value="it" {{ session()->get('locale') == 'it' ? 'selected' : '' }}>
-                            {{ GoogleTranslate::justTranslate('Italian', app()->getLocale()) }}</option>
+                            {{ ucwords(GoogleTranslate::justTranslate('Italian', app()->getLocale())) }}</option>
                     </select>
                 </div>
                 <li class="nav-item d-block d-lg-none">
@@ -148,7 +148,7 @@
                             <a class="dropdown-item d-flex align-items-center"
                                 onclick="window.location.href='{{ url('logout') }}'">
                                 <i class="bi bi-box-arrow-right"></i>
-                                <span>{{ GoogleTranslate::justTranslate('Sign Out', app()->getLocale()) }}</span>
+                                <span>{{ ucwords(GoogleTranslate::justTranslate('Sign Out', app()->getLocale())) }}</span>
                             </a>
                         </li>
 
@@ -162,29 +162,13 @@
 
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
-
         <ul class="sidebar-nav" id="sidebar-nav">
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="users-profile.html">
-                    <i class="fa-regular fa-calendar-check"></i>
-                    <span>{{ GoogleTranslate::justTranslate('Appointments', app()->getLocale()) }}</span>
-                </a>
-            </li>
-            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
-                <li class="nav-item">
-                    <a class="nav-link  {{ Request::is('dashboard') ? '' : 'collapsed' }}"
-                        href="{{ url('/dashboard') }}">
-                        <i class="fa-solid fa-chart-line"></i>
-                        <span>{{ GoogleTranslate::justTranslate('Dashboard', app()->getLocale()) }}</span>
-                    </a>
-                </li>
-            @endif
             @if (auth()->user()->role == 1 || auth()->user()->role == 2)
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('personal') ? '' : 'collapsed' }}"
                         href="{{ url('/personal') }}">
                         <i class="fa-regular fa-address-card"></i>
-                        <span>{{ GoogleTranslate::justTranslate('Personal data', app()->getLocale()) }}</span>
+                        <span>{{ ucwords(GoogleTranslate::justTranslate('Personal data', app()->getLocale())) }}</span>
                     </a>
                 </li>
             @endif
@@ -192,7 +176,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('family') ? '' : 'collapsed' }}" href="{{ url('family') }}">
                         <i class="fa-solid fa-people-roof"></i>
-                        <span>{{ GoogleTranslate::justTranslate('Family', app()->getLocale()) }}</span>
+                        <span>{{ ucwords(GoogleTranslate::justTranslate('Family', app()->getLocale())) }}</span>
                     </a>
                 </li>
             @endif
@@ -200,7 +184,7 @@
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('users') ? '' : 'collapsed' }}" href="{{ url('/users') }}">
                         <i class="fa-solid fa-user"></i>
-                        <span>{{ GoogleTranslate::justTranslate('Users', app()->getLocale()) }}</span>
+                        <span>{{ ucwords(GoogleTranslate::justTranslate('Users', app()->getLocale())) }}</span>
                     </a>
                 </li>
             @endif
@@ -209,7 +193,7 @@
                     <a class="nav-link {{ Request::is('clinicalHistorie') ? '' : 'collapsed' }}"
                         href="{{ url('/clinicalHistorie') }}">
                         <i class="fa-solid fa-book-medical"></i>
-                        <span>{{ GoogleTranslate::justTranslate('Clinical History', app()->getLocale()) }}</span>
+                        <span>{{ ucwords(GoogleTranslate::justTranslate('Clinical History', app()->getLocale())) }}</span>
                     </a>
                 </li>
             @endif
@@ -217,7 +201,7 @@
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="users-profile.html">
                         <i class="fa-regular fa-calendar-check"></i>
-                        <span>{{ GoogleTranslate::justTranslate('Appointments', app()->getLocale()) }}</span>
+                        <span>{{ ucwords(GoogleTranslate::justTranslate('Appointments', app()->getLocale())) }}</span>
                     </a>
                 </li>
             @endif
@@ -226,7 +210,7 @@
                     <a class="nav-link  {{ Request::is('recipes') ? '' : 'collapsed' }}"
                         href="{{ url('/recipes') }}">
                         <i class="fa-regular fa-rectangle-list"></i>
-                        <span>{{ GoogleTranslate::justTranslate('Recipes', app()->getLocale()) }}</span>
+                        <span>{{ ucwords(GoogleTranslate::justTranslate('Recipes', app()->getLocale())) }}</span>
                     </a>
                 </li>
             @endif
@@ -934,7 +918,7 @@
     <footer id="footer" class="footer">
         <div class="copyright">
             &copy; Copyright <strong><span>DMM</span></strong>.
-            {{ GoogleTranslate::justTranslate('All Rights Reserved', app()->getLocale()) }}
+            {{ ucwords(GoogleTranslate::justTranslate('All Rights Reserved', app()->getLocale())) }}
         </div>
     </footer><!-- End Footer -->
 

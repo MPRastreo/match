@@ -1,9 +1,9 @@
 @extends('layout.layout')
 @section('title')
-    {{ GoogleTranslate::justTranslate('Users', app()->getLocale()) }}
+    {{ ucwords(GoogleTranslate::justTranslate('Users', app()->getLocale())) }}
 @endsection
 @section('pagetitle')
-    {{ GoogleTranslate::justTranslate('Users', app()->getLocale()) }}
+    {{ ucwords(GoogleTranslate::justTranslate('Users', app()->getLocale())) }}
 @endsection
 @section('content')
     {{-- <style>
@@ -22,19 +22,19 @@
                     @if (auth()->user()->role == 2)
                         <div class="row g-3">
                             <h5 class="card-title">
-                                {{ GoogleTranslate::justTranslate('User records', app()->getLocale()) }}
+                                {{ ucwords(GoogleTranslate::justTranslate('User records', app()->getLocale())) }}
                             </h5>
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th scope="col">
-                                                {{ GoogleTranslate::justTranslate('Name', app()->getLocale()) }}</th>
+                                                {{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</th>
                                             <th scope="col">
-                                                {{ GoogleTranslate::justTranslate('Username', app()->getLocale()) }}
+                                                {{ ucwords(GoogleTranslate::justTranslate('Username', app()->getLocale())) }}
                                             </th>
                                             <th scope="col">
-                                                {{ GoogleTranslate::justTranslate('Role', app()->getLocale()) }}</th>
+                                                {{ ucwords(GoogleTranslate::justTranslate('Role', app()->getLocale())) }}</th>
                                             <th scope="col"></th>
                                             <th scope="col"></th>
                                         </tr>
@@ -45,16 +45,16 @@
                                                 <td>{{ $row->{'name'} }}</td>
                                                 <td>{{ $row->{'username'} }}</td>
                                                 @if ($row->{'role'} == 1)
-                                                    <td>{{ GoogleTranslate::justTranslate('Administrator', app()->getLocale()) }}
+                                                    <td>{{ ucwords(GoogleTranslate::justTranslate('Administrator', app()->getLocale())) }}
                                                     </td>
                                                 @elseif ($row->{'role'} == 2)
-                                                    <td>{{ GoogleTranslate::justTranslate('User', app()->getLocale()) }}
+                                                    <td>{{ ucwords(GoogleTranslate::justTranslate('User', app()->getLocale())) }}
                                                     </td>
                                                 @elseif ($row->{'role'} == 3)
-                                                    <td>{{ GoogleTranslate::justTranslate('Family member', app()->getLocale()) }}
+                                                    <td>{{ ucwords(GoogleTranslate::justTranslate('Family member', app()->getLocale())) }}
                                                     </td>
                                                 @elseif ($row->{'role'} == 4)
-                                                    <td>{{ GoogleTranslate::justTranslate('Booth', app()->getLocale()) }}
+                                                    <td>{{ ucwords(GoogleTranslate::justTranslate('Booth', app()->getLocale())) }}
                                                     </td>
                                                 @endif
                                             </tr>
@@ -80,19 +80,19 @@
                                     aria-labelledby="personal-data-tab" tabindex="0">
                                     <div class="row g-3">
                                         <h5 class="card-title">
-                                            {{ GoogleTranslate::justTranslate('User records', app()->getLocale()) }}
+                                            {{ ucwords(GoogleTranslate::justTranslate('User records', app()->getLocale())) }}
                                         </h5>
                                         <div class="table-responsive">
                                             <table class="table">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">
-                                                            {{ GoogleTranslate::justTranslate('Name', app()->getLocale()) }}</th>
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</th>
                                                         <th scope="col">
-                                                            {{ GoogleTranslate::justTranslate('Username', app()->getLocale()) }}
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Username', app()->getLocale())) }}
                                                         </th>
                                                         <th scope="col">
-                                                            {{ GoogleTranslate::justTranslate('Role', app()->getLocale()) }}</th>
+                                                            {{ ucwords(GoogleTranslate::justTranslate('Role', app()->getLocale())) }}</th>
                                                         <th scope="col"></th>
                                                         <th scope="col"></th>
                                                     </tr>
@@ -103,16 +103,16 @@
                                                             <td>{{ $row->{'name'} }}</td>
                                                             <td>{{ $row->{'username'} }}</td>
                                                             @if ($row->{'role'} == 1)
-                                                                <td>{{ GoogleTranslate::justTranslate('Administrator', app()->getLocale()) }}
+                                                                <td>{{ ucwords(GoogleTranslate::justTranslate('Administrator', app()->getLocale())) }}
                                                                 </td>
                                                             @elseif ($row->{'role'} == 2)
-                                                                <td>{{ GoogleTranslate::justTranslate('User', app()->getLocale()) }}
+                                                                <td>{{ ucwords(GoogleTranslate::justTranslate('User', app()->getLocale())) }}
                                                                 </td>
                                                             @elseif ($row->{'role'} == 3)
-                                                                <td>{{ GoogleTranslate::justTranslate('Family member', app()->getLocale()) }}
+                                                                <td>{{ ucwords(GoogleTranslate::justTranslate('Family member', app()->getLocale())) }}
                                                                 </td>
                                                             @elseif ($row->{'role'} == 4)
-                                                                <td>{{ GoogleTranslate::justTranslate('Booth', app()->getLocale()) }}
+                                                                <td>{{ ucwords(GoogleTranslate::justTranslate('Booth', app()->getLocale())) }}
                                                                 </td>
                                                             @endif
                                                             <td>
@@ -139,7 +139,7 @@
                                 <div class="tab-pane fade " id="v-pills-profile" role="tabpanel"
                                     aria-labelledby="v-pills-profile-tab" tabindex="0">
                                     <h5 class="card-title">
-                                        {{ GoogleTranslate::justTranslate('Add a new user', app()->getLocale()) }}
+                                        {{ ucwords(GoogleTranslate::justTranslate('Add a new user', app()->getLocale())) }}
                                     </h5>
                                     <form class="validation-add-user row g-3" novalidate>
                                         <div class="col-md-8">
@@ -147,7 +147,7 @@
                                                 <input type="text" class="form-control" id="inputName" placeholder="Name"
                                                     name="name" required>
                                                 <label for="inputName"
-                                                    class="text-primary">{{ GoogleTranslate::justTranslate('Name', app()->getLocale()) }}</label>
+                                                    class="text-primary">{{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</label>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -155,22 +155,22 @@
                                                 <select id="selectRole" class="form-select"
                                                     aria-label="Floating label select role" required>
                                                     <option selected disabled value="">
-                                                        {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                                     </option>
                                                     <option value="1">
-                                                        {{ GoogleTranslate::justTranslate('Administrator', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Administrator', app()->getLocale())) }}
                                                     </option>
                                                     <option value="2">
-                                                        {{ GoogleTranslate::justTranslate('User', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('User', app()->getLocale())) }}
                                                     </option>
                                                     <option value="3">
-                                                        {{ GoogleTranslate::justTranslate('Family member', app()->getLocale()) }}
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Family member', app()->getLocale())) }}
                                                     </option>
                                                     <option value="4">
-                                                        {{ GoogleTranslate::justTranslate('Booth', app()->getLocale()) }}</option>
+                                                        {{ ucwords(GoogleTranslate::justTranslate('Booth', app()->getLocale())) }}</option>
                                                 </select>
                                                 <label for="selectRole"
-                                                    class="text-primary">{{ GoogleTranslate::justTranslate('Role', app()->getLocale()) }}</label>
+                                                    class="text-primary">{{ ucwords(GoogleTranslate::justTranslate('Role', app()->getLocale())) }}</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -178,7 +178,7 @@
                                                 <input type="text" class="form-control" id="inputUsername"
                                                     placeholder="Username" required>
                                                 <label for="inputUsername"
-                                                    class="text-primary">{{ GoogleTranslate::justTranslate('Username', app()->getLocale()) }}</label>
+                                                    class="text-primary">{{ ucwords(GoogleTranslate::justTranslate('Username', app()->getLocale())) }}</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -186,14 +186,14 @@
                                                 <input type="password" class="form-control" id="inputPassword"
                                                     placeholder="Password" required>
                                                 <label for="inputPassword"
-                                                    class="text-primary">{{ GoogleTranslate::justTranslate('Password', app()->getLocale()) }}</label>
+                                                    class="text-primary">{{ ucwords(GoogleTranslate::justTranslate('Password', app()->getLocale())) }}</label>
                                             </div>
                                         </div>
                                         <div class="text-center">
                                             <button type="submit"
-                                                class="btn btn-primary rounded-pill m-1">{{ GoogleTranslate::justTranslate('Save user', app()->getLocale()) }}</button>
+                                                class="btn btn-primary rounded-pill m-1">{{ ucwords(GoogleTranslate::justTranslate('Save user', app()->getLocale())) }}</button>
                                             <button type="reset"
-                                                class="btn btn-secondary rounded-pill m-1">{{ GoogleTranslate::justTranslate('Reset form', app()->getLocale()) }}</button>
+                                                class="btn btn-secondary rounded-pill m-1">{{ ucwords(GoogleTranslate::justTranslate('Reset form', app()->getLocale())) }}</button>
                                         </div>
                                     </form>
                                 </div>
@@ -210,36 +210,36 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        {{ GoogleTranslate::justTranslate('Edit user', app()->getLocale()) }}</h1>
+                        {{ ucwords(GoogleTranslate::justTranslate('Edit user', app()->getLocale())) }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="validation-edit-user row g-3" novalidate id="formEditar">
                         <div class="col-md-8">
                             <label for="inputNameEdit"
-                                class="form-label">{{ GoogleTranslate::justTranslate('Name', app()->getLocale()) }}</label>
+                                class="form-label">{{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</label>
                             <input type="text" class="form-control" id="inputNameEdit" required>
                         </div>
                         <div class="col-md-4">
                             <label for="selectRoleEdit"
-                                class="form-label">{{ GoogleTranslate::justTranslate('Role', app()->getLocale()) }}</label>
+                                class="form-label">{{ ucwords(GoogleTranslate::justTranslate('Role', app()->getLocale())) }}</label>
                             <select id="selectRoleEdit" class="form-select" required>
                                 <option selected disabled value="">
-                                    {{ GoogleTranslate::justTranslate('Select an option', app()->getLocale()) }}
+                                    {{ ucwords(GoogleTranslate::justTranslate('Select an option', app()->getLocale())) }}
                                 </option>
                                 <option value="1">
-                                    {{ GoogleTranslate::justTranslate('Administrator', app()->getLocale()) }}</option>
-                                <option value="2">{{ GoogleTranslate::justTranslate('User', app()->getLocale()) }}
+                                    {{ ucwords(GoogleTranslate::justTranslate('Administrator', app()->getLocale())) }}</option>
+                                <option value="2">{{ ucwords(GoogleTranslate::justTranslate('User', app()->getLocale())) }}
                                 </option>
                                 <option value="3">
-                                    {{ GoogleTranslate::justTranslate('Family member', app()->getLocale()) }}</option>
+                                    {{ ucwords(GoogleTranslate::justTranslate('Family member', app()->getLocale())) }}</option>
                                 <option value="4">
-                                    {{ GoogleTranslate::justTranslate('Booth', app()->getLocale()) }}</option>
+                                    {{ ucwords(GoogleTranslate::justTranslate('Booth', app()->getLocale())) }}</option>
                             </select>
                         </div>
                         <div class="col-md-12">
                             <label for="inputUsernameEdit"
-                                class="form-label">{{ GoogleTranslate::justTranslate('Username', app()->getLocale()) }}</label>
+                                class="form-label">{{ ucwords(GoogleTranslate::justTranslate('Username', app()->getLocale())) }}</label>
                             <input type="text" class="form-control" id="inputUsernameEdit" required>
                         </div>
                         <div class="col-md-12">
@@ -251,9 +251,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">{{ GoogleTranslate::justTranslate('Close window', app()->getLocale()) }}</button>
+                        data-bs-dismiss="modal">{{ ucwords(GoogleTranslate::justTranslate('Close window', app()->getLocale())) }}</button>
                     <button type="button" class="btn btn-primary"
-                        onclick="$('#btnForm').click();">{{ GoogleTranslate::justTranslate('Save changes', app()->getLocale()) }}</button>
+                        onclick="$('#btnForm').click();">{{ ucwords(GoogleTranslate::justTranslate('Save changes', app()->getLocale())) }}</button>
                 </div>
             </div>
         </div>

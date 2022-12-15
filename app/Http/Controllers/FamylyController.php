@@ -47,7 +47,7 @@ class FamylyController extends Controller
             // return $family;
             // Familys::create($familyR);
             $family->save();
-            return response()->json(["result" => true, "message" => GoogleTranslate::justTranslate( "Family succesfully added")], 200);
+            return response()->json(["result" => true, "message" => ucwords(GoogleTranslate::justTranslate( "Family succesfully added"))], 200);
         } catch (Exception $th) {
             Log::error($th);
             return response()->json(['result' => false, "message" => $th->getMessage()], 500);
@@ -68,7 +68,7 @@ class FamylyController extends Controller
                 }
             }
             $family->save();
-            return response()->json(["result" => true, "message" => GoogleTranslate::justTranslate( "Family succesfully modified")], 200);
+            return response()->json(["result" => true, "message" => ucwords(GoogleTranslate::justTranslate( "Family succesfully modified"))], 200);
         } catch (Exception $th) {
             Log::error($th);
             return response()->json(['result' => false, "message" => $th->getMessage()], 500);
@@ -80,7 +80,7 @@ class FamylyController extends Controller
 
             $family = Familys::find($request->id);
             $family->delete();
-            return response()->json(["result" => true, "message" => GoogleTranslate::justTranslate( "Family succesfully deleted")], 200);
+            return response()->json(["result" => true, "message" => ucwords(GoogleTranslate::justTranslate( "Family succesfully deleted"))], 200);
 
         } catch (Exception $th) {
             Log::error($th);
