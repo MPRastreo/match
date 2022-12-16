@@ -11,7 +11,7 @@ $(() =>
 {
     const requiredCheckboxes = $('.alcoholismchk :checkbox[required]');
 
-    const setProgressBar = (curStep) =>
+    const setProgressBar = curStep =>
     {
         let percent = parseFloat(100 / steps) * curStep;
         percent = percent.toFixed();
@@ -45,7 +45,7 @@ $(() =>
             opacity: 0
         },
         {
-            step: (now) =>
+            step: now =>
             {
                 opacity = 1 - now;
                 current_fs.css({
@@ -74,7 +74,7 @@ $(() =>
             opacity: 0
         },
         {
-            step: (now) =>
+            step: now =>
             {
                 opacity = 1 - now;
 
@@ -95,7 +95,6 @@ $(() =>
     {
         return false;
     })
-
 
     $('.bootstrap-select > button').removeClass('bs-placeholder');
     $('.bootstrap-select > button').removeClass('btn-light');
@@ -196,7 +195,8 @@ $(() =>
 
 const translateAlertAttention = (title, text, alert) =>
 {
-    Swal.fire({
+    Swal.fire
+    ({
         icon: alert,
         title: title,
         text: text
@@ -211,6 +211,7 @@ $('#modalNew').on('hidden.bs.modal', function ()
     $('.selectpicker').selectpicker('refresh');
     edit = false;
     current = 1;
+    clinicalHistory = {};
     $('.divListSurgerPPH').slice(1).remove();
     $('.divListAllergyPPH').slice(1).remove();
     $('.divListFracturePPH').slice(1).remove();
@@ -226,6 +227,14 @@ $('#modalNew').on('hidden.bs.modal', function ()
                 selectFMember.value = "";
                 idFamilyM = null;
             }
+        }
+    }
+
+    if(!edit)
+    {
+        if(clinicalHistory.progress >= 21)
+        {
+            location.reload();
         }
     }
 });
@@ -299,7 +308,7 @@ const checkStepsValidity = () =>
     }
 }
 
-const disableField = (id) =>
+const disableField = id =>
 {
     const switchT = document.getElementById(id);
     if (switchT.checked)
@@ -361,7 +370,7 @@ const validateSteps = () =>
     }
 }
 
-const enableFieldsAlch = (id) =>
+const enableFieldsAlch = id =>
 {
     document.getElementById('txt' + id.substring(5)).disabled = false;
     document.getElementById('txt' + id.substring(5)).required = true;
@@ -369,7 +378,7 @@ const enableFieldsAlch = (id) =>
     document.getElementById('select' + id.substring(5)).required = true;
 }
 
-const disableFieldsAlch = (id) =>
+const disableFieldsAlch = id =>
 {
     document.getElementById('txt' + id.substring(5, 15)).disabled = true;
     document.getElementById('txt' + id.substring(5, 15)).required = false;
@@ -379,7 +388,7 @@ const disableFieldsAlch = (id) =>
     document.getElementById('select' + id.substring(5, 15)).value = "";
 }
 
-const enableFieldsSmok = (id) =>
+const enableFieldsSmok = id =>
 {
     document.getElementById('txt' + id.substring(5)).disabled = false;
     document.getElementById('txt' + id.substring(5)).required = true;
@@ -387,7 +396,7 @@ const enableFieldsSmok = (id) =>
     document.getElementById('select' + id.substring(5)).required = true;
 }
 
-const disableFieldsSmok = (id) =>
+const disableFieldsSmok = id =>
 {
     document.getElementById('txt' + id.substring(5, 12)).disabled = true;
     document.getElementById('txt' + id.substring(5, 12)).required = false;
@@ -397,7 +406,7 @@ const disableFieldsSmok = (id) =>
     document.getElementById('select' + id.substring(5, 12)).value = "";
 }
 
-const enableFieldsDrugAd = (id) =>
+const enableFieldsDrugAd = id =>
 {
     document.getElementById('txt' + id.substring(5)).disabled = false;
     document.getElementById('txt' + id.substring(5)).required = true;
@@ -405,7 +414,7 @@ const enableFieldsDrugAd = (id) =>
     document.getElementById('select' + id.substring(5)).required = true;
 }
 
-const disableFieldsDrugAd = (id) =>
+const disableFieldsDrugAd = id =>
 {
     document.getElementById('txt' + id.substring(5, 11)).disabled = true;
     document.getElementById('txt' + id.substring(5, 11)).required = false;
@@ -445,7 +454,7 @@ const disableFieldImmCV = () =>
     immunizations.required = false;
 }
 
-const enableFieldsDiabetes = (id) =>
+const enableFieldsDiabetes = id =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
     document.getElementById('select' + id.substring(5)).required = true;
@@ -453,7 +462,7 @@ const enableFieldsDiabetes = (id) =>
     document.getElementById('txt' + id.substring(5)).required = true;
 }
 
-const disableFieldsDiabetes = (id) =>
+const disableFieldsDiabetes = id =>
 {
     document.getElementById('select' + id.substring(5, 16)).disabled = true;
     document.getElementById('select' + id.substring(5, 16)).required = false;
@@ -463,7 +472,7 @@ const disableFieldsDiabetes = (id) =>
     document.getElementById('txt' + id.substring(5, 16)).value = "";
 }
 
-const enableFieldsHyper = (id) =>
+const enableFieldsHyper = id =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
     document.getElementById('select' + id.substring(5)).required = true;
@@ -471,7 +480,7 @@ const enableFieldsHyper = (id) =>
     document.getElementById('txt' + id.substring(5)).required = true;
 }
 
-const disableFieldsHyper = (id) =>
+const disableFieldsHyper = id =>
 {
     document.getElementById('select' + id.substring(5, 13)).disabled = true;
     document.getElementById('select' + id.substring(5, 13)).required = false;
@@ -496,25 +505,7 @@ const disableFieldsSurg = () =>
     $('#btnSurgerPPH').hide();
 }
 
-const enableFieldsFractures = (id) =>
-{
-    document.getElementById('txt' + id.substring(5)).disabled = false;
-    document.getElementById('txt' + id.substring(5)).required = true;
-    document.getElementById('tx' + id.substring(5)).disabled = false;
-    document.getElementById('tx' + id.substring(5)).required = true;
-}
-
-const disableFieldsFractures = (id) =>
-{
-    document.getElementById('tx' + id.substring(5, 16)).disabled = true;
-    document.getElementById('tx' + id.substring(5, 16)).required = false;
-    document.getElementById('tx' + id.substring(5, 16)).value = "";
-    document.getElementById('txt' + id.substring(5, 16)).disabled = true;
-    document.getElementById('txt' + id.substring(5, 16)).required = false;
-    document.getElementById('txt' + id.substring(5, 16)).value = "";
-}
-
-const enableFieldsSeizures = (id) =>
+const enableFieldsSeizures = id =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
     document.getElementById('select' + id.substring(5)).required = true;
@@ -522,7 +513,7 @@ const enableFieldsSeizures = (id) =>
     document.getElementById('txt' + id.substring(5)).required = true;
 }
 
-const disableFieldsSeizures = (id) =>
+const disableFieldsSeizures = id =>
 {
     document.getElementById('select' + id.substring(5, 12)).disabled = true;
     document.getElementById('select' + id.substring(5, 12)).required = false;
@@ -532,7 +523,7 @@ const disableFieldsSeizures = (id) =>
     document.getElementById('txt' + id.substring(5, 12)).value = "";
 }
 
-const enableFieldsPulmonary = (id) =>
+const enableFieldsPulmonary = id =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
     document.getElementById('select' + id.substring(5)).required = true;
@@ -540,7 +531,7 @@ const enableFieldsPulmonary = (id) =>
     document.getElementById('txt' + id.substring(5)).required = true;
 }
 
-const disableFieldsPulmonary = (id) =>
+const disableFieldsPulmonary = id =>
 {
     document.getElementById('select' + id.substring(5, 14)).disabled = true;
     document.getElementById('select' + id.substring(5, 14)).required = false;
@@ -550,7 +541,7 @@ const disableFieldsPulmonary = (id) =>
     document.getElementById('txt' + id.substring(5, 14)).value = "";
 }
 
-const enableFieldsCardiacal = (id) =>
+const enableFieldsCardiacal = id =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
     document.getElementById('select' + id.substring(5)).required = true;
@@ -558,7 +549,7 @@ const enableFieldsCardiacal = (id) =>
     document.getElementById('txt' + id.substring(5)).required = true;
 }
 
-const disableFieldsCardiacal = (id) =>
+const disableFieldsCardiacal = id =>
 {
     document.getElementById('select' + id.substring(5, 12)).disabled = true;
     document.getElementById('select' + id.substring(5, 12)).required = false;
@@ -568,7 +559,7 @@ const disableFieldsCardiacal = (id) =>
     document.getElementById('txt' + id.substring(5, 12)).value = "";
 }
 
-const enableFieldsKidney = (id) =>
+const enableFieldsKidney = id =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
     document.getElementById('select' + id.substring(5)).required = true;
@@ -576,7 +567,7 @@ const enableFieldsKidney = (id) =>
     document.getElementById('txt' + id.substring(5)).required = true;
 }
 
-const disableFieldsKidney = (id) =>
+const disableFieldsKidney = id =>
 {
     document.getElementById('select' + id.substring(5, 14)).disabled = true;
     document.getElementById('select' + id.substring(5, 14)).required = false;
@@ -586,7 +577,7 @@ const disableFieldsKidney = (id) =>
     document.getElementById('txt' + id.substring(5, 14)).value = "";
 }
 
-const enableFieldsPsych = (id) =>
+const enableFieldsPsych = id =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
     document.getElementById('select' + id.substring(5)).required = true;
@@ -594,7 +585,7 @@ const enableFieldsPsych = (id) =>
     document.getElementById('txt' + id.substring(5)).required = true;
 }
 
-const disableFieldsPsych = (id) =>
+const disableFieldsPsych = id =>
 {
     document.getElementById('select' + id.substring(5, 13)).disabled = true;
     document.getElementById('select' + id.substring(5, 13)).required = false;
@@ -604,7 +595,7 @@ const disableFieldsPsych = (id) =>
     document.getElementById('txt' + id.substring(5, 13)).value = "";
 }
 
-const enableFieldsTrans = (id) =>
+const enableFieldsTrans = id =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
     document.getElementById('select' + id.substring(5)).required = true;
@@ -612,7 +603,7 @@ const enableFieldsTrans = (id) =>
     document.getElementById('txt' + id.substring(5)).required = true;
 }
 
-const disableFieldsTrans = (id) =>
+const disableFieldsTrans = id =>
 {
     document.getElementById('select' + id.substring(5, 13)).disabled = true;
     document.getElementById('select' + id.substring(5, 13)).required = false;
@@ -622,7 +613,7 @@ const disableFieldsTrans = (id) =>
     document.getElementById('txt' + id.substring(5, 13)).value = "";
 }
 
-const enableFieldsHematic = (id) =>
+const enableFieldsHematic = id =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
     document.getElementById('select' + id.substring(5)).required = true;
@@ -630,7 +621,7 @@ const enableFieldsHematic = (id) =>
     document.getElementById('txt' + id.substring(5)).required = true;
 }
 
-const disableFieldsHematic = (id) =>
+const disableFieldsHematic = id =>
 {
     document.getElementById('select' + id.substring(5, 13)).disabled = true;
     document.getElementById('select' + id.substring(5, 13)).required = false;
@@ -640,7 +631,7 @@ const disableFieldsHematic = (id) =>
     document.getElementById('txt' + id.substring(5, 13)).value = "";
 }
 
-const enableFieldsRheum = (id) =>
+const enableFieldsRheum = id =>
 {
     document.getElementById('select' + id.substring(5)).disabled = false;
     document.getElementById('select' + id.substring(5)).required = true;
@@ -648,7 +639,7 @@ const enableFieldsRheum = (id) =>
     document.getElementById('txt' + id.substring(5)).required = true;
 }
 
-const disableFieldsRheum = (id) =>
+const disableFieldsRheum = id =>
 {
     document.getElementById('select' + id.substring(5, 13)).disabled = true;
     document.getElementById('select' + id.substring(5, 13)).required = false;
@@ -1038,7 +1029,7 @@ const savePersonalPathHis = () =>
                     icon: 'success',
                     title: data.title,
                     text: data.result
-                }).then((result) =>
+                }).then(result =>
                 {
                     if (result.isConfirmed)
                     {
@@ -1070,7 +1061,7 @@ const savePersonalPathHis = () =>
     }
 }
 
-const completeClinicalH = (id) =>
+const completeClinicalH = id =>
 {
     fetch('/clinicalHistorie/getbyid/' + id,
     {
