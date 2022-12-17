@@ -45,25 +45,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/users', 'UserController@showUsers');
     Route::get('/clinicalHistorie', 'MedicalHController@index');
     Route::post('/clinicalHistorie/save', 'MedicalHController@saveClinicalHistorie');
-    Route::get('/medicalAppointment', function ()
-    {
-        if(auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
-        {
+    Route::get('/medicalAppointment', function () {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4) {
             return view('medicalAppointment');
-        }
-        else
-        {
-            return view('blocked');
-        }
-    });
-    Route::get('/recipes', function ()
-    {
-        if(auth()->user()->role == 1 || auth()->user()->role == 2)
-        {
-            return view('recipes');
-        }
-        else
-        {
+        } else {
             return view('blocked');
         }
     });
@@ -72,12 +57,24 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/quotation/add', 'QuotationController@addQuotation');
     Route::get('/quotation/delete/{id}', 'QuotationController@deleteAppo');
 
-    Route::post('/quotation/assign','QuotationController@assignQuotation');
+    // Route::post('/quotation/assign','QuotationController@assignQuotation');
+
+    Route::get('/quotation', function () {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4) {
+            return view('auth.quotation');
+        } else {
+            return view('blocked');
+        }
+    });
+
+    Route::get('/quotation', 'QuotationController@showQuotation');
+    Route::post('/quotation/add', 'QuotationController@addQuotation');
 
     Route::get('/recipes', function () {
         if (auth()->user()->role == 1 || auth()->user()->role == 2) {
-            return view('recipes');
-        } else {
+            return view('auth.recipes');
+        }
+        else{
             return view('blocked');
         }
     });

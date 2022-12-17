@@ -1,9 +1,9 @@
 @extends('layout.layout')
 @section('title')
-    {{ GoogleTranslate::trans('Quotation', app()->getLocale()) }}
+    {{ GoogleTranslate::justTranslate('Quotation', app()->getLocale()) }}
 @endsection
 @section('pagetitle')
-    {{ GoogleTranslate::trans('Quotation', app()->getLocale()) }}
+    {{ GoogleTranslate::justTranslate('Quotation', app()->getLocale()) }}
 @endsection
 @section('content')
     <div class="row">
@@ -15,7 +15,7 @@
                         @if (Auth::user()->role == 2)
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                 style="margin: 15px; float:right;">
-                                {{ GoogleTranslate::trans('Schedule Appointment', app()->getLocale()) }}
+                                {{ GoogleTranslate::justTranslate('Schedule Appointment', app()->getLocale()) }}
                             </button>
                         @else
                         @endif
@@ -51,7 +51,7 @@
                                                         {{-- @if (Auth::user()->role == 2) --}}
                                                             <button type="button" class="btn btn-warning"
                                                                 onclick="seeDetails('{{ $quota->_id }}');">
-                                                                {{ GoogleTranslate::trans('See details', app()->getLocale()) }}
+                                                                {{ GoogleTranslate::justTranslate('See details', app()->getLocale()) }}
                                                             </button>
                                                         {{-- @endif --}}
                                                     </div>
@@ -83,13 +83,13 @@
                                                         @if (Auth::user()->role == 2 || Auth::user()->role == 1)
                                                             <button type="button" class="btn btn-danger"
                                                                 onclick="deleteAppointment('{{ $quota->_id }}');">
-                                                                {{ GoogleTranslate::trans('Cancel', app()->getLocale()) }}
+                                                                {{ GoogleTranslate::justTranslate('Cancel', app()->getLocale()) }}
                                                             </button>
                                                         @else
                                                             <button type="button" class="btn btn-warning"
                                                                 {{-- data-bs-toggle="modal" data-bs-target="#assignQuotation" --}}
                                                                 onclick="openModalAssign('{{ $quota->_id }}');">
-                                                                {{ GoogleTranslate::trans('Assign', app()->getLocale()) }}
+                                                                {{ GoogleTranslate::justTranslate('Assign', app()->getLocale()) }}
                                                             </button>
                                                         @endif
                                                     </div>
@@ -112,28 +112,28 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
-                        {{ GoogleTranslate::trans('Schedule Appointment', app()->getLocale()) }}</h5>
+                        {{ GoogleTranslate::justTranslate('Schedule Appointment', app()->getLocale()) }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="needs-validation row g-3" novalidate>
                         <div class="col-md-12">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Specialty', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Specialty', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtSpecialty" required>
                         </div>
                         <div class="col-md-12">
                             <label
-                                class="form-label"><b>{{ GoogleTranslate::trans('Date', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Date', app()->getLocale()) }}</b></label>
                             <input type="date" class="form-control" id="txtDate" required min=<?php $hoy=date("Y-m-d"); echo $hoy;?>>
                         </div>
                         <div class="col-md-12">
                             <label for="validationCustomUsername"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Family members', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Family members', app()->getLocale()) }}</b></label>
                             <div class="input-group has-validation">
                                 <select class="form-select" name="" id="txtFamilyMembers" required>
                                     <option value="" selected disabled>
-                                        {{ GoogleTranslate::trans('Select a family member', app()->getLocale()) }}</option>
+                                        {{ GoogleTranslate::justTranslate('Select a family member', app()->getLocale()) }}</option>
                                     <option value="{{ Auth::user()->_id }}">
                                         {{ Auth::user()->name . ' ' . Auth::user()->lastname }}</option>
                                     @foreach ($familys as $fam)
@@ -145,7 +145,7 @@
                         </div>
                         <div class="col-md-12">
                             <label for="validationCustomUsername"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Reason for inquiry', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Reason for inquiry', app()->getLocale()) }}</b></label>
                             <div class="input-group has-validation">
                                 <div class="form-floating">
                                     <textarea class="form-control" id="floatingTextarea" required></textarea>
@@ -155,9 +155,9 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">{{ GoogleTranslate::trans('Cancel', app()->getLocale()) }}</button>
+                                data-bs-dismiss="modal">{{ GoogleTranslate::justTranslate('Cancel', app()->getLocale()) }}</button>
                             <button type="button" onclick="$('#btnSaveQuotation').click();"
-                                class="btn btn-primary">{{ GoogleTranslate::trans('Save change', app()->getLocale()) }}</button>
+                                class="btn btn-primary">{{ GoogleTranslate::justTranslate('Save change', app()->getLocale()) }}</button>
                         </div>
                     </form>
                 </div>
@@ -171,46 +171,46 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="assignQuotationLabel">
-                        {{ GoogleTranslate::trans('Schedule Appointment', app()->getLocale()) }}</h5>
+                        {{ GoogleTranslate::justTranslate('Schedule Appointment', app()->getLocale()) }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="needs-validation-assign row g-3" novalidate>
 
-                        <h5>{{ GoogleTranslate::trans('Physician data', app()->getLocale()) }}</h5>
+                        <h5>{{ GoogleTranslate::justTranslate('Physician data', app()->getLocale()) }}</h5>
 
                         <div class="col-md-12">
                             <input type="text" class="form-control" id="txtId" disabled style="display: none;">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Name', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Name', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtName" required>
                         </div>
 
                         <div class="col-md-6 mb-2">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Mail', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Mail', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtMail" required>
                         </div>
 
                         <div class="col-md-6 mb-2">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Phone', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Phone', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtPhone" required>
                         </div>
 
                         <hr>
 
-                        <h5>{{ GoogleTranslate::trans('Clinic data', app()->getLocale()) }}</h5>
+                        <h5>{{ GoogleTranslate::justTranslate('Clinic data', app()->getLocale()) }}</h5>
 
                         <div class="col-md-12">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Clinic name', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Clinic name', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtClinicName" required>
                         </div>
 
                         <div class="col-md-12">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Address', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Address', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtAddress" required>
 
                             <button id="btnAssignQuotation" type="submit" style="display: none;"></button>
@@ -218,9 +218,9 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">{{ GoogleTranslate::trans('Cancel', app()->getLocale()) }}</button>
+                                data-bs-dismiss="modal">{{ GoogleTranslate::justTranslate('Cancel', app()->getLocale()) }}</button>
                             <button type="button" onclick="$('#btnAssignQuotation').click();"
-                                class="btn btn-primary">{{ GoogleTranslate::trans('Save change', app()->getLocale()) }}</button>
+                                class="btn btn-primary">{{ GoogleTranslate::justTranslate('Save change', app()->getLocale()) }}</button>
                         </div>
                     </form>
                 </div>
@@ -233,50 +233,50 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="seeQuotationLabel">
-                        {{ GoogleTranslate::trans('Appointment details', app()->getLocale()) }}</h5>
+                        {{ GoogleTranslate::justTranslate('Appointment details', app()->getLocale()) }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="row g-3">
-                        <h5>{{ GoogleTranslate::trans('Physician data', app()->getLocale()) }}</h5>
+                        <h5>{{ GoogleTranslate::justTranslate('Physician data', app()->getLocale()) }}</h5>
 
                         <div class="col-md-12">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Doctor', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Doctor', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtDoctorSee" readonly>
                         </div>
 
                         <div class="col-md-6 mb-2">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Mail', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Mail', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtMailSee" readonly>
                         </div>
 
                         <div class="col-md-6 mb-2">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Phone', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Phone', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtPhoneSee" readonly>
                         </div>
 
                         <hr>
 
-                        <h5>{{ GoogleTranslate::trans('Clinic data', app()->getLocale()) }}</h5>
+                        <h5>{{ GoogleTranslate::justTranslate('Clinic data', app()->getLocale()) }}</h5>
 
                         <div class="col-md-12">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Clinic name', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Clinic name', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtClinicNameSee" readonly>
                         </div>
 
                         <div class="col-md-12">
                             <label for="validationCustom01"
-                                class="form-label"><b>{{ GoogleTranslate::trans('Address', app()->getLocale()) }}</b></label>
+                                class="form-label"><b>{{ GoogleTranslate::justTranslate('Address', app()->getLocale()) }}</b></label>
                             <input type="text" class="form-control" id="txtAddressSee" readonly>
                         </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary"
-                                data-bs-dismiss="modal">{{ GoogleTranslate::trans('Close Details', app()->getLocale()) }}</button>
+                                data-bs-dismiss="modal">{{ GoogleTranslate::justTranslate('Close Details', app()->getLocale()) }}</button>
                         </div>
                     </form>
                 </div>

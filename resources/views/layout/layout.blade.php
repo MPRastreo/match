@@ -218,7 +218,7 @@
                     <a class="nav-link {{ Request::is('quotation') ? '' : 'collapsed' }}"
                         href="{{ url('/quotation') }}">
                         <i class="fa-regular fa-calendar-check"></i>
-                        <span>{{ GoogleTranslate::trans('Quotation', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::justTranslate('Quotation', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif

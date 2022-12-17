@@ -8,8 +8,7 @@ use App\Models\Users;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Stichoza\GoogleTranslate\GoogleTranslate;
+use GoogleTranslate;
 
 class QuotationController extends Controller
 {
@@ -32,26 +31,25 @@ class QuotationController extends Controller
 
                 $familys = Familys::find($objQuotation['familyMembers']);
 
-                $objQuotation['familyMembers'] = $familys['name'].' '.$familys['lastname'];
+                $objQuotation['familyMembers'] = $familys['name'] . ' ' . $familys['lastname'];
 
                 $objQuotation->gender = $familys['gender'];
-
-            }else {
+            } else {
                 $objQuotation['familyMembers'] = $user['name'];
             }
 
             $objQuotation->save();
 
             return response()->json([
-                "result" => GoogleTranslate::trans('Appointment succesfully added', app()->getLocale()),
-                "title" => GoogleTranslate::trans('¡Success!', app()->getLocale()),
+                "result" => GoogleTranslate::justTranslate('Appointment succesfully added', app()->getLocale()),
+                "title" => GoogleTranslate::justTranslate('¡Success!', app()->getLocale()),
                 "true" => $user
             ], 200);
         } catch (Exception $ex) {
             return response()->json([
                 "error" => $ex->getMessage(),
-                "text" => GoogleTranslate::trans('An error occurred, please try again', app()->getLocale()),
-                "title" => GoogleTranslate::trans('¡Error!', app()->getLocale())
+                "text" => GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale()),
+                "title" => GoogleTranslate::justTranslate('¡Error!', app()->getLocale())
             ], 500);
         }
     }
@@ -76,21 +74,21 @@ class QuotationController extends Controller
 
     public function deleteAppo($id)
     {
-        try
-        {
-            if(strcmp($id, auth()->user()->_id) == 0)
-            {
-                return response()->json(["warning" => GoogleTranslate::trans('You can not delete yourself', app()->getLocale()), "title" => GoogleTranslate::trans('¡Attention!', app()->getLocale())], 200);
+        try {
+            if (strcmp($id, auth()->user()->_id) == 0) {
+                return response()->json(["warning" => GoogleTranslate::justTranslate('You can not delete yourself', app()->getLocale()), "title" => GoogleTranslate::justTranslate('¡Attention!', app()->getLocale())], 200);
             }
             Quotation::find($id)->delete();
-            return response()->json(["result" => GoogleTranslate::trans('Appointment succesfully cancel', app()->getLocale()),
-                                     "title" => GoogleTranslate::trans('¡Success!', app()->getLocale())], 200);
-        }
-        catch (Exception $ex)
-        {
-            return response()->json(["error" => $ex->getMessage(),
-                                     "text" => GoogleTranslate::trans('An error occurred, please try again', app()->getLocale()),
-                                     "title" => GoogleTranslate::trans('¡Error!', app()->getLocale())], 500);
+            return response()->json([
+                "result" => GoogleTranslate::justTranslate('Appointment succesfully cancel', app()->getLocale()),
+                "title" => GoogleTranslate::justTranslate('¡Success!', app()->getLocale())
+            ], 200);
+        } catch (Exception $ex) {
+            return response()->json([
+                "error" => $ex->getMessage(),
+                "text" => GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale()),
+                "title" => GoogleTranslate::justTranslate('¡Error!', app()->getLocale())
+            ], 500);
         }
     }
 
@@ -111,16 +109,15 @@ class QuotationController extends Controller
             $qua->save();
 
             return response()->json([
-                "result" => GoogleTranslate::trans('Appointment succesfully assign', app()->getLocale()),
-                "title" => GoogleTranslate::trans('¡Success!', app()->getLocale()),
+                "result" => GoogleTranslate::justTranslate('Appointment succesfully assign', app()->getLocale()),
+                "title" => GoogleTranslate::justTranslate('¡Success!', app()->getLocale()),
             ], 200);
         } catch (Exception $ex) {
             return response()->json([
                 "error" => $ex->getMessage(),
-                "text" => GoogleTranslate::trans('An error occurred, please try again', app()->getLocale()),
-                "title" => GoogleTranslate::trans('¡Error!', app()->getLocale())
+                "text" => GoogleTranslate::justTranslate('An error occurred, please try again', app()->getLocale()),
+                "title" => GoogleTranslate::justTranslate('¡Error!', app()->getLocale())
             ], 500);
         }
-
     }
 }
