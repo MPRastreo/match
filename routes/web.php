@@ -13,39 +13,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function ()
-{
+Route::get('/', function () {
     return view('login');
 });
 
 Route::post('/login', 'LoginController@login');
 
-Route::group(['middleware' => ['auth']], function ()
-{
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/logout', 'LoginController@logout');
-    Route::get('/dashboard', function ()
-    {
-        if(auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
-        {
+    Route::get('/dashboard', function () {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4) {
             return view('dashboard');
-        }
-        else
-        {
+        } else {
             return view('blocked');
         }
     });
-    Route::get('/personal', function ()
-    {
-        if (auth()->user()->role == 1 || auth()->user()->role == 2)
-        {
+    Route::get('/personal', function () {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2) {
             return view('auth.personal_data');
-        }
-        else
-        {
+        } else {
             return view('blocked');
         }
     });
-    Route::get('/family','FamylyController@index');
+    Route::get('/family', 'FamylyController@index');
     Route::post('/family/add', 'FamylyController@create');
     Route::post('/family/update', 'FamylyController@update');
     Route::get('/family/show/{id}', 'FamylyController@show');
@@ -55,29 +45,41 @@ Route::group(['middleware' => ['auth']], function ()
     Route::get('/users', 'UserController@showUsers');
     Route::get('/clinicalHistorie', 'MedicalHController@index');
     Route::post('/clinicalHistorie/save', 'MedicalHController@saveClinicalHistorie');
-    Route::get('/medicalAppointment', function ()
-    {
-        if(auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
-        {
+    Route::get('/medicalAppointment', function () {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4) {
             return view('medicalAppointment');
-        }
-        else
-        {
-            return view('blocked');
-        }
-    });
-    Route::get('/recipes', function ()
-    {
-        if(auth()->user()->role == 1 || auth()->user()->role == 2)
-        {
-            return view('recipes');
-        }
-        else
-        {
+        } else {
             return view('blocked');
         }
     });
 
+    Route::get('/quotation', 'QuotationController@showQuotation');
+    Route::post('/quotation/add', 'QuotationController@addQuotation');
+    Route::get('/quotation/delete/{id}', 'QuotationController@deleteAppo');
+
+    // Route::post('/quotation/assign','QuotationController@assignQuotation');
+
+    Route::get('/quotation', function () {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4) {
+            return view('auth.quotation');
+        } else {
+            return view('blocked');
+        }
+    });
+
+    Route::get('/quotation', 'QuotationController@showQuotation');
+    Route::post('/quotation/add', 'QuotationController@addQuotation');
+
+    Route::get('/recipes', function () {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2) {
+            return view('auth.recipes');
+        }
+        else{
+            return view('blocked');
+        }
+    });
+
+    Route::get('/users', 'UserController@showUsers');
     Route::get('/users/show', 'UserController@showUsers');
     Route::post('/users/add', 'UserController@addUser');
     Route::post('/users/edit/{id}', 'UserController@editUser');
