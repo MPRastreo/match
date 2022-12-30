@@ -1,7 +1,7 @@
 const updateField = () =>
 {
     const name = document.getElementById('txtName');
-    const last_name = document.getElementById('txtLastName');
+    const lastname = document.getElementById('txtLastName');
     const age = document.getElementById('txtAge');
     const age_birth = document.getElementById('txtAgeBirth');
     const gender = document.getElementById('txtGender');
@@ -17,7 +17,7 @@ const updateField = () =>
     let data =
     {
         name: name.value,
-        last_name: last_name.value,
+        lastname: lastname.value,
         age: age.value,
         age_birth: age_birth.value,
         gender: gender.value,
@@ -40,8 +40,8 @@ const updateField = () =>
             "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
         },
         body: JSON.stringify(data)
-    }).then((resp) => resp.json())
-    .then((data) =>
+    }).then(resp => resp.json())
+    .then(data =>
     {
         if (data.result != null)
         {
@@ -75,7 +75,7 @@ const updateField = () =>
     );
 }
 
-const getInfoByID = (id) =>
+const getInfoByID = id =>
 {
     fetch('/users/show/' + id,
     {
@@ -83,20 +83,13 @@ const getInfoByID = (id) =>
         {
             "Content-Type": "application/json",
         }
-    }).then((resp) => resp.json())
-    .then((data) =>
+    }).then(resp => resp.json())
+    .then(data =>
     {
-        if(data.personal_data == null)
+
+        if (data._id != null)
         {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Attention!',
-                text: 'There is no records'
-            })
-        }
-        else if (data._id != null)
-        {
-            fillPersonalData(data.personal_data);
+            fillPersonalData(data);
         }
         else if(data.error != null)
         {
@@ -104,6 +97,14 @@ const getInfoByID = (id) =>
                 icon: 'error',
                 title: data.title,
                 text: data.text
+            })
+        }
+        else
+        {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Attention!',
+                text: 'There is no records'
             })
         }
     }).catch(
@@ -116,11 +117,11 @@ const getInfoByID = (id) =>
     );
 }
 
-const fillPersonalData = (personal_data) =>
+const fillPersonalData = personal_data =>
 {
-    const { name, last_name, age, age_birth, gender, email, phone, marital_st, birth_place, address, schooling, occupation, religion } = personal_data;
+    const { name, lastname, age, age_birth, gender, email, phone, marital_st, birth_place, address, schooling, occupation, religion } = personal_data;
     document.getElementById('txtName').value = name;
-    document.getElementById('txtLastName').value = last_name;
+    document.getElementById('txtLastName').value = lastname;
     document.getElementById('txtAge').value = age;
     document.getElementById('txtAgeBirth').value = age_birth;
     document.getElementById('txtGender').value = gender;

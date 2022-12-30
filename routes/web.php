@@ -13,25 +13,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
-
+Route::get('/', fn() => view('login'));
 Route::post('/login', 'LoginController@login');
 
-Route::group(['middleware' => ['auth']], function () {
+Route::get('/tokendr', fn() => view('doctor.tokenv'));
+Route::post('/validatetoken', 'DoctorController@validateTokenJWT');
+
+Route::group(['middleware' => ['auth']], function ()
+{
     Route::get('/logout', 'LoginController@logout');
-    Route::get('/dashboard', function () {
-        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4) {
+    Route::get('/dashboard', function ()
+    {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+        {
             return view('dashboard');
-        } else {
+        }
+        else
+        {
             return view('blocked');
         }
     });
-    Route::get('/personal', function () {
-        if (auth()->user()->role == 1 || auth()->user()->role == 2) {
+    Route::get('/personal', function ()
+    {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2)
+        {
             return view('auth.personal_data');
-        } else {
+        }
+        else
+        {
             return view('blocked');
         }
     });
@@ -45,10 +54,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/users', 'UserController@showUsers');
     Route::get('/clinicalHistorie', 'MedicalHController@index');
     Route::post('/clinicalHistorie/save', 'MedicalHController@saveClinicalHistorie');
-    Route::get('/medicalAppointment', function () {
-        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4) {
+    Route::get('/medicalAppointment', function ()
+    {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+        {
             return view('medicalAppointment');
-        } else {
+        }
+        else
+        {
             return view('blocked');
         }
     });
@@ -56,13 +69,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/quotation', 'QuotationController@showQuotation');
     Route::post('/quotation/add', 'QuotationController@addQuotation');
     Route::get('/quotation/delete/{id}', 'QuotationController@deleteAppo');
+    Route::post('/generatetoken', 'DoctorController@generateTokenJWT');
 
-    // Route::post('/quotation/assign','QuotationController@assignQuotation');
+    Route::post('/quotation/assign','QuotationController@assignQuotation');
 
-    Route::get('/quotation', function () {
-        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4) {
+    Route::get('/quotation', function ()
+    {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
+        {
             return view('auth.quotation');
-        } else {
+        }
+        else
+        {
             return view('blocked');
         }
     });
@@ -70,11 +88,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/quotation', 'QuotationController@showQuotation');
     Route::post('/quotation/add', 'QuotationController@addQuotation');
 
-    Route::get('/recipes', function () {
-        if (auth()->user()->role == 1 || auth()->user()->role == 2) {
+    Route::get('/recipes', function ()
+    {
+        if (auth()->user()->role == 1 || auth()->user()->role == 2)
+        {
             return view('auth.recipes');
         }
-        else{
+        else
+        {
             return view('blocked');
         }
     });
@@ -91,4 +112,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/clinicalHistorie/getbyid/{id}', 'MedicalHController@getClinicalHistoryByID');
     Route::get('/clinicalhistorie/hereditarydiseases/{id}', 'MedicalHController@getHereditaryDiseasesByID');
     Route::post('/translate/alerts', 'LangController@translateAlerts');
+});
+
+Route::group(['middleware' => ['doctor']], function ()
+{
+    Route::get('/doctor/view/{id}/{lang}', 'DoctorController@index');
+    Route::get('/doctor/exit', 'DoctorController@logoutDoctor');
+    Route::post('/doctor/translate/alerts', 'LangController@translateAlertsDoctor');
+    Route::post('/doctor/clinicalHistorie/save', 'MedicalHController@saveClinicalHistorieByDoctor');
+    Route::get('/doctor/clinicalHistorie/getbyid/{id}', 'MedicalHController@getClinicalHistoryByID');
+    Route::get('/doctor/clinicalhistorie/hereditarydiseases/{id}', 'MedicalHController@getHereditaryDiseasesByID');
 });

@@ -70,6 +70,45 @@
     {{-- <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/3DBookShowcase/css/default.css"> --}}
     <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/3DBookShowcase/css/component2.css">
     <script src="https://tympanus.net/Development/3DBookShowcase/js/modernizr.custom.js"></script>
+    <style>
+		#img
+		{
+			position: fixed;
+			display: none;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-image: url("https://cdn.dribbble.com/users/108183/screenshots/4543219/loader_backinout.gif");
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 1057;
+			cursor: pointer;
+		}
+
+        #overlay
+        {
+            position: fixed;
+			display: none;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+            background-color: rgb(255, 255, 255);
+            z-index: 1056;
+        }
+	</style>
+	<script>
+		window.onload = () =>
+		{
+			$('#overlay').hide("slow");
+            $('#img').hide("slow");
+		}
+	</script>
     @yield('links')
 </head>
 
@@ -78,6 +117,9 @@
         App::setLocale(auth()->user()->lang);
         session()->put('locale', auth()->user()->lang);
     @endphp
+    <div id="overlay">
+        <div id="img"></div>
+    </div>
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between pt-3">
@@ -136,7 +178,7 @@
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                         data-bs-toggle="dropdown">
                         {{-- <img src="{{ asset('/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle"> --}}
-                        <span class="d-none d-md-block dropdown-toggle">{{ Auth::user()->name }}</span>
+                        <span class="d-none d-md-block dropdown-toggle">{{ Auth::user()->username }}</span>
                         <span class="fa-stack fa-4x px-4">
                             <i class="fa fa-circle fa-stack-2x icon-background"></i>
                             <i class="fa-solid fa-user fa-stack-1x text-light"></i>
@@ -234,7 +276,7 @@
         </div><!-- End Page Title --> --}}
 
         <section class="section dashboard">
-            <div class="row">
+            <div class="container-fluid">
                 @yield('content')
                 {{-- <!-- Left side columns -->
                 <div class="col-lg-8">
@@ -945,7 +987,14 @@
     </script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     @yield('scripts')
-
+    <script>
+		window.onbeforeunload = e =>
+		{
+			$('#overlay').show("slow");
+            $('#img').show("slow");
+			return undefined;
+		};
+	</script>
 </body>
 
 </html>

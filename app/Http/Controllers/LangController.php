@@ -16,7 +16,7 @@ class LangController extends Controller
     {
         App::setLocale($request->lang);
         session()->put('locale', $request->lang);
-        $user = Users::find(auth()->user()->_id);
+        $user = Users::find($request->_id);
         $user->lang = $request->lang;
         $user->save();
         return redirect()->back();
@@ -27,8 +27,24 @@ class LangController extends Controller
         try
         {
             $translation = new stdClass();
-            $translation->title = ucwords(GoogleTranslate::justTranslate($request->title, auth()->user()->lang));
-            $translation->text = ucwords(GoogleTranslate::justTranslate($request->text, auth()->user()->lang));
+            $translation->title = ucwords(GoogleTranslate::justTranslate($request->title, $request->lang));
+            $translation->text = ucwords(GoogleTranslate::justTranslate($request->text, $request->lang));
+
+            return response()->json($translation, 200);
+        }
+        catch (Exception $ex)
+        {
+            return response()->json(["error" => $ex->getMessage()], 500);
+        }
+    }
+
+    public function translateAlertsDoctor(Request $request)
+    {
+        try
+        {
+            $translation = new stdClass();
+            $translation->title = ucwords(GoogleTranslate::justTranslate($request->title, $request->lang));
+            $translation->text = ucwords(GoogleTranslate::justTranslate($request->text, $request->lang));
 
             return response()->json($translation, 200);
         }

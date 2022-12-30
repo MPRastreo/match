@@ -1262,3 +1262,8 @@ h6 {
 .text-primary-a {
     color: #e62d33 !important;
 }
+
+.nav-tabs .nav-link {
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
+}

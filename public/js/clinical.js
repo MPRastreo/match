@@ -125,7 +125,17 @@ $(() =>
                 event.preventDefault();
                 if(document.getElementById('selectFamilyM').value != "")
                 {
-                    saveHereditaryDiseases();
+                    if(edit)
+                    {
+                        if($('.modal').find('form')[0].checkValidity())
+                        {
+                            saveHereditaryDiseases();
+                        }
+                    }
+                    else
+                    {
+                        saveHereditaryDiseases();
+                    }
                 }
                 else
                 {
@@ -153,7 +163,17 @@ $(() =>
                 event.preventDefault();
                 if(document.getElementById('selectFamilyM').value != "")
                 {
-                    saveNonPathAnt();
+                    if(edit)
+                    {
+                        if($('.modal').find('form')[0].checkValidity())
+                        {
+                            saveNonPathAnt();
+                        }
+                    }
+                    else
+                    {
+                        saveNonPathAnt();
+                    }
                 }
                 else
                 {
@@ -173,14 +193,23 @@ $(() =>
             {
                 event.preventDefault()
                 event.stopPropagation()
-
             }
             else
             {
                 event.preventDefault();
                 if(document.getElementById('selectFamilyM').value != "")
                 {
-                    savePersonalPathHis();
+                    if(edit)
+                    {
+                        if($('.modal').find('form')[0].checkValidity())
+                        {
+                            savePersonalPathHis();
+                        }
+                    }
+                    else
+                    {
+                        savePersonalPathHis();
+                    }
                 }
                 else
                 {
@@ -209,9 +238,7 @@ $('#modalNew').on('hidden.bs.modal', function ()
     $('form').removeClass('was-validated');
     $('.selectpicker').prop('disabled', true);
     $('.selectpicker').selectpicker('refresh');
-    edit = false;
     current = 1;
-    clinicalHistory = {};
     $('.divListSurgerPPH').slice(1).remove();
     $('.divListAllergyPPH').slice(1).remove();
     $('.divListFracturePPH').slice(1).remove();
@@ -237,6 +264,8 @@ $('#modalNew').on('hidden.bs.modal', function ()
             location.reload();
         }
     }
+    edit = false;
+    clinicalHistory = {};
 });
 
 const checkStepsValidity = () =>
@@ -657,6 +686,8 @@ const saveHereditaryDiseases = () =>
     const cancer = $('#txtCancer').val();
     const psychiatric = $('#txtPsychiatric').val();
     const tuberculosis = $('#txtTuberculosis').val();
+    let url;
+    let data;
 
     const objDiabetes =
     {
@@ -700,18 +731,34 @@ const saveHereditaryDiseases = () =>
     clinicalHistory.cancer_relatives = objCancer;
     clinicalHistory.psychiatric_relatives = objPsychiatric;
     clinicalHistory.tuberculosis_relatives = objTuberculosis;
-    clinicalHistory.familiar_id = document.getElementById('selectFamilyM').value;
+    clinicalHistory.person_id = document.getElementById('selectFamilyM').value;
     if(edit == false)
     {
-        clinicalHistory.progress = 21;
+        if(typeof(clinicalHistory.progress) == "undefined" && clinicalHistory.progress == null)
+        {
+            clinicalHistory.progress = 21;
+        }
     }
 
-    let data =
+    if(typeof(clinicalHDoctor) != "undefined" && clinicalHDoctor !== null)
     {
-        clinical_history: clinicalHistory,
-    };
+        url = '/doctor/clinicalHistorie/save';
+        data =
+        {
+            clinical_history: clinicalHistory,
+            lang: lang
+        };
+    }
+    else
+    {
+        url = '/clinicalHistorie/save';
+        data =
+        {
+            clinical_history: clinicalHistory,
+        };
+    }
 
-    fetch('/clinicalHistorie/save',
+    fetch(url,
     {
         method: 'POST',
         headers:
@@ -727,6 +774,7 @@ const saveHereditaryDiseases = () =>
         {
             if(edit == false)
             {
+                clinicalHistory._id = data._id;
                 Swal.fire({
                     icon: 'success',
                     title: data.title,
@@ -766,6 +814,8 @@ const saveNonPathAnt = () =>
         const water_cons = $('#txtWaterConsumption').val();
         const sleeping_time = $('#txtSleepingT').val();
         const pets = $('#txtPet').val();
+        let data;
+        let url;
 
         const objAlcoholism =
         {
@@ -803,7 +853,6 @@ const saveNonPathAnt = () =>
         clinicalHistory.feeding = feeding;
         clinicalHistory.water_consumption = water_cons;
         clinicalHistory.sleeping_time = sleeping_time;
-        clinicalHistory.pet = pets;
         clinicalHistory.alcoholism = objAlcoholism;
         clinicalHistory.smoking = objSmoking;
         clinicalHistory.drug_adict = objDrugAdd;
@@ -814,12 +863,26 @@ const saveNonPathAnt = () =>
             clinicalHistory.progress = 54;
         }
 
-        let data =
-        {
-            clinical_history: clinicalHistory,
-        };
 
-        fetch('/clinicalHistorie/save',
+        if(typeof(clinicalHDoctor) != "undefined" && clinicalHDoctor !== null)
+        {
+            url = '/doctor/clinicalHistorie/save';
+            data =
+            {
+                clinical_history: clinicalHistory,
+                lang: lang
+            };
+        }
+        else
+        {
+            url = '/clinicalHistorie/save';
+            data =
+            {
+                clinical_history: clinicalHistory,
+            };
+        }
+
+        fetch(url,
         {
             method: 'POST',
             headers:
@@ -835,6 +898,7 @@ const saveNonPathAnt = () =>
             {
                 if(edit == false)
                 {
+                    clinicalHistory._id = data._id;
                     Swal.fire({
                         icon: 'success',
                         title: data.title,
@@ -880,6 +944,8 @@ const savePersonalPathHis = () =>
         let surgeries = dataS['listSurgerPPH'];
         let fractures = dataS['listFracturePPH'];
         let allergies = dataS['listAllergyPPH'];
+        let url;
+        let data;
 
         surgeries.forEach(element =>
         {
@@ -1006,12 +1072,25 @@ const savePersonalPathHis = () =>
         clinicalHistory.rheumatic_diseases = objRheumaticDiseases;
         clinicalHistory.progress = 100;
 
-        const data =
+        if(typeof(clinicalHDoctor) != "undefined" && clinicalHDoctor !== null)
         {
-            clinical_history: clinicalHistory,
-        };
+            url = '/doctor/clinicalHistorie/save';
+            data =
+            {
+                clinical_history: clinicalHistory,
+                lang: lang
+            };
+        }
+        else
+        {
+            url = '/clinicalHistorie/save';
+            data =
+            {
+                clinical_history: clinicalHistory,
+            };
+        }
 
-        fetch('/clinicalHistorie/save',
+        fetch(url,
         {
             method: 'POST',
             headers:
@@ -1031,7 +1110,7 @@ const savePersonalPathHis = () =>
                     text: data.result
                 }).then(result =>
                 {
-                    if (result.isConfirmed)
+                    if (result.isConfirmed && edit == false)
                     {
                         window.location = '/clinicalHistorie';
                     }
@@ -1061,9 +1140,19 @@ const savePersonalPathHis = () =>
     }
 }
 
-const completeClinicalH = id =>
+const completeClinicalH = _id =>
 {
-    fetch('/clinicalHistorie/getbyid/' + id,
+    let url;
+    if(typeof(clinicalHDoctor) != "undefined" && clinicalHDoctor !== null)
+    {
+        url = '/doctor/clinicalHistorie/getbyid/' + _id;
+    }
+    else
+    {
+        url = '/clinicalHistorie/getbyid/' + _id;
+    }
+
+    fetch(url,
     {
         headers:
         {
@@ -1078,6 +1167,7 @@ const completeClinicalH = id =>
             $('#modalNew').modal('show');
             fillDataClinicalH(data);
             clinicalHistory = data.clinical_history;
+            edit = false;
         }
         else if (data.error != null)
         {
@@ -1222,7 +1312,17 @@ const fillDataClinicalH = ({ clinical_history, _id, name, lastname }) =>
 
 const openInfoClinicalH = _id =>
 {
-    fetch('/clinicalHistorie/getbyid/' + _id,
+    let url;
+    if(typeof(clinicalHDoctor) != "undefined" && clinicalHDoctor !== null)
+    {
+        url = '/doctor/clinicalHistorie/getbyid/' + _id;
+    }
+    else
+    {
+        url = '/clinicalHistorie/getbyid/' + _id;
+    }
+
+    fetch(url,
     {
         headers:
         {
@@ -1249,11 +1349,14 @@ const openInfoClinicalH = _id =>
         }
     }).catch(
         error =>
-        Swal.fire({
-            icon: 'error',
-            title: '¡Error!',
-            text: 'An error occurred, please try again'
-        })
+        {
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: 'An error occurred, please try again'
+            })
+            console.log(error);
+        }
     );
 }
 
@@ -1568,13 +1671,24 @@ const translateAlert = (callback, title, text, alert) =>
 {
     let titleNewAlert;
     let textNewAlert;
+    let url;
     const dataJSON =
     {
         "title": title,
         "text": text
     };
 
-    fetch('/translate/alerts',
+    if(typeof(clinicalHDoctor) != "undefined" && clinicalHDoctor !== null)
+    {
+        url = '/doctor/translate/alerts';
+        dataJSON['lang'] = lang;
+    }
+    else
+    {
+        url = '/translate/alerts';
+    }
+
+    fetch(url,
     {
         method: 'POST',
         headers:

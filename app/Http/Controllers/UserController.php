@@ -136,10 +136,16 @@ class UserController extends Controller
     {
         try
         {
-            Users::find(auth()->user()->_id)->update(
-            [
-                "personal_data" => $request->all(),
-            ]);
+            $user = Users::find(auth()->user()->_id);
+            foreach($request->all() as $key => $value)
+            {
+                if(strcmp($key, '_token') == 0)
+                {
+                    continue;
+                }
+                $user->$key = $value;
+            }
+            $user->save();
             return response()->json(["result" => ucwords(GoogleTranslate::justTranslate('Data succesfully modified', app()->getLocale())),
                                      "title" => ucwords(GoogleTranslate::justTranslate('¡Success!', app()->getLocale()))], 200);
         }

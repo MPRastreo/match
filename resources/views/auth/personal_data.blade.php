@@ -56,7 +56,7 @@
                                     <div class="col-12">
                                         <div class="form-floating">
                                             <input type="text" class="form-control" id="txtLastName" placeholder="Phone"
-                                                name="last_name">
+                                                name="lastname">
                                             <label for="txtLastName"
                                                 class="text-primary ">{{ ucwords(GoogleTranslate::justTranslate('Your last name', app()->getLocale())) }}</label>
                                         </div>

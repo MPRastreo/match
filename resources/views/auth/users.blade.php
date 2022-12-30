@@ -29,8 +29,6 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">
-                                                {{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</th>
-                                            <th scope="col">
                                                 {{ ucwords(GoogleTranslate::justTranslate('Username', app()->getLocale())) }}
                                             </th>
                                             <th scope="col">
@@ -42,7 +40,6 @@
                                     <tbody>
                                         @foreach ($users as $row)
                                             <tr>
-                                                <td>{{ $row->{'name'} }}</td>
                                                 <td>{{ $row->{'username'} }}</td>
                                                 @if ($row->{'role'} == 1)
                                                     <td>{{ ucwords(GoogleTranslate::justTranslate('Administrator', app()->getLocale())) }}
@@ -87,8 +84,6 @@
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">
-                                                            {{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</th>
-                                                        <th scope="col">
                                                             {{ ucwords(GoogleTranslate::justTranslate('Username', app()->getLocale())) }}
                                                         </th>
                                                         <th scope="col">
@@ -100,7 +95,6 @@
                                                 <tbody>
                                                     @foreach ($users as $row)
                                                         <tr>
-                                                            <td>{{ $row->{'name'} }}</td>
                                                             <td>{{ $row->{'username'} }}</td>
                                                             @if ($row->{'role'} == 1)
                                                                 <td>{{ ucwords(GoogleTranslate::justTranslate('Administrator', app()->getLocale())) }}
@@ -142,15 +136,7 @@
                                         {{ ucwords(GoogleTranslate::justTranslate('Add a new user', app()->getLocale())) }}
                                     </h5>
                                     <form class="validation-add-user row g-3" novalidate>
-                                        <div class="col-md-8">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="inputName" placeholder="Name"
-                                                    name="name" required>
-                                                <label for="inputName"
-                                                    class="text-primary">{{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-12">
                                             <div class="form-floating">
                                                 <select id="selectRole" class="form-select"
                                                     aria-label="Floating label select role" required>
@@ -215,12 +201,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="validation-edit-user row g-3" novalidate id="formEditar">
-                        <div class="col-md-8">
-                            <label for="inputNameEdit"
-                                class="form-label">{{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</label>
-                            <input type="text" class="form-control" id="inputNameEdit" required>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <label for="selectRoleEdit"
                                 class="form-label">{{ ucwords(GoogleTranslate::justTranslate('Role', app()->getLocale())) }}</label>
                             <select id="selectRoleEdit" class="form-select" required>

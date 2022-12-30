@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login</title>
+    <title>Token access</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -36,7 +36,6 @@
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <body>
     <main>
         <div class="container">
@@ -45,31 +44,38 @@
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-                            <div class="d-flex justify-content-center py-4"> <a href="#"
+                            <div class="d-flex justify-content-center py-4"> <a
                                     class="logo d-flex align-items-center w-auto"> <img
                                         src="{{ asset('img/Logo-largo-08.png') }}" alt=""></a></div>
                             <div class="card mb-3" style="border-radius: 20px;">
                                 <div class="card-body p-5">
                                     <div class="pb-2">
-                                        <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                                        <p class="text-center small">Enter your username &amp; password to login</p>
+                                        <h5 class="card-title text-center pb-0 fs-4">Token access</h5>
+                                        <p class="text-center small">Enter your token to access</p>
                                     </div>
-                                    <form class="row g-3 needs-validation" novalidate method="POST" action="/login">
+                                    <form class="row g-3 needs-validation" novalidate method="POST" action="{{ url('/validatetoken') }}">
                                         @csrf
                                         <div class="col-12">
-                                            <label for="inputUsername" class="form-label">Username</label>
-                                            <input type="text" name="username" class="form-control"
-                                                id="inputUsername" required="">
-                                            <div class="invalid-feedback">Please enter your username!</div>
+                                            <label for="inputToken" class="form-label">Token</label>
+                                            <textarea type="text" name="token" class="form-control"
+                                                id="inputToken" required="" rows="4"></textarea>
+                                            <div class="invalid-feedback">Please enter your token!</div>
                                         </div>
                                         <div class="col-12">
-                                            <label for="inputPassword" class="form-label">Password</label>
-                                            <input type="password" name="password" class="form-control"
-                                                id="inputPassword" required="">
-                                            <div class="invalid-feedback">Please enter your password!</div>
+                                            <label for="selectLang" class="form-label">Language</label>
+                                            <select class="form-select" id="selectLang" name="lang" required>
+                                                <option disabled selected value="">Select an option</option>
+                                                <option value="en">English</option>
+                                                <option value="es">Spanish</option>
+                                                <option value="pt">Portuguese</option>
+                                                <option value="zh">Chinese</option>
+                                                <option value="ja">Japanese</option>
+                                                <option value="it">Italian</option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select a language!</div>
                                         </div>
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Login</button>
+                                            <button class="btn btn-primary w-100" type="submit">Verify & enter</button>
                                         </div>
                                         @error('error')
                                             <div class="fv-row">
@@ -78,10 +84,6 @@
                                                 </span>
                                             </div>
                                         @enderror
-                                        {{-- <div class="col-12">
-                                            <p class="small mb-0">Don't have account? <a
-                                                    href="pages-register.html">Create an account</a></p>
-                                        </div> --}}
                                     </form>
                                 </div>
                             </div>

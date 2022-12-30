@@ -47,14 +47,12 @@
 
 const addUser = () =>
 {
-    const inputName = document.getElementById('inputName').value;
     const selectRole = document.getElementById('selectRole').value;
     const inputUsername = document.getElementById('inputUsername').value;
     const inputPassword = document.getElementById('inputPassword').value;
 
     data =
     {
-        name: inputName,
         username: inputUsername,
         password: inputPassword,
         role: selectRole,
@@ -106,7 +104,6 @@ const addUser = () =>
 
 const getInfoByID = (id) =>
 {
-    const inputName = document.getElementById('inputNameEdit');
     const selectRole = document.getElementById('selectRoleEdit');
     const inputUsername = document.getElementById('inputUsernameEdit');
     const inputPassword = document.getElementById('inputPasswordEdit');
@@ -124,7 +121,6 @@ const getInfoByID = (id) =>
         if (data._id != null)
         {
             $('#modalEdit').modal('show');
-            inputName.value = data.name;
             selectRole.value = data.role;
             inputUsername.value = data.username;
             inputPassword.value = data.password;
@@ -152,7 +148,6 @@ const getInfoByID = (id) =>
 
 const editUser = () =>
 {
-    const inputName = document.getElementById('inputNameEdit').value;
     const selectRole = document.getElementById('selectRoleEdit').value;
     const inputUsername = document.getElementById('inputUsernameEdit').value;
     const inputPassword = document.getElementById('inputPasswordEdit').value;
@@ -160,7 +155,6 @@ const editUser = () =>
 
     data =
     {
-        name: inputName,
         username: inputUsername,
         password: inputPassword,
         role: selectRole,

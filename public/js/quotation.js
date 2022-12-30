@@ -221,8 +221,6 @@ const seeDetails = (id) => {
 
     var quotation = arrayQuotations.find(x => x._id == id);
 
-    console.log(quotation);
-
     $('#txtDoctorSee').val(quotation.infoQuotation.name);
     $('#txtMailSee').val(quotation.infoQuotation.mail);
     $('#txtPhoneSee').val(quotation.infoQuotation.phone);
@@ -230,4 +228,74 @@ const seeDetails = (id) => {
     $('#txtAddressSee').val(quotation.infoQuotation.address);
 
     $('#seeQuotation').modal('show');
+}
+
+const generateToken = _id =>
+{
+    const data =
+    {
+        _id: _id,
+    };
+
+    fetch('/generatetoken',
+    {
+        method: 'POST',
+        headers:
+        {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
+        },
+        body: JSON.stringify(data)
+    }).then(resp => resp.json())
+    .then(({token, text, error}) =>
+    {
+        if (token != null)
+        {
+            copyText(token, text);
+        }
+        else if (error != null)
+        {
+            Swal.fire({
+                icon: 'error',
+                title: data.title,
+                text: data.text
+            });
+        }
+    }).catch(
+        error =>
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: 'An error occurred, please try again'
+        })
+    );
+}
+
+const copyText = (token, text) =>
+{
+    const Toast = Swal.mixin
+    ({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: toast =>
+        {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
+
+    navigator.clipboard.writeText(token).then(
+    () =>
+    {
+        Toast.fire
+        ({
+            icon: 'success',
+            title: text
+        })
+    },
+    () => {}
+  );
 }

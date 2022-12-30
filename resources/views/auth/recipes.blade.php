@@ -9,24 +9,23 @@
 @endsection
 
 @section('content')
+    <script>
+        let idioma;
 
-<script>
-    let idioma;
+        function recuperarValor() {
+            idioma = $('#sltPDFLenaguaje21').val();
 
-    function recuperarValor() {
-        idioma = $('#sltPDFLenaguaje21').val();
+            window.location.href = "?idioma=" + idioma;
+        }
+    </script>
 
-        window.location.href = "?idioma=" + idioma;
-    }
-</script>
-
-@php
-    if (isset($_GET['idioma'])) {
-        $phpVar1 = $_GET['idioma'];
-    } else {
-        $phpVar1 = 'en';
-    }
-@endphp
+    @php
+        if (isset($_GET['idioma'])) {
+            $phpVar1 = $_GET['idioma'];
+        } else {
+            $phpVar1 = 'en';
+        }
+    @endphp
 
     <div class="row">
         <div class="row mb-2">
@@ -44,8 +43,7 @@
                                 {{-- style="margin: 15px 0px 0px 0px;width: 15rem; height: 2.5rem;" --}}>{{ GoogleTranslate::justTranslate('Recipe language', app()->getLocale()) }}</span>
 
                             <select class="form-select" aria-label="Default select example" id="sltPDFLenaguaje21"
-                                {{-- style="margin: 15px 0px 0px 0px;float:left; width: 4rem; height: 2.5rem;" --}}
-                                onchange="recuperarValor();">
+                                {{-- style="margin: 15px 0px 0px 0px;float:left; width: 4rem; height: 2.5rem;" --}} onchange="recuperarValor();">
                                 <option value="0" disabled selected>
                                     {{ GoogleTranslate::justTranslate('Select the language', app()->getLocale()) }}
                                 </option>
@@ -101,11 +99,9 @@
                                     <option value="{{ GoogleTranslate::justTranslate('Injectable', $phpVar1) }}">
                                         {{ GoogleTranslate::justTranslate('Injectable', app()->getLocale()) }}
                                     </option>
-                                    <option
-                                        value="{{ GoogleTranslate::justTranslate('Vaginal Tablet', $phpVar1) }}">
+                                    <option value="{{ GoogleTranslate::justTranslate('Vaginal Tablet', $phpVar1) }}">
                                         {{ GoogleTranslate::justTranslate('Vaginal Tablet', app()->getLocale()) }}</option>
-                                    <option
-                                        value="{{ GoogleTranslate::justTranslate('Vaginal Ovum', $phpVar1) }}">
+                                    <option value="{{ GoogleTranslate::justTranslate('Vaginal Ovum', $phpVar1) }}">
                                         {{ GoogleTranslate::justTranslate('Vaginal Ovum', app()->getLocale()) }}
                                     </option>
                                     <option value="{{ GoogleTranslate::justTranslate('Capsules', $phpVar1) }}">
@@ -141,14 +137,14 @@
                                         <option value="0" disabled selected>
                                             {{ GoogleTranslate::justTranslate('Select the frequency', app()->getLocale()) }}
                                         </option>
-                                        <option value="{{ GoogleTranslate::justTranslate('Hour',$phpVar1) }}">
-                                            {{ GoogleTranslate::justTranslate('Hour',app()->getLocale()) }}
+                                        <option value="{{ GoogleTranslate::justTranslate('Hour', $phpVar1) }}">
+                                            {{ GoogleTranslate::justTranslate('Hour', app()->getLocale()) }}
                                         </option>
-                                        <option value="{{ GoogleTranslate::justTranslate('Day',$phpVar1) }}">
-                                            {{ GoogleTranslate::justTranslate('Day',app()->getLocale()) }}
+                                        <option value="{{ GoogleTranslate::justTranslate('Day', $phpVar1) }}">
+                                            {{ GoogleTranslate::justTranslate('Day', app()->getLocale()) }}
                                         </option>
-                                        <option value="{{ GoogleTranslate::justTranslate('Month',$phpVar1) }}">
-                                            {{ GoogleTranslate::justTranslate('Month',app()->getLocale()) }}
+                                        <option value="{{ GoogleTranslate::justTranslate('Month', $phpVar1) }}">
+                                            {{ GoogleTranslate::justTranslate('Month', app()->getLocale()) }}
                                         </option>
                                     </select>
                                 </div>
@@ -174,8 +170,7 @@
                                         <option value="{{ GoogleTranslate::justTranslate('Month', $phpVar1) }}">
                                             {{ GoogleTranslate::justTranslate('Month', app()->getLocale()) }}
                                         </option>
-                                        <option
-                                            value="{{ GoogleTranslate::justTranslate('Treatment', $phpVar1) }}">
+                                        <option value="{{ GoogleTranslate::justTranslate('Treatment', $phpVar1) }}">
                                             {{ GoogleTranslate::justTranslate('Treatment', app()->getLocale()) }}</option>
                                     </select>
                                 </div>
@@ -248,15 +243,20 @@
             <div class="row">
                 <div class="col-6">
 
-                    <h5 style="font-size: 1.1rem;"><b>{{ GoogleTranslate::justTranslate('Type of Attention', $phpVar1) }}:</b> Consulta General </h5><br><br>
+                    <h5 style="font-size: 1.1rem;">
+                        <b>{{ GoogleTranslate::justTranslate('Type of Attention', $phpVar1) }}:</b> Consulta General </h5>
+                    <br><br>
 
                     <h5 style="margin-top: -3.4rem; font-size: 1rem;"><b>Type of Attention</b></h5><br><br>
 
-                    <h5 style="margin-top: -1.5rem; font-size: 1.1rem;"><b>{{ GoogleTranslate::justTranslate('Name', $phpVar1) }}:</b> Cristian Ulises</h5> <br><br>
+                    <h5 style="margin-top: -1.5rem; font-size: 1.1rem;">
+                        <b>{{ GoogleTranslate::justTranslate('Name', $phpVar1) }}:</b> Cristian Ulises</h5> <br><br>
 
                     <h5 style="margin-top: -3.4rem; font-size: 1rem;"><b>Name</b></h5><br><br>
 
-                    <h5 style="margin-top: -1.5rem; font-size: 1.1rem;"><b>{{ GoogleTranslate::justTranslate("Physician's name", $phpVar1) }}:</b> Roberto Alejandro Salazar Fierros </h5><br><br>
+                    <h5 style="margin-top: -1.5rem; font-size: 1.1rem;">
+                        <b>{{ GoogleTranslate::justTranslate("Physician's name", $phpVar1) }}:</b> Roberto Alejandro
+                        Salazar Fierros </h5><br><br>
 
                     <h5 style="margin-top: -3.4rem; font-size: 1rem;"><b>Physician's name</b></h5><br><br>
                 </div>
@@ -265,7 +265,8 @@
 
                     <h5 style="margin-top: -1rem; font-size: 1rem;"><b>Date</b></h5><br><br>
 
-                    <h5 style="margin-top: -1.5rem; font-size: 1.1rem;"><b>{{ GoogleTranslate::justTranslate('Last name', $phpVar1) }}:</b> Ortega Padron </h5><br><br>
+                    <h5 style="margin-top: -1.5rem; font-size: 1.1rem;">
+                        <b>{{ GoogleTranslate::justTranslate('Last name', $phpVar1) }}:</b> Ortega Padron </h5><br><br>
 
                     <h5 style="margin-top: -3.4rem; font-size: 1rem;"><b>Last name</b></h5><br><br>
                 </div>
@@ -314,28 +315,32 @@
 
             <div class="row">
                 <div class="col-12">
-                    <b>{{ GoogleTranslate::justTranslate('Allergies', $phpVar1) }} - Allergies:</b> Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque quaerat mollitia
+                    <b>{{ GoogleTranslate::justTranslate('Allergies', $phpVar1) }} - Allergies:</b> Lorem ipsum dolor sit
+                    amet consectetur adipisicing elit. Neque quaerat mollitia
                     tenetur nam. Suscipit quis amet dignissimos! Facere placeat voluptatem in illum id. Blanditiis vero
                     perspiciatis sequi! Commodi, unde dicta.
                 </div>
             </div><br>
             <div class="row">
                 <div class="col-12">
-                    <b>{{ GoogleTranslate::justTranslate('Pregnancy', $phpVar1) }} - Pregnancy:</b> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex, quibusdam
+                    <b>{{ GoogleTranslate::justTranslate('Pregnancy', $phpVar1) }} - Pregnancy:</b> Lorem ipsum dolor sit
+                    amet consectetur, adipisicing elit. Ex, quibusdam
                     necessitatibus, dolor corrupti exercitationem dicta accusamus nostrum rem magni explicabo sapiente
                     neque, ut cumque totam quas est assumenda reprehenderit placeat!
                 </div>
             </div><br>
             <div class="row">
                 <div class="col-12">
-                    <b>{{ GoogleTranslate::justTranslate('Symptomatology', $phpVar1) }} - Symptomatology:</b> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem quam
+                    <b>{{ GoogleTranslate::justTranslate('Symptomatology', $phpVar1) }} - Symptomatology:</b> Lorem ipsum
+                    dolor sit amet consectetur, adipisicing elit. Exercitationem quam
                     laborum ducimus nisi optio harum nobis autem doloribus voluptates quia, accusantium, sed commodi
                     inventore, excepturi nihil in dolorum! Esse, dignissimos.
                 </div>
             </div><br>
             <div class="row">
                 <div class="col-12">
-                    <b>{{ GoogleTranslate::justTranslate('Diagnosis', $phpVar1) }} - Diagnosis:</b> Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque natus nostrum
+                    <b>{{ GoogleTranslate::justTranslate('Diagnosis', $phpVar1) }} - Diagnosis:</b> Lorem ipsum dolor sit
+                    amet consectetur adipisicing elit. Itaque natus nostrum
                     incidunt officiis libero sapiente. Quasi tenetur est dolorem nesciunt iusto illo maiores repellat
                     enim laborum impedit! Officia, mollitia facere?
                 </div>
@@ -347,7 +352,8 @@
 
             <div class="row" align="center">
                 <div class="col-12">
-                    <b style="font-size: 2.8rem;">{{ GoogleTranslate::justTranslate('Recipe', $phpVar1) }}</b><b style="font-size: 1.4rem;"> - Recipe</b>
+                    <b style="font-size: 2.8rem;">{{ GoogleTranslate::justTranslate('Recipe', $phpVar1) }}</b><b
+                        style="font-size: 1.4rem;"> - Recipe</b>
                 </div>
             </div>
             <div class="row">
@@ -403,5 +409,5 @@
 @endsection
 
 @section('scripts')
-    <script src="js/recipes.js"></script>
+    <script src="{{ asset('js/recipesobfus.js') }}"></script>
 @endsection
