@@ -22,17 +22,6 @@ Route::post('/validatetoken', 'DoctorController@validateTokenJWT');
 Route::group(['middleware' => ['auth']], function ()
 {
     Route::get('/logout', 'LoginController@logout');
-    Route::get('/dashboard', function ()
-    {
-        if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4)
-        {
-            return view('dashboard');
-        }
-        else
-        {
-            return view('blocked');
-        }
-    });
     Route::get('/personal', function ()
     {
         if (auth()->user()->role == 1 || auth()->user()->role == 2)
