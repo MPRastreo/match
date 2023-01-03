@@ -91,4 +91,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/clinicalHistorie/getbyid/{id}', 'MedicalHController@getClinicalHistoryByID');
     Route::get('/clinicalhistorie/hereditarydiseases/{id}', 'MedicalHController@getHereditaryDiseasesByID');
     Route::post('/translate/alerts', 'LangController@translateAlerts');
+
+    Route::get('/notifications/cabina','NotificationsController@index');
 });

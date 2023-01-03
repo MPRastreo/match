@@ -46,7 +46,7 @@ const addRecipe = () => {
         duration_time: duration_time
     }
 
-    datav.push(data);
+          .push(data);
 
     Swal.fire({
         icon: 'success',

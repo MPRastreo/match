@@ -71,6 +71,8 @@
     <link rel="stylesheet" type="text/css" href="https://tympanus.net/Development/3DBookShowcase/css/component2.css">
     <script src="https://tympanus.net/Development/3DBookShowcase/js/modernizr.custom.js"></script>
     @yield('links')
+
+    @laravelPWA
 </head>
 
 <body>
@@ -218,7 +220,7 @@
                     <a class="nav-link {{ Request::is('quotation') ? '' : 'collapsed' }}"
                         href="{{ url('/quotation') }}">
                         <i class="fa-regular fa-calendar-check"></i>
-                        <span>{{ GoogleTranslate::justTranslate('Quotation', app()->getLocale()) }}</span>
+                        <span>{{ GoogleTranslate::justTranslate('Appointment', app()->getLocale()) }}</span>
                     </a>
                 </li>
             @endif
@@ -959,6 +961,10 @@
             window.location.href = url + "?lang=" + $(this).val();
         })
     </script>
+    <script>
+        var notificaciones;
+    </script>
+    <script src="{{ asset('js/notifications.js') }}"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     @yield('scripts')
 

@@ -238,7 +238,7 @@
 
 
     {{-- Aqui se genera el pdf --}}
-    <div class="row" {{-- style="display: none;" --}}>
+    <div class="row" style="display: none;">
         <div class="col-10 mt-5 m-5" id="divExportPDF">
             <div class="row d-flex align-items-center">
                 <div class="col-md-2 m-3">
@@ -395,7 +395,11 @@
             </div>
             <div class="row" style="text-align:center;">
                 <div class="col-12">
-                    <b>Nombre y cédula del médico</b>
+                    <b>{{ GoogleTranslate::justTranslate('Physician´s name and ID number', $phpVar1) }}</b>
+
+                    <br>
+
+                    <b style="font-size: 0.8rem;">Physician's name and ID number</b>
                 </div>
             </div>
         </div>

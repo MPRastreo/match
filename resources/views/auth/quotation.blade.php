@@ -1,9 +1,9 @@
 @extends('layout.layout')
 @section('title')
-    {{ GoogleTranslate::justTranslate('Quotation', app()->getLocale()) }}
+    {{ GoogleTranslate::justTranslate('Appointment', app()->getLocale()) }}
 @endsection
 @section('pagetitle')
-    {{ GoogleTranslate::justTranslate('Quotation', app()->getLocale()) }}
+    {{ GoogleTranslate::justTranslate('Appointment', app()->getLocale()) }}
 @endsection
 @section('content')
     <div class="row">
@@ -19,15 +19,23 @@
                             </button>
                         @else
                         @endif
+                        <div class="col-xl-2 offset-xl-10 col-xs-cu-12">
+                            <div class="form-floating">
+                                <input type="search" class="form-control rounded" name="txtBuscador" id="txtBuscador"
+                                    placeholder="Buscar" aria-label="Buscar" aria-describedby="buscar-addon">
+                                <label for="txtBuscador" id="search-addon"><i class="icons fas fa-search"></i>
+                                    Buscar...</label>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="col md 12">
-                            <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col md 12" >
+                            <div class="row" id="divContent">
                                 <div class="row p-xl-5 p-xs-cu-3">
                                     @foreach ($quotation as $quota)
-                                        @if ($quota->status == "Assign" && (Auth::user()->role == 2 || Auth::user()->role == 1))
-                                            <div class="col-xl-3 col-xs-cu-12">
-                                                <div class="card shadow mb-xs-cu-3 p-xl-4 p-xs-cu-2">
+                                        @if ($quota->status == 'Assign' && (Auth::user()->role == 2 || Auth::user()->role == 1))
+                                            <div class="col-xl-3 col-xs-cu-12 unidad">
+                                                <div class="card shadow mb-xs-cu-3 p-xl-4 align-self-stretch">
                                                     @if ($quota->gender == 'Male')
                                                         <div class="card-body text-center">
                                                             <img src="{{ asset('img/man.png') }}"
@@ -40,7 +48,7 @@
                                                         </div>
                                                     @endif
                                                     <div class="text-center">
-                                                        {{ $quota->familyMembers }}<br><br>
+                                                        {{ $quota->familyMember }}<br><br>
                                                         <i class="bi bi-clipboard2-pulse-fill"></i> {{ $quota->specialy }}
                                                         </p>
 
@@ -49,16 +57,16 @@
                                                     </div>
                                                     <div class="card-footer d-grid">
                                                         {{-- @if (Auth::user()->role == 2) --}}
-                                                            <button type="button" class="btn btn-warning"
-                                                                onclick="seeDetails('{{ $quota->_id }}');">
-                                                                {{ GoogleTranslate::justTranslate('See details', app()->getLocale()) }}
-                                                            </button>
+                                                        <button type="button" class="btn btn-warning"
+                                                            onclick="seeDetails('{{ $quota->_id }}');">
+                                                            {{ GoogleTranslate::justTranslate('See details', app()->getLocale()) }}
+                                                        </button>
                                                         {{-- @endif --}}
                                                     </div>
                                                 </div>
                                             </div>
-                                        @elseif ($quota->status == "Requested")
-                                            <div class="col-xl-3 col-xs-cu-12">
+                                        @elseif ($quota->status == 'Requested')
+                                            <div class="col-xl-3 col-xs-cu-12 unidad">
                                                 <div class="card shadow mb-xs-cu-3 p-xl-4 p-xs-cu-2">
                                                     @if ($quota->gender == 'Male')
                                                         <div class="card-body text-center">
@@ -106,6 +114,22 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready(function() {
+            $("#txtBuscador").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#divContent .unidad").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+
+        function validar() {
+            if (validator) ñ
+
+        }
+    </script>
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -118,14 +142,44 @@
                 <div class="modal-body">
                     <form class="needs-validation row g-3" novalidate>
                         <div class="col-md-12">
+                            <input type="text" value="{{ Auth::user()->_id }}" id="txtFamilyFrom"
+                                style="display: none;">
                             <label for="validationCustom01"
                                 class="form-label"><b>{{ GoogleTranslate::justTranslate('Specialty', app()->getLocale()) }}</b></label>
-                            <input type="text" class="form-control" id="txtSpecialty" required>
+                            <select class="form-select" name="" id="txtSpecialty" required>
+                                <option value="0" selected disabled>
+                                    {{ GoogleTranslate::justTranslate('Reason for consultation', app()->getLocale()) }}
+                                </option>
+                                <option
+                                    value="{{ GoogleTranslate::justTranslate('General inquiryn', app()->getLocale()) }}">
+                                    {{ GoogleTranslate::justTranslate('General inquiry', app()->getLocale()) }}
+                                </option>
+                                <option value="{{ GoogleTranslate::justTranslate('Discomfort', app()->getLocale()) }}">
+                                    {{ GoogleTranslate::justTranslate('Discomfort', app()->getLocale()) }}
+                                </option>
+                                <option
+                                    value="{{ GoogleTranslate::justTranslate('Medical checkup', app()->getLocale()) }}">
+                                    {{ GoogleTranslate::justTranslate('Medical checkup', app()->getLocale()) }}
+                                </option>
+                                <option
+                                    value="{{ GoogleTranslate::justTranslate('Follow-up consultation', app()->getLocale()) }}">
+                                    {{ GoogleTranslate::justTranslate('Follow-up consultation', app()->getLocale()) }}
+                                </option>
+                                <option value="Another">
+                                    {{ GoogleTranslate::justTranslate('Another', app()->getLocale()) }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" id="txtSpecifyLabel"
+                                style="display: none;"><b>{{ GoogleTranslate::justTranslate('Specify', app()->getLocale()) }}</b></label>
+                            <input type="text" class="form-control" id="txtSpecify" style="display: none;">
                         </div>
                         <div class="col-md-12">
                             <label
                                 class="form-label"><b>{{ GoogleTranslate::justTranslate('Date', app()->getLocale()) }}</b></label>
-                            <input type="date" class="form-control" id="txtDate" required min=<?php $hoy=date("Y-m-d"); echo $hoy;?>>
+                            <input type="date" class="form-control" id="txtDate" required min=<?php $hoy = date('Y-m-d');
+                            echo $hoy; ?>>
                         </div>
                         <div class="col-md-12">
                             <label for="validationCustomUsername"
@@ -133,7 +187,8 @@
                             <div class="input-group has-validation">
                                 <select class="form-select" name="" id="txtFamilyMembers" required>
                                     <option value="" selected disabled>
-                                        {{ GoogleTranslate::justTranslate('Select a family member', app()->getLocale()) }}</option>
+                                        {{ GoogleTranslate::justTranslate('Select a family member', app()->getLocale()) }}
+                                    </option>
                                     <option value="{{ Auth::user()->_id }}">
                                         {{ Auth::user()->name . ' ' . Auth::user()->lastname }}</option>
                                     @foreach ($familys as $fam)

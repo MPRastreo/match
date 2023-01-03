@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Familys;
+use App\Models\Notifications;
 use App\Models\Quotation;
 use App\Models\Users;
 use Exception;
@@ -31,10 +32,18 @@ class QuotationController extends Controller
 
                 $familys = Familys::find($objQuotation['familyMembers']);
 
+                $objQuotation['familyMemberID'] = $objQuotation['familyFrom']; /* $familys['name'] . ' ' . $familys['lastname'] */
+
                 $objQuotation['familyMembers'] = $familys['name'] . ' ' . $familys['lastname'];
 
                 $objQuotation->gender = $familys['gender'];
+
+                unset($objQuotation['familyFrom']);
+
             } else {
+
+                $objQuotation['familyMemberID'] = $user['_id'];
+
                 $objQuotation['familyMembers'] = $user['name'];
             }
 
@@ -57,13 +66,19 @@ class QuotationController extends Controller
     public function showQuotation()
     {
         try {
-            if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 4) {
-                $quotation = Quotation::all();
+            if (auth()->user()->role == 1 || auth()->user()->role == 2) {
+                $quotation = Quotation::where('familyMemberID',Auth::user()->_id)->orderBy('date')->get();
 
                 $familys = Familys::where("id_usuario", Auth::user()->_id)->get();
 
                 return view('auth.quotation', compact('quotation', 'familys'));
                 // return response()->json(["Quotation" => $quotation, "familys" => $familys],200);
+            }elseif (auth()->user()->role == 4) {
+                $quotation = Quotation::orderBy('date')->get();
+
+                $familys = Familys::where("id_usuario", Auth::user()->_id)->get();
+
+                return view('auth.quotation', compact('quotation', 'familys'));
             } else {
                 return view('blocked');
             }
