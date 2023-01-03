@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Users;
 use Exception;
-use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use GoogleTranslate;
@@ -16,7 +15,7 @@ class LangController extends Controller
     {
         App::setLocale($request->lang);
         session()->put('locale', $request->lang);
-        $user = Users::find($request->_id);
+        $user = Users::find(auth()->user()->_id);
         $user->lang = $request->lang;
         $user->save();
         return redirect()->back();

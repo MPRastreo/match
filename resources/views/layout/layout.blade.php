@@ -981,7 +981,8 @@
     <script src="{{ asset('/js/main.js') }}"></script>
     <script>
         const url = "{{ url('/lang/change') }}";
-        $('.changeLang').change(function(event) {
+        $('.changeLang').change(function(event)
+        {
             window.location.href = url + "?lang=" + $(this).val();
         })
     </script>
