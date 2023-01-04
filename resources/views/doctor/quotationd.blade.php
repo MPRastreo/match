@@ -2658,7 +2658,7 @@
         {
             Swal.fire({
                 icon: "warning",
-                title: "{{ GoogleTranslate::justTranslate('¿Are you sure?', $lang) }}",
+                title: "{{ GoogleTranslate::justTranslate('Are you sure?', $lang) }}",
                 text: "{{ GoogleTranslate::justTranslate('This action cannot be undone', $lang) }}",
                 showCancelButton: true,
                 confirmButtonText: '{{ GoogleTranslate::justTranslate('Yes', $lang) }}',
