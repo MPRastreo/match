@@ -34,16 +34,50 @@
     });
 })()
 
+$(document).ready(function () {
+    $("#txtSpecialty").on('click', function () {
+
+        if ($('#txtSpecialty').val() == "Another") {
+
+            $("#txtSpecify").show();
+            $("#txtSpecifyLabel").show();
+
+            document.getElementById('txtSpecify').required = true;
+
+            return false;
+        }
+
+        $("#txtSpecify").hide();
+        $("#txtSpecifyLabel").hide();
+
+        document.getElementById('txtSpecify').required = false;
+
+        return false;
+    });
+});
+
 const addQuotation = () => {
     const txtSpecialty = document.getElementById('txtSpecialty').value;
     const txtDate = document.getElementById('txtDate').value;
     const txtFamilyMembers = document.getElementById('txtFamilyMembers').value;
     const floatingTextarea = document.getElementById('floatingTextarea').value;
+    const txtFamilyFrom = document.getElementById('txtFamilyFrom').value;
+
+    let specialy = "";
+
+    if (txtSpecialty == "Another") {
+
+        specialy = document.getElementById('txtSpecify').value;
+    }else{
+
+        specialy = txtSpecialty;
+    }
 
     data = {
-        specialy: txtSpecialty,
+        specialy: specialy,
         date: txtDate,
         familyMembers: txtFamilyMembers,
+        familyFrom: txtFamilyFrom,
         reason: floatingTextarea,
         status: "Requested",
         _token: $('meta[name="csrf-token"]').attr('content')

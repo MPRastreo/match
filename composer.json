@@ -16,7 +16,8 @@
         "laravel/tinker": "^2.5",
         "mongodb/mongodb": "^1.11",
         "mpdf/mpdf": "8.1",
-        "stechstudio/laravel-jwt": "^1.11"
+        "stechstudio/laravel-jwt": "^1.11",
+        "silviolleite/laravelpwa": "^2.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

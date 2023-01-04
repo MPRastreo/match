@@ -110,6 +110,8 @@
 		}
 	</script>
     @yield('links')
+
+    @laravelPWA
 </head>
 
 <body>
@@ -986,6 +988,10 @@
             window.location.href = url + "?lang=" + $(this).val();
         })
     </script>
+    <script>
+        var notificaciones;
+    </script>
+    <script src="{{ asset('js/notifications.js') }}"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     @yield('scripts')
     <script>

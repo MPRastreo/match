@@ -40,7 +40,6 @@
                                                     {{ $quota->familyMembers }}<br><br>
                                                     <i class="bi bi-clipboard2-pulse-fill"></i> {{ $quota->specialy }}
                                                     </p>
-
                                                     <i class="bi bi-calendar-event"></i> {{ $quota->date }}
                                                     </p>
                                                 </div>
@@ -110,6 +109,22 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready(function() {
+            $("#txtBuscador").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#divContent .unidad").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+
+        function validar() {
+            if (validator) ñ
+
+        }
+    </script>
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -122,9 +137,38 @@
                 <div class="modal-body">
                     <form class="needs-validation row g-3" novalidate>
                         <div class="col-md-12">
+                            <input type="text" value="{{ Auth::user()->_id }}" id="txtFamilyFrom"
+                                style="display: none;">
                             <label for="validationCustom01"
                                 class="form-label"><b>{{ GoogleTranslate::justTranslate('Specialty', app()->getLocale()) }}</b></label>
-                            <input type="text" class="form-control" id="txtSpecialty" required>
+                            <select class="form-select" name="" id="txtSpecialty" required>
+                                <option value="0" selected disabled>
+                                    {{ GoogleTranslate::justTranslate('Reason for consultation', app()->getLocale()) }}
+                                </option>
+                                <option
+                                    value="{{ GoogleTranslate::justTranslate('General inquiryn', app()->getLocale()) }}">
+                                    {{ GoogleTranslate::justTranslate('General inquiry', app()->getLocale()) }}
+                                </option>
+                                <option value="{{ GoogleTranslate::justTranslate('Discomfort', app()->getLocale()) }}">
+                                    {{ GoogleTranslate::justTranslate('Discomfort', app()->getLocale()) }}
+                                </option>
+                                <option
+                                    value="{{ GoogleTranslate::justTranslate('Medical checkup', app()->getLocale()) }}">
+                                    {{ GoogleTranslate::justTranslate('Medical checkup', app()->getLocale()) }}
+                                </option>
+                                <option
+                                    value="{{ GoogleTranslate::justTranslate('Follow-up consultation', app()->getLocale()) }}">
+                                    {{ GoogleTranslate::justTranslate('Follow-up consultation', app()->getLocale()) }}
+                                </option>
+                                <option value="Another">
+                                    {{ GoogleTranslate::justTranslate('Another', app()->getLocale()) }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label" id="txtSpecifyLabel"
+                                style="display: none;"><b>{{ GoogleTranslate::justTranslate('Specify', app()->getLocale()) }}</b></label>
+                            <input type="text" class="form-control" id="txtSpecify" style="display: none;">
                         </div>
                         <div class="col-md-12">
                             <label

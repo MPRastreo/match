@@ -77,7 +77,7 @@ const addRecipe = async () => {
         duration_time: duration_time
     }
 
-    datav.push(data);
+          .push(data);
 
     alert = await translateAlertDoctor('Éxito!', 'Medicamento agregado correctamente', 'success');
 
