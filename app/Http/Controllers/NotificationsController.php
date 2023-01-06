@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use GoogleTranslate;
 use stdClass;
+use GoogleTranslate;
 
 class NotificationsController extends Controller
 {
@@ -42,74 +43,6 @@ class NotificationsController extends Controller
 
             return response()->json($notificaciones);
         }
-
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Notifications  $notifications
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Notifications $notifications)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Notifications  $notifications
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Notifications $notifications)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Notifications  $notifications
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Notifications $notifications)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Notifications  $notifications
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Notifications $notifications)
-    {
-        //
     }
 
     public function asignacion($user)
@@ -170,5 +103,19 @@ class NotificationsController extends Controller
             }
 
             $notificaciones->save();
+    }
+
+    public function watchNotification(Request $request)
+    {
+
+        Log::info($request);
+
+        $quotation = Notifications::find($request->id);
+
+        $quotation->visto = true;
+
+        $quotation->save();
+
+        return 1;
     }
 }

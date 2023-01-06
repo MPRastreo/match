@@ -103,6 +103,7 @@ Route::group(['middleware' => ['auth']], function ()
     Route::post('/translate/alerts', 'LangController@translateAlerts');
 
     Route::get('/notifications/cabina','NotificationsController@index');
+    Route::post('/notifications/watch','NotificationsController@watchNotification');
 });
 
 Route::group(['middleware' => ['doctor']], function ()

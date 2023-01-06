@@ -60,6 +60,56 @@
                                                         </div>
                                                     @endif
                                                 </div>
+                                            @elseif ($quota->status == 'Requested')
+                                                <div class="col-xl-3 col-xs-cu-12 unidad">
+                                                    <div class="card shadow mb-xs-cu-3 p-xl-4 p-xs-cu-2">
+                                                        @if ($quota->gender == 'Male')
+                                                            <div class="card-body text-center">
+                                                                <img src="{{ asset('img/man.png') }}"
+                                                                    class="img-fluid rounded-top my-2" alt="">
+                                                            </div>
+                                                        @else
+                                                            <div class="card-body text-center">
+                                                                <img src="{{ asset('img/mujer.png') }}"
+                                                                    class="img-fluid rounded-top my-2 " alt="">
+                                                            </div>
+                                                        @endif
+                                                        <div class="text-center">
+                                                            {{ $quota->familyMembers }}<p></p>
+                                                            <i class="bi bi-clipboard2-pulse-fill"></i>
+                                                            {{ $quota->specialy }}
+                                                            </p>
+
+                                                            <i class="bi bi-calendar-event"></i> {{ $quota->date }}
+                                                            </p>
+                                                        </div>
+                                                        <div class="card-footer d-grid">
+                                                            @if (Auth::user()->role == 2 || Auth::user()->role == 1)
+                                                                <button type="button" class="btn btn-danger"
+                                                                    onclick="deleteAppointment('{{ $quota->_id }}');">
+                                                                    {{ GoogleTranslate::justTranslate('Cancel', app()->getLocale()) }}
+                                                                </button>
+                                                            @else
+                                                                <button type="button" class="btn btn-warning"
+                                                                    {{-- data-bs-toggle="modal" data-bs-target="#assignQuotation" --}}
+                                                                    onclick="openModalAssign('{{ $quota->_id }}');">
+                                                                    {{ GoogleTranslate::justTranslate('Assign', app()->getLocale()) }}
+                                                                </button>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <div class="col-md-8">
+                                                <img src="https://gestaodeclinicas.ajmed.com.br/wp-content/uploads/2020/01/Contabilidade-para-cl%C3%ADnicas-m%C3%A9dicas-e-consult%C3%B3rios-m%C3%A9dicos.gif"
+                                                    class="img-fluid col-12">
+                                                <br>
+                                                <h2 class="h2 text-center pb-5 px-5 text-title-cu text-bold-cu">
+                                                    {{ GoogleTranslate::justTranslate('At the moment you have no appointments', app()->getLocale()) }}
+                                                </h2>
                                             </div>
                                         </div>
                                     @elseif ($quota->status == 'Requested')
