@@ -2,11 +2,11 @@ let str = '';
 
 function mostrarMotificacionesCabina() {
     fetch('/notifications/cabina', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    }).then((response) => response.json())
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => response.json())
         .then((res) => {
 
             console.log(res);
@@ -32,7 +32,44 @@ function mostrarMotificacionesCabina() {
         })
 }
 
-$( document ).ready(function() {
+function verNotificacion(id, nombre) {
+
+    var data = {
+        id: id,
+        _token: $('meta[name="csrf-token"]').attr('content')
+    }
+
+    Swal.fire({
+        title: `Cargando...`,
+        text: 'Espere un momento',
+        icon: 'info',
+        allowOutsideClick: true,
+        onBeforeOpen: () => {
+            Swal.showLoading();
+        },
+    });
+
+    fetch('/notifications/watch', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        }).then((resp) => resp.json())
+            .then(function (data) {
+                if (data != 0) {
+                    window.location = `/${nombre}`;
+                }
+        }).catch((error) =>
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: 'Ocurrió un error vuelve a intentarlo'
+            })
+        );
+}
+
+$(document).ready(function () {
     mostrarMotificacionesCabina();
     Notification.requestPermission().then((result) => {
         console.log(result);

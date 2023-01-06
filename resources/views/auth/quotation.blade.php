@@ -14,97 +14,113 @@
                     <div class="card-header">
                         @if (Auth::user()->role == 2)
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                style="margin: 15px; float:right;">
+                                style="margin: 1rem; float:right;">
                                 {{ GoogleTranslate::justTranslate('Schedule Appointment', app()->getLocale()) }}
                             </button>
                         @else
                         @endif
-                        <div class="col-xl-2 offset-xl-10 col-xs-cu-12">
-                            <div class="form-floating">
+                            <div>
+                                <style>
+                                    #txtBuscador::placeholder {
+                                        color: black;
+                                    }
+                                </style>
                                 <input type="search" class="form-control rounded" name="txtBuscador" id="txtBuscador"
-                                    placeholder="Buscar" aria-label="Buscar" aria-describedby="buscar-addon">
-                                <label for="txtBuscador" id="search-addon"><i class="icons fas fa-search"></i>
-                                    Buscar...</label>
+                                    placeholder="Buscar..." aria-label="Buscar" aria-describedby="buscar-addon" style="width: 30%; margin: 1rem;"> {{-- 15 rem --}}
                             </div>
-                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="col md 12" >
+                        <div class="col md 12">
                             <div class="row" id="divContent">
-                                <div class="row p-xl-5 p-xs-cu-3">
-                                    @foreach ($quotation as $quota)
-                                        @if ($quota->status == 'Assign' && (Auth::user()->role == 2 || Auth::user()->role == 1))
-                                            <div class="col-xl-3 col-xs-cu-12 unidad">
-                                                <div class="card shadow mb-xs-cu-3 p-xl-4 align-self-stretch">
-                                                    @if ($quota->gender == 'Male')
-                                                        <div class="card-body text-center">
-                                                            <img src="{{ asset('img/man.png') }}"
-                                                                class="img-fluid rounded-top my-2" alt="">
-                                                        </div>
-                                                    @else
-                                                        <div class="card-body text-center">
-                                                            <img src="{{ asset('img/mujer.png') }}"
-                                                                class="img-fluid rounded-top my-2 " alt="">
-                                                        </div>
-                                                    @endif
-                                                    <div class="text-center">
-                                                        {{ $quota->familyMember }}<br><br>
-                                                        <i class="bi bi-clipboard2-pulse-fill"></i> {{ $quota->specialy }}
-                                                        </p>
-
-                                                        <i class="bi bi-calendar-event"></i> {{ $quota->date }}
-                                                        </p>
-                                                    </div>
-                                                    <div class="card-footer d-grid">
-                                                        {{-- @if (Auth::user()->role == 2) --}}
-                                                        <button type="button" class="btn btn-warning"
-                                                            onclick="seeDetails('{{ $quota->_id }}');">
-                                                            {{ GoogleTranslate::justTranslate('See details', app()->getLocale()) }}
-                                                        </button>
-                                                        {{-- @endif --}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @elseif ($quota->status == 'Requested')
-                                            <div class="col-xl-3 col-xs-cu-12 unidad">
-                                                <div class="card shadow mb-xs-cu-3 p-xl-4 p-xs-cu-2">
-                                                    @if ($quota->gender == 'Male')
-                                                        <div class="card-body text-center">
-                                                            <img src="{{ asset('img/man.png') }}"
-                                                                class="img-fluid rounded-top my-2" alt="">
-                                                        </div>
-                                                    @else
-                                                        <div class="card-body text-center">
-                                                            <img src="{{ asset('img/mujer.png') }}"
-                                                                class="img-fluid rounded-top my-2 " alt="">
-                                                        </div>
-                                                    @endif
-                                                    <div class="text-center">
-                                                        {{ $quota->familyMembers }}<br><br>
-                                                        <i class="bi bi-clipboard2-pulse-fill"></i> {{ $quota->specialy }}
-                                                        </p>
-
-                                                        <i class="bi bi-calendar-event"></i> {{ $quota->date }}
-                                                        </p>
-                                                    </div>
-                                                    <div class="card-footer d-grid">
-                                                        @if (Auth::user()->role == 2 || Auth::user()->role == 1)
-                                                            <button type="button" class="btn btn-danger"
-                                                                onclick="deleteAppointment('{{ $quota->_id }}');">
-                                                                {{ GoogleTranslate::justTranslate('Cancel', app()->getLocale()) }}
-                                                            </button>
+                                <div class="row p-xl-4 p-xs-cu-3">
+                                    @if (sizeOf($quotation) != 0)
+                                        @foreach ($quotation as $quota)
+                                            @if ($quota->status == 'Assign' && (Auth::user()->role == 2 || Auth::user()->role == 1))
+                                                <div class="col-xl-3 col-xs-cu-12 unidad">
+                                                    <div class="card shadow mb-xs-cu-3 p-xl-4 align-self-stretch">
+                                                        @if ($quota->gender == 'Male')
+                                                            <div class="card-body text-center">
+                                                                <img src="{{ asset('img/man.png') }}"
+                                                                    class="img-fluid rounded-top my-2" alt="">
+                                                            </div>
                                                         @else
-                                                            <button type="button" class="btn btn-warning"
-                                                                {{-- data-bs-toggle="modal" data-bs-target="#assignQuotation" --}}
-                                                                onclick="openModalAssign('{{ $quota->_id }}');">
-                                                                {{ GoogleTranslate::justTranslate('Assign', app()->getLocale()) }}
-                                                            </button>
+                                                            <div class="card-body text-center">
+                                                                <img src="{{ asset('img/mujer.png') }}"
+                                                                    class="img-fluid rounded-top my-2 " alt="">
+                                                            </div>
                                                         @endif
+                                                        <div class="text-center">
+                                                            {{ $quota->familyMember }}<p></p>
+                                                            <i class="bi bi-clipboard2-pulse-fill"></i>
+                                                            {{ $quota->specialy }}
+                                                            </p>
+
+                                                            <i class="bi bi-calendar-event"></i> {{ $quota->date }}
+                                                            </p>
+                                                        </div>
+                                                        <div class="card-footer d-grid">
+                                                            {{-- @if (Auth::user()->role == 2) --}}
+                                                            <button type="button" class="btn btn-warning"
+                                                                onclick="seeDetails('{{ $quota->_id }}');">
+                                                                {{ GoogleTranslate::justTranslate('See details', app()->getLocale()) }}
+                                                            </button>
+                                                            {{-- @endif --}}
+                                                        </div>
                                                     </div>
                                                 </div>
+                                            @elseif ($quota->status == 'Requested')
+                                                <div class="col-xl-3 col-xs-cu-12 unidad">
+                                                    <div class="card shadow mb-xs-cu-3 p-xl-4 p-xs-cu-2">
+                                                        @if ($quota->gender == 'Male')
+                                                            <div class="card-body text-center">
+                                                                <img src="{{ asset('img/man.png') }}"
+                                                                    class="img-fluid rounded-top my-2" alt="">
+                                                            </div>
+                                                        @else
+                                                            <div class="card-body text-center">
+                                                                <img src="{{ asset('img/mujer.png') }}"
+                                                                    class="img-fluid rounded-top my-2 " alt="">
+                                                            </div>
+                                                        @endif
+                                                        <div class="text-center">
+                                                            {{ $quota->familyMembers }}<p></p>
+                                                            <i class="bi bi-clipboard2-pulse-fill"></i>
+                                                            {{ $quota->specialy }}
+                                                            </p>
+
+                                                            <i class="bi bi-calendar-event"></i> {{ $quota->date }}
+                                                            </p>
+                                                        </div>
+                                                        <div class="card-footer d-grid">
+                                                            @if (Auth::user()->role == 2 || Auth::user()->role == 1)
+                                                                <button type="button" class="btn btn-danger"
+                                                                    onclick="deleteAppointment('{{ $quota->_id }}');">
+                                                                    {{ GoogleTranslate::justTranslate('Cancel', app()->getLocale()) }}
+                                                                </button>
+                                                            @else
+                                                                <button type="button" class="btn btn-warning"
+                                                                    {{-- data-bs-toggle="modal" data-bs-target="#assignQuotation" --}}
+                                                                    onclick="openModalAssign('{{ $quota->_id }}');">
+                                                                    {{ GoogleTranslate::justTranslate('Assign', app()->getLocale()) }}
+                                                                </button>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <div class="col-md-8">
+                                                <img src="https://gestaodeclinicas.ajmed.com.br/wp-content/uploads/2020/01/Contabilidade-para-cl%C3%ADnicas-m%C3%A9dicas-e-consult%C3%B3rios-m%C3%A9dicos.gif"
+                                                    class="img-fluid col-12">
+                                                <br>
+                                                <h2 class="h2 text-center pb-5 px-5 text-title-cu text-bold-cu">
+                                                    {{ GoogleTranslate::justTranslate('At the moment you have no appointments', app()->getLocale()) }}
+                                                </h2>
                                             </div>
-                                        @endif
-                                    @endforeach
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
