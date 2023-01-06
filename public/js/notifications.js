@@ -25,7 +25,8 @@ const showCabinNotifications = async () =>
                     {
                         body: n.cuerpo,
                         icon: img,
-                        badge: img
+                        badge: img,
+                        tag: n._id
                     });
                 }
             }
