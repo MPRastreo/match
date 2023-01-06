@@ -58,26 +58,26 @@
                         data-bs-target="#modalAdd">
                         <i class="fa-solid fa-plus"></i> Add</button>
                 </div>
-                <div class="card-body">
-                    <div class="col md 12">
-                        <div class="row d-flex justify-content-center align-items-center">
+                <div class="card-body pt-3 d-none d-md-block">
+                    <div class="d-flex">
+                        <div class="row justify-content-center align-items-center">
                             @foreach ($familys as $family)
-                                <div class="col col-lg-5 mb-4">
-                                    <div class="card mb-3">
+                                <div class="col-md-6 mb-4">
+                                    <div class="card mb-3" style="border-radius: 20px;">
                                         <div class="row g-0">
-                                            <div class="col-md-4 text-center text-white"
-                                                style="background-color: rgba(35,161,220) ">
+                                            <div class="col-md-5 text-center text-white"
+                                                style="background-color: rgba(35,161,220); border-bottom-left-radius: 20px; border-top-left-radius: 20px;">
                                                 @if ($family->gender == 'Male')
                                                     <img src="{{ asset('img/man.png') }}"
-                                                        class="img-fluid rounded-top my-5 " alt="">
+                                                        class="img-fluid rounded-top my-5" style="max-width: 162px;" alt="">
                                                 @else
                                                     <img src="{{ asset('img/mujer.png') }}"
-                                                        class="img-fluid rounded-top my-5 " alt="">
+                                                        class="img-fluid rounded-top my-5" style="max-width: 162px;" alt="">
                                                 @endif
                                                 {{-- alt="Avatar" class="img-fluid " style="width: 80px;" /> --}}
-                                                <h5>{{ $family->name }} {{ $family->lastname }} </h5>
+                                                <h5 class="fw-bolder">{{ $family->name }} {{ $family->lastname }} </h5>
                                                 @if (isset($family->occupation))
-                                                    <p>{{ $family->occupation }}</p>
+                                                    <p>{{ ucwords($family->occupation) }}</p>
                                                 @endif
                                                 <p>{{ $family->schooling }}</p>
                                                 <button type="button" class="btn btn-sm"
@@ -88,7 +88,83 @@
                                                     <i class="fa-solid fa-trash-can text-danger"></i>
                                                 </button>
                                             </div>
-                                            <div class="col-md-8 " style="border: 3px solid rgba(35,161,220);">
+                                            <div class="col-md-7" style="border: 3px solid rgba(35,161,220); border-bottom-right-radius: 20px; border-top-right-radius: 20px;">
+                                                <div class="card-body p-4">
+                                                    <h4>Information</h6>
+                                                        <hr class="mt-0 mb-4">
+                                                        <div class="row pt-1">
+                                                            <div class="col-md-12 mb-2">
+                                                                <h6>Email</h6>
+                                                                <p class="text-muted">{{ $family->email }}</p>
+                                                            </div>
+                                                            <div class="col-md-12 mb-2">
+                                                                <h6>Phone</h6>
+                                                                <p class="text-muted ">{{ $family->phone['phone'] }}</p>
+                                                                <h6>Mobile</h6>
+                                                                <p class="text-muted ">{{ $family->phone['mobile'] }}</p>
+                                                            </div>
+                                                            <div class="col-md-12 mb-2">
+                                                                <h6>Address</h6>
+                                                                <p class="text-muted mb-0">{{ $family->address['street'] }}
+                                                                    #{{ $family->address['num_ext'] }}
+                                                                    @if ($family->address['num_int'] != 'N/A')
+                                                                        - {{ $family->address['num_int'] }}
+                                                                    @endif
+                                                                    {{ $family->address['colony'] }}
+                                                                    {{ $family->address['state'] }}
+                                                                    {{ $family->address['country'] }}
+                                                                    {{ $family->address['zip_code'] }}
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-md-4 mb-2">
+                                                                <h6>Age</h6>
+                                                                <p class="text-muted">{{ $family->age }}</p>
+                                                            </div>
+                                                            <div class="col-md-8 mb-2">
+                                                                <h6>Relationship</h6>
+                                                                <p class="text-muted mb-0">{{ $family->relationship }}</p>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body pt-3 d-md-none">
+                    <div class="d-flex">
+                        <div class="row justify-content-center align-items-center">
+                            @foreach ($familys as $family)
+                                <div class="col-md-6 mb-4">
+                                    <div class="card mb-3" style="border-radius: 20px;">
+                                        <div class="row g-0">
+                                            <div class="col-md-5 text-center text-white"
+                                                style="background-color: rgba(35,161,220); border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                                                @if ($family->gender == 'Male')
+                                                    <img src="{{ asset('img/man.png') }}"
+                                                        class="img-fluid rounded-top my-4" style="max-width: 162px;" alt="">
+                                                @else
+                                                    <img src="{{ asset('img/mujer.png') }}"
+                                                        class="img-fluid rounded-top my-4" style="max-width: 162px;" alt="">
+                                                @endif
+                                                {{-- alt="Avatar" class="img-fluid " style="width: 80px;" /> --}}
+                                                <h5 class="fw-bolder">{{ $family->name }} {{ $family->lastname }} </h5>
+                                                @if (isset($family->occupation))
+                                                    <p>{{ ucwords($family->occupation) }}</p>
+                                                @endif
+                                                <p>{{ $family->schooling }}</p>
+                                                <button type="button" class="btn btn-sm pb-3"
+                                                    onclick="editMember('{{ $family->_id }}')"> <i
+                                                        class="far fa-edit text-light"></i></button>
+                                                <button type="button" class="btn btn-sm pb-3"
+                                                    onclick="deleteMember('{{ $family->_id }}')">
+                                                    <i class="fa-solid fa-trash-can text-danger"></i>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-7" style="border: 3px solid rgba(35,161,220); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
                                                 <div class="card-body p-4">
                                                     <h4>Information</h6>
                                                         <hr class="mt-0 mb-4">

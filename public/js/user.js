@@ -47,11 +47,11 @@
 
 const addUser = () =>
 {
-    const selectRole = document.getElementById('selectRole').value;
-    const inputUsername = document.getElementById('inputUsername').value;
-    const inputPassword = document.getElementById('inputPassword').value;
+    const selectRole = (document.getElementById('selectRole').value != "") ? document.getElementById('selectRole').value : document.getElementById('selectRoleB').value;
+    const inputUsername = (document.getElementById('inputUsername').value != "") ? document.getElementById('inputUsername').value : document.getElementById('inputUsernameB').value;
+    const inputPassword = (document.getElementById('inputPassword').value != "") ? document.getElementById('inputPassword').value : document.getElementById('inputPasswordB').value;
 
-    data =
+    const data =
     {
         username: inputUsername,
         password: inputPassword,

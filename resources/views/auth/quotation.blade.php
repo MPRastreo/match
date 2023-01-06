@@ -11,29 +11,29 @@
             <div class="card w-100">
                 <div class="card-header">
                     @if (Auth::user()->role == 2)
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal"
                             style="margin: 15px; float:right;">
                             {{ GoogleTranslate::justTranslate('Schedule Appointment', app()->getLocale()) }}
                         </button>
                     @endif
                 </div>
                 <div class="card-body">
-                    <div class="col md 12">
-                        <div class="d-flex justify-content-center align-items-center">
-                            <div class="row p-xl-5 p-xs-cu-3">
+                    <div class="col-12">
+                        <div class="justify-content-center align-items-center">
+                            <div class="row p-2 p-xs-cu-3">
                                 @foreach ($quotation as $quota)
                                     @if ($quota->status == 'Assign' && (Auth::user()->role == 2 || Auth::user()->role == 1))
-                                        <div class="col-xl-3 col-xs-cu-12">
-                                            <div class="card shadow mb-xs-cu-3 p-xl-4 p-xs-cu-2">
+                                        <div class="col-md-4 p-2 px-3">
+                                            <div class="card shadow-sm h-100">
                                                 @if ($quota->gender == 'Male')
                                                     <div class="card-body text-center">
                                                         <img src="{{ asset('img/man.png') }}"
-                                                            class="img-fluid rounded-top my-2" alt="">
+                                                            class="img-fluid rounded-top my-2" style="max-width: 162px;" alt="">
                                                     </div>
                                                 @else
                                                     <div class="card-body text-center">
                                                         <img src="{{ asset('img/mujer.png') }}"
-                                                            class="img-fluid rounded-top my-2 " alt="">
+                                                            class="img-fluid rounded-top my-2" style="max-width: 162px;" alt="">
                                                     </div>
                                                 @endif
                                                 <div class="text-center">
@@ -46,14 +46,14 @@
                                                 <div class="card-footer d-grid">
 
                                                     <div class="d-block py-2">
-                                                        <button type="button" class="btn btn-warning w-100"
+                                                        <button type="button" class="btn btn-warning w-100 rounded-pill"
                                                             onclick="seeDetails('{{ $quota->_id }}');">
                                                             {{ GoogleTranslate::justTranslate('See details', app()->getLocale()) }}
                                                         </button>
                                                     </div>
                                                     @if (Auth::user()->role == 1 || Auth::user()->role == 4)
                                                         <div class="d-block py-2">
-                                                            <button type="button" class="btn btn-primary w-100"
+                                                            <button type="button" class="btn btn-primary w-100 rounded-pill"
                                                                 onclick="generateToken('{{ $quota->_id }}');">
                                                                 {{ GoogleTranslate::justTranslate('Generate token', app()->getLocale()) }}
                                                             </button>
@@ -63,35 +63,36 @@
                                             </div>
                                         </div>
                                     @elseif ($quota->status == 'Requested')
-                                        <div class="col-xl-3 col-xs-cu-12">
-                                            <div class="card shadow mb-xs-cu-3 p-xl-4 p-xs-cu-2">
+                                        <div class="col-md-4 p-2 px-3">
+                                            <div class="card shadow h-100">
                                                 @if ($quota->gender == 'Male')
                                                     <div class="card-body text-center">
                                                         <img src="{{ asset('img/man.png') }}"
-                                                            class="img-fluid rounded-top my-2" alt="">
+                                                            class="img-fluid rounded-top my-2" style="max-width: 162px;" alt="">
                                                     </div>
                                                 @else
                                                     <div class="card-body text-center">
                                                         <img src="{{ asset('img/mujer.png') }}"
-                                                            class="img-fluid rounded-top my-2 " alt="">
+                                                            class="img-fluid rounded-top my-2" style="max-width: 162px;" alt="">
                                                     </div>
                                                 @endif
                                                 <div class="text-center">
-                                                    {{ $quota->familyMembers }}<br><br>
-                                                    <i class="bi bi-clipboard2-pulse-fill"></i> {{ $quota->specialy }}
+                                                    <p class="fw-bolder d-block">{{ $quota->familyMembers }}</p>
+                                                    <p class="d-block">
+                                                        <i class="bi bi-clipboard2-pulse-fill"></i>&nbsp;&nbsp;{{ $quota->specialy }}
                                                     </p>
-
-                                                    <i class="bi bi-calendar-event"></i> {{ $quota->date }}
+                                                    <p class="d-block">
+                                                        <i class="bi bi-calendar-event"></i>&nbsp;&nbsp;{{ $quota->date }}
                                                     </p>
                                                 </div>
                                                 <div class="card-footer d-grid">
                                                     @if (Auth::user()->role == 2 || Auth::user()->role == 1)
-                                                        <button type="button" class="btn btn-danger"
+                                                        <button type="button" class="btn btn-danger rounded-pill"
                                                             onclick="deleteAppointment('{{ $quota->_id }}');">
                                                             {{ GoogleTranslate::justTranslate('Cancel', app()->getLocale()) }}
                                                         </button>
                                                     @else
-                                                        <button type="button" class="btn btn-warning" {{-- data-bs-toggle="modal" data-bs-target="#assignQuotation" --}}
+                                                        <button type="button" class="btn btn-warning rounded-pill" {{-- data-bs-toggle="modal" data-bs-target="#assignQuotation" --}}
                                                             onclick="openModalAssign('{{ $quota->_id }}');">
                                                             {{ GoogleTranslate::justTranslate('Assign', app()->getLocale()) }}
                                                         </button>
@@ -204,10 +205,10 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-secondary rounded-pill"
                                 data-bs-dismiss="modal">{{ GoogleTranslate::justTranslate('Cancel', app()->getLocale()) }}</button>
                             <button type="button" onclick="$('#btnSaveQuotation').click();"
-                                class="btn btn-primary">{{ GoogleTranslate::justTranslate('Save change', app()->getLocale()) }}</button>
+                                class="btn btn-primary rounded-pill">{{ GoogleTranslate::justTranslate('Save changes', app()->getLocale()) }}</button>
                         </div>
                     </form>
                 </div>
@@ -267,10 +268,10 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-secondary rounded-pill"
                                 data-bs-dismiss="modal">{{ GoogleTranslate::justTranslate('Cancel', app()->getLocale()) }}</button>
                             <button type="button" onclick="$('#btnAssignQuotation').click();"
-                                class="btn btn-primary">{{ GoogleTranslate::justTranslate('Save change', app()->getLocale()) }}</button>
+                                class="btn btn-primary rounded-pill">{{ GoogleTranslate::justTranslate('Save changes', app()->getLocale()) }}</button>
                         </div>
                     </form>
                 </div>
@@ -325,7 +326,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary"
+                            <button type="button" class="btn btn-primary rounded-pill"
                                 data-bs-dismiss="modal">{{ GoogleTranslate::justTranslate('Close Details', app()->getLocale()) }}</button>
                         </div>
                     </form>

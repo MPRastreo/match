@@ -9,6 +9,7 @@
     <title>{{ GoogleTranslate::justTranslate('Appointment - Doctor', $lang) }}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     <!-- Favicons -->
     <link href="{{ asset('/img/Imagologo-07.png') }}" rel="icon">

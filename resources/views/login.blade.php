@@ -9,6 +9,7 @@
     <title>Login</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     <!-- Favicons -->
     <link href="{{ asset('/img/Imagologo-07.png') }}" rel="icon">
@@ -36,7 +37,6 @@
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @laravelPWA
 <body>
     <main>
         <div class="container">

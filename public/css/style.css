@@ -75,7 +75,7 @@ h6 {
     opacity: 0;
     right: 15px;
     bottom: 15px;
-    z-index: 99999;
+    z-index: 1055;
     background: #4154f1;
     width: 40px;
     height: 40px;
@@ -395,7 +395,7 @@ h6 {
 .header {
     transition: all 0.5s;
     z-index: 997;
-    height: 60px;
+    height: 70px;
     box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
     background-color: #fff;
     padding-left: 20px;
@@ -1266,4 +1266,37 @@ h6 {
 .nav-tabs .nav-link {
     border-top-left-radius: 20px !important;
     border-top-right-radius: 20px !important;
+}
+
+#img {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("https://cdn.dribbble.com/users/108183/screenshots/4543219/loader_backinout.gif");
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1057;
+    cursor: pointer;
+}
+
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    /* left: 0; */
+    /* right: 0; */
+    bottom: 0;
+    background-color: rgb(255, 255, 255);
+    z-index: 1056;
+}
+
+.icon-background {
+    color: #0572ce;
 }

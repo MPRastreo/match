@@ -1,43 +1,59 @@
 let str = '';
+const img = 'img/Match_PNG-01.png';
 
-function mostrarMotificacionesCabina() {
-    fetch('/notifications/cabina', {
+const showCabinNotifications = async () =>
+{
+    const serviceWorker = await navigator.serviceWorker.register('js/sw.js');
+    fetch('/notifications/cabina',
+    {
         method: 'GET',
-        headers: {
+        headers:
+        {
             'Content-Type': 'application/json'
         },
-    }).then((response) => response.json())
-        .then((res) => {
-
-            console.log(res);
-
-            notificaciones = res;
-
-            notificaciones.forEach(n => {
-
-                if (n.visto == false) {
-                    var img = 'img/Match_PNG-01.png';
-                    var notification = new Notification(n.encabezado, {
+    }).then(response => response.json())
+    .then(res =>
+    {
+        notifications = res;
+        notifications.forEach(n =>
+        {
+            if (!n.visto)
+            {
+                if (serviceWorker.active)
+                {
+                    serviceWorker.showNotification(n.encabezado,
+                    {
                         body: n.cuerpo,
-                        icon: img
+                        icon: img,
+                        badge: img
                     });
-                    notification.onshow;
-                    notification.onclick = function () {
-                        verNotificacion(n._id,n.titulo);
-                    }
                 }
-            });
-        }).catch((error) => {
-            console.error(error);
-        })
+            }
+        });
+    }).catch(error =>
+    {
+        console.error(error);
+    })
 }
 
-$( document ).ready(function() {
-    mostrarMotificacionesCabina();
-    Notification.requestPermission().then((result) => {
-        console.log(result);
-    });
-    setInterval(() => {
-        mostrarMotificacionesCabina();
-    }, 300000);
-});
+(() =>
+{
+    if (!("Notification" in window) && !('serviceWorker' in navigator))
+    {
+        alert("This browser does not support notifications");
+    }
+    else
+    {
+        Notification.requestPermission(() =>
+        {
+            if (Notification.permission === 'granted')
+            {
+                showCabinNotifications();
+                setInterval(() =>
+                {
+                    showCabinNotifications();
+                }, 100000);
+            }
+        });
+    }
+})();

@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use JoggApp\GoogleTranslate\GoogleTranslate;
 use stdClass;
 
 class NotificationsController extends Controller
@@ -111,8 +112,8 @@ class NotificationsController extends Controller
             $obj = new stdClass();
 
             $obj->encabezado = 'Match';
-            $obj->titulo = 'quotation';
-            $obj->cuerpo = 'You have an appointment to assign.';
+            $obj->titulo = ucwords(GoogleTranslate::justTranslate('Quotation', app()->getLocale()));
+            $obj->cuerpo = ucwords(GoogleTranslate::justTranslate('You have an appointment to assign', app()->getLocale()));
             $notificaciones->visto = false;
             $notificaciones->id_usuario = "Informativa";
 
@@ -128,8 +129,8 @@ class NotificationsController extends Controller
             $objUser = new stdClass();
 
             $objUser->encabezado = 'Match';
-            $objUser->titulo = 'quotation';
-            $objUser->cuerpo = 'Your appointment is pending assignment.';
+            $objUser->titulo = ucwords(GoogleTranslate::justTranslate('Quotation', app()->getLocale()));
+            $objUser->cuerpo = ucwords(GoogleTranslate::justTranslate('Your appointment is pending assignment.', app()->getLocale()));
             $notificacionesUser->visto = false;
             $notificacionesUser->id_usuario = $user->familyMemberID;
 
@@ -151,8 +152,8 @@ class NotificationsController extends Controller
             $obj = new stdClass();
 
             $obj->encabezado = 'Match';
-            $obj->titulo = 'quotation';
-            $obj->cuerpo = 'Your appointment is already assigned.';
+            $obj->titulo = ucwords(GoogleTranslate::justTranslate('Quotation', app()->getLocale()));
+            $obj->cuerpo = ucwords(GoogleTranslate::justTranslate('Your appointment is already assigned', app()->getLocale()));
             $obj->visto = false;
             $obj->id_usuario = $user->familyMemberID;
 

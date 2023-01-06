@@ -4,8 +4,12 @@
 @endsection
 @section('pagetitle')
     {{ ucwords(GoogleTranslate::justTranslate('Clinical History', app()->getLocale())) }}
-    <button type="button" class="btn btn-primary float-end rounded-pill rounded-pill" data-bs-toggle="modal"
+    <button type="button" class="btn btn-primary float-end rounded-pill rounded-pill d-none d-md-block" data-bs-toggle="modal"
         data-bs-target="#modalNew">{{ ucwords(GoogleTranslate::justTranslate('New Clinical Historie', app()->getLocale())) }}</button>
+    <button type="button" class="btn btn-primary btn-sm float-end rounded-pill d-md-none" data-bs-toggle="modal"
+        data-bs-target="#modalNew" data-bs-toggle="tooltip" title="{{ ucwords(GoogleTranslate::justTranslate('New Clinical Historie', app()->getLocale())) }}">
+        <i class="fa-solid fa-plus"></i>
+    </button>
 @endsection
 @section('links')
     <style>
@@ -247,7 +251,13 @@
 
         .bootstrap-select>.dropdown-toggle {
             padding-top: 1.625rem;
-            | padding-bottom: .625rem;
+            /* padding-bottom: .625rem; */
+        }
+
+        .px-1>.dropdown>button
+        {
+            padding-top: 0.25rem !important;
+            /* padding-bottom: 0rem !important; */
         }
 
         * {
@@ -361,190 +371,178 @@
     </script>
 @endsection
 @section('content')
-    <div class="row">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="tab-pend" data-bs-toggle="tab" data-bs-target="#tab-pend-pane"
-                    type="button" role="tab" aria-controls="tab-pend-pane"
-                    aria-selected="true">{{ ucwords(GoogleTranslate::justTranslate('Pending histories', app()->getLocale())) }}</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab-historie" data-bs-toggle="tab" data-bs-target="#tab-historie-pane"
-                    type="button" role="tab" aria-controls="tab-historie-pane"
-                    aria-selected="false">{{ ucwords(GoogleTranslate::justTranslate('Clinical Histories', app()->getLocale())) }}</button>
-            </li>
-            {{-- <li class="nav-item" role="presentation">
-                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane"
-                    type="button" role="tab" aria-controls="contact-tab-pane"
-                    aria-selected="false">{{ ucwords(GoogleTranslate::justTranslate('Contact', app()->getLocale())) }}</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane"
-                    type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false"
-                    disabled>Disabled</button>
-            </li> --}}
-        </ul>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="tab-pend-pane" role="tabpanel" aria-labelledby="tab-pend"
-                tabindex="0">
-                <div class="table-responsive">
-                    <table class="table text-center">
-                        <thead>
-                            <tr>
-                                <th scope="col">
-                                    {{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</th>
-                                <th scope="col">
-                                    {{ ucwords(GoogleTranslate::justTranslate('Progress', app()->getLocale())) }}
-                                </th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (!empty($clinicalHUncomplete))
-                                @foreach ($clinicalHUncomplete as $f)
-                                    @if ($f['clinical_history'] != null && $f['clinical_history']['progress'] < 100)
-                                        <tr>
-                                            <td class="align-middle">{{ $f['name'] . ' ' . $f['lastname'] }}</td>
-                                            <td class="align-middle">
-                                                <div class="d-flex align-items-center justify-content-center">
-                                                    <div style="max-width: 80px;"
-                                                        id="progressBarCircle-{{ $f['_id'] }}">
-                                                    </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-pend" data-bs-toggle="tab" data-bs-target="#tab-pend-pane"
+                type="button" role="tab" aria-controls="tab-pend-pane"
+                aria-selected="true">{{ ucwords(GoogleTranslate::justTranslate('Pending histories', app()->getLocale())) }}</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-historie" data-bs-toggle="tab" data-bs-target="#tab-historie-pane"
+                type="button" role="tab" aria-controls="tab-historie-pane"
+                aria-selected="false">{{ ucwords(GoogleTranslate::justTranslate('Clinical Histories', app()->getLocale())) }}</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="tab-pend-pane" role="tabpanel" aria-labelledby="tab-pend"
+            tabindex="0">
+            <div class="table-responsive">
+                <table class="table text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                {{ ucwords(GoogleTranslate::justTranslate('Name', app()->getLocale())) }}</th>
+                            <th scope="col">
+                                {{ ucwords(GoogleTranslate::justTranslate('Progress', app()->getLocale())) }}
+                            </th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!empty($clinicalHUncomplete))
+                            @foreach ($clinicalHUncomplete as $f)
+                                @if ($f['clinical_history'] != null && $f['clinical_history']['progress'] < 100)
+                                    <tr>
+                                        <td class="align-middle">{{ $f['name'] . ' ' . $f['lastname'] }}</td>
+                                        <td class="align-middle">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div style="max-width: 80px;"
+                                                    id="progressBarCircle-{{ $f['_id'] }}">
                                                 </div>
+                                            </div>
+                                        </td>
+                                        @if ($f['clinical_history']['progress'] < 100)
+                                            <td class="align-middle">
+                                                <button class="btn btn-primary btn-circle" data-bs-toggle="tooltip"
+                                                    data-bs-toggle="tooltip"
+                                                    onclick="completeClinicalH('{{ $f['_id'] }}');"
+                                                    title="{{ ucwords(GoogleTranslate::justTranslate('Complete medical history', app()->getLocale())) }}"><i
+                                                        class="fas fa-spinner"></i></button>
                                             </td>
-                                            @if ($f['clinical_history']['progress'] < 100)
-                                                <td class="align-middle">
-                                                    <button class="btn btn-primary btn-circle" data-bs-toggle="tooltip"
-                                                        data-bs-toggle="tooltip"
-                                                        onclick="completeClinicalH('{{ $f['_id'] }}');"
-                                                        title="{{ ucwords(GoogleTranslate::justTranslate('Complete medical history', app()->getLocale())) }}"><i
-                                                            class="fas fa-spinner"></i></button>
-                                                </td>
-                                            @else
-                                                <td class="align-middle">
-                                                    <button class="btn btn-success btn-circle" data-bs-toggle="tooltip"
-                                                        data-bs-toggle="tooltip"
-                                                        title="{{ ucwords(GoogleTranslate::justTranslate('Medical history completed', app()->getLocale())) }}"><i
-                                                            class="fa-solid fa-check"></i></button>
-                                                </td>
-                                            @endif
-                                        </tr>
-                                    @else
-                                        @if ($loop->index == 0)
-                                            <tr>
-                                                <td class="align-middle" colspan="3">
-                                                    {{ ucwords(GoogleTranslate::justTranslate('There are no records', app()->getLocale())) }}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    @endif
-                                    @if ($loop->index == sizeof($clinicalHUncomplete) - 1)
-                                        <script>
-                                            castArrayToJSON(generateProgressBars);
-                                        </script>
-                                    @endif
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td class="align-middle" colspan="3">
-                                        {{ ucwords(GoogleTranslate::justTranslate('There are no records', app()->getLocale())) }}
-                                    </td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="tab-historie-pane" role="tabpanel" aria-labelledby="tab-historie" tabindex="0">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h5 class="d-block py-3">
-                            {{ ucwords(GoogleTranslate::justTranslate('Histories', app()->getLocale())) }}</h5>
-                        <div class="container-fluid">
-                            <!-- Codrops top bar -->
-                            <!--/ Codrops top bar -->
-                            <div class="table-responsive">
-                                <div class="main">
-                                    <ul id="bk-list" class="bk-list clearfix">
-                                        @php
-                                            $noMedicalR = true;
-                                        @endphp
-                                        @if (!empty($clinicalHComplete))
-                                            @foreach ($clinicalHComplete as $f)
-                                                @if ($f['clinical_history'] != null && $f['clinical_history']['progress'] == 100)
-                                                    <li style="z-index: {{ $loop->index }};"
-                                                        onclick="openInfoClinicalH('{{ $f['_id'] }}');">
-                                                        <div class="bk-book book-2">
-                                                            <div class="bk-front">
-                                                                <div class="bk-cover-back"></div>
-                                                                <div class="bk-cover">
-
-                                                                </div>
-                                                            </div>
-                                                            <div class="bk-page">
-                                                                <div class="bk-content bk-content-current">
-                                                                </div>
-                                                                <div class="bk-content">
-                                                                </div>
-                                                                <div class="bk-content">
-                                                                </div>
-                                                                <nav><span class="bk-page-prev">&lt;</span><span
-                                                                        class="bk-page-next">&gt;</span></nav>
-                                                                <nav><span class="bk-page-prev">&lt;</span><span
-                                                                        class="bk-page-next">&gt;</span></nav>
-                                                            </div>
-                                                            <div class="bk-back">
-                                                            </div>
-                                                            <div class="bk-right"></div>
-                                                            <div class="bk-left">
-                                                                <h2>
-                                                                    <span>{{ $f['name'] . ' ' . $f['lastname'] }}</span>
-                                                                </h2>
-                                                            </div>
-                                                            <div class="bk-top"></div>
-                                                            <div class="bk-bottom"></div>
-                                                        </div>
-                                                    </li>
-                                                    @php
-                                                        $bookshelf = 1;
-                                                        $noMedicalR = true;
-                                                    @endphp
-                                                @else
-                                                    @php
-                                                        $noMedicalR = false;
-                                                        $bookshelf = 0;
-                                                    @endphp
-                                                @endif
-                                            @endforeach
                                         @else
-                                            @php
-                                                $noMedicalR = false;
-                                                $bookshelf = 0;
-                                            @endphp
+                                            <td class="align-middle">
+                                                <button class="btn btn-success btn-circle" data-bs-toggle="tooltip"
+                                                    data-bs-toggle="tooltip"
+                                                    title="{{ ucwords(GoogleTranslate::justTranslate('Medical history completed', app()->getLocale())) }}"><i
+                                                        class="fa-solid fa-check"></i></button>
+                                            </td>
                                         @endif
-                                    </ul>
-                                    @if (!$noMedicalR)
-                                        <div class="container-fluid p-2">
-                                            <div class="row">
-                                                <div class="d-flex align-items-center justify-content-center">
-                                                    <div class="col-md-8">
-                                                        <img src="{{ asset('img/medical-history.png') }}"
-                                                            class="img-fluid col-12" />
-                                                        <h1
-                                                            class="h1 text-center pb-5 px-3 text-title-cu text-bold-cu text-uppercase">
-                                                            {{ ucwords(GoogleTranslate::justTranslate('No medical records', app()->getLocale())) }}
-                                                        </h1>
+                                    </tr>
+                                @else
+                                    @if ($loop->index == 0)
+                                        <tr>
+                                            <td class="align-middle" colspan="3">
+                                                {{ ucwords(GoogleTranslate::justTranslate('There are no records', app()->getLocale())) }}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endif
+                                @if ($loop->index == sizeof($clinicalHUncomplete) - 1)
+                                    <script>
+                                        castArrayToJSON(generateProgressBars);
+                                    </script>
+                                @endif
+                            @endforeach
+                        @else
+                            <tr>
+                                <td class="align-middle" colspan="3">
+                                    {{ ucwords(GoogleTranslate::justTranslate('There are no records', app()->getLocale())) }}
+                                </td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tab-historie-pane" role="tabpanel" aria-labelledby="tab-historie" tabindex="0">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="d-block py-3">
+                        {{ ucwords(GoogleTranslate::justTranslate('Histories', app()->getLocale())) }}</h5>
+                    <div class="container-fluid">
+                        <!-- Codrops top bar -->
+                        <!--/ Codrops top bar -->
+                        <div class="table-responsive">
+                            <div class="main">
+                                <ul id="bk-list" class="bk-list clearfix">
+                                    @php
+                                        $noMedicalR = true;
+                                    @endphp
+                                    @if (!empty($clinicalHComplete))
+                                        @foreach ($clinicalHComplete as $f)
+                                            @if ($f['clinical_history'] != null && $f['clinical_history']['progress'] == 100)
+                                                <li style="z-index: {{ $loop->index }};"
+                                                    onclick="openInfoClinicalH('{{ $f['_id'] }}');">
+                                                    <div class="bk-book book-2">
+                                                        <div class="bk-front">
+                                                            <div class="bk-cover-back"></div>
+                                                            <div class="bk-cover">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="bk-page">
+                                                            <div class="bk-content bk-content-current">
+                                                            </div>
+                                                            <div class="bk-content">
+                                                            </div>
+                                                            <div class="bk-content">
+                                                            </div>
+                                                            <nav><span class="bk-page-prev">&lt;</span><span
+                                                                    class="bk-page-next">&gt;</span></nav>
+                                                            <nav><span class="bk-page-prev">&lt;</span><span
+                                                                    class="bk-page-next">&gt;</span></nav>
+                                                        </div>
+                                                        <div class="bk-back">
+                                                        </div>
+                                                        <div class="bk-right"></div>
+                                                        <div class="bk-left">
+                                                            <h2>
+                                                                <span>{{ $f['name'] . ' ' . $f['lastname'] }}</span>
+                                                            </h2>
+                                                        </div>
+                                                        <div class="bk-top"></div>
+                                                        <div class="bk-bottom"></div>
                                                     </div>
+                                                </li>
+                                                @php
+                                                    $bookshelf = 1;
+                                                    $noMedicalR = true;
+                                                @endphp
+                                            @else
+                                                @php
+                                                    $noMedicalR = false;
+                                                    $bookshelf = 0;
+                                                @endphp
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        @php
+                                            $noMedicalR = false;
+                                            $bookshelf = 0;
+                                        @endphp
+                                    @endif
+                                </ul>
+                                @if (!$noMedicalR)
+                                    <div class="container-fluid p-2">
+                                        <div class="row">
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <div class="col-md-8">
+                                                    <img src="{{ asset('img/medical-history.png') }}"
+                                                        class="img-fluid col-12" />
+                                                    <h1
+                                                        class="h1 text-center pb-5 px-3 text-title-cu text-bold-cu text-uppercase">
+                                                        {{ ucwords(GoogleTranslate::justTranslate('No medical records', app()->getLocale())) }}
+                                                    </h1>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                @endif
+                                @if (isset($bookshelf))
+                                    @if ($bookshelf == 1)
+                                        <div class="bookshelf"></div>
                                     @endif
-                                    @if (isset($bookshelf))
-                                        @if ($bookshelf == 1)
-                                            <div class="bookshelf"></div>
-                                        @endif
-                                    @endif
-                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>

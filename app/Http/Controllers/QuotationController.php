@@ -71,12 +71,20 @@ class QuotationController extends Controller
 
                 $familys = Familys::where("id_usuario", Auth::user()->_id)->get();
 
+                if ($familys == []) {
+                    $familys = Users::where('_id',Auth::user()->_id)->get();
+                }
+
                 return view('auth.quotation', compact('quotation', 'familys'));
                 // return response()->json(["Quotation" => $quotation, "familys" => $familys],200);
             }elseif (auth()->user()->role == 4) {
                 $quotation = Quotation::orderBy('date')->get();
 
                 $familys = Familys::where("id_usuario", Auth::user()->_id)->get();
+
+                if ($familys == []) {
+                    $familys = Users::where('_id',Auth::user()->_id)->get();
+                }
 
                 return view('auth.quotation', compact('quotation', 'familys'));
             } else {

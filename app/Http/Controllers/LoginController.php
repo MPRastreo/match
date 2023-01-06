@@ -21,7 +21,8 @@ class LoginController extends Controller
                 $usuario = Users::find(auth()->user()->_id);
                 $usuario->token = Hash::make(date('Y-m-d H:i:s ').'-'.auth()->user()->name.'-'.auth()->user()->role);
                 $usuario->save();
-                return redirect()->intended('/personal');
+
+                return (Auth::user()->role == 4) ? redirect()->intended('/quotation') : redirect()->intended('/personal');
             }
             else
             {
